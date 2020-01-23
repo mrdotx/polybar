@@ -1,4 +1,6 @@
-| shell scripts         | comment                                                         |
+# polybar
+
+| name                  | comment                                                         |
 | :-------------------- | :-------------------------------------------------------------- |
 | polybar.sh            | start and toggle polybar                                        |
 | polybar_bluetooth.sh  | enable/disable bluetooth, show bluetooth status                 |
