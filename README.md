@@ -1,5 +1,7 @@
 # polybar
 
+shell scripts for polybar
+
 | name                  | comment                                                         |
 | :-------------------- | :-------------------------------------------------------------- |
 | polybar.sh            | start and toggle polybar                                        |
