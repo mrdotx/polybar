@@ -15,5 +15,5 @@ shell scripts for polybar
 
 config files: [dotfiles/polybar](https://github.com/mrdotx/dotfiles/tree/master/.config/polybar)
 
-![](screenshot_monitor1.png)
-![](screenshot_monitor2.png)
+![monitor1](screenshot_monitor1.png)
+![monitor2](screenshot_monitor2.png)
