@@ -1,9 +1,9 @@
 #!/bin/sh
 
 # path:       ~/projects/polybar/polybar_printer.sh
-# user:       klassiker [mrdotx]
+# author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-01-23T11:39:28+0100
+# date:       2020-02-03T13:22:21+0100
 
 grey=$(xrdb -query | grep Polybar.foreground1: | cut -f2)
 red=$(xrdb -query | grep color9: | cut -f2)

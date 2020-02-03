@@ -1,9 +1,9 @@
 #!/bin/sh
 
 # path:       ~/projects/polybar/polybar_vpn_hades.sh
-# user:       klassiker [mrdotx]
+# author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-01-23T11:40:23+0100
+# date:       2020-02-03T13:22:57+0100
 
 vpn_name=hades
 grey=$(xrdb -query | grep Polybar.foreground1: | cut -f2)
