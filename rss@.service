@@ -1,0 +1,12 @@
+[Unit]
+Description=receive rss feeds with newsboat in user contaxt %i
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=%i
+Type=oneshot
+ExecStart=/home/klassiker/projects/polybar/polybar_rss.sh
+
+[Install]
+WantedBy=multi-user.target
