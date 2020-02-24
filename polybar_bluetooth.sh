@@ -3,18 +3,18 @@
 # path:       ~/projects/polybar/polybar_bluetooth.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-02-03T13:21:32+0100
+# date:       2020-02-24T08:46:45+0100
 
-grey=$(xrdb -query | grep Polybar.foreground1: | cut -f2)
-red=$(xrdb -query | grep color9: | cut -f2)
+grey="%{o$(xrdb -query | grep Polybar.foreground1: | cut -f2)}%{o-}"
+red="%{o$(xrdb -query | grep color9: | cut -f2)}%{o-}"
 
 case "$1" in
     --status)
         if [ "$(systemctl is-active bluetooth.service)" = "active" ]
         then
-            echo "%{o$red}%{o-}"
+            printf "%s" "$red"
         else
-            echo "%{o$grey}%{o-}"
+            printf "%s" "$grey"
         fi
         ;;
     *)
@@ -23,12 +23,12 @@ case "$1" in
             sudo -A systemctl start bluetooth.service \
                 && sudo -A systemctl start bluetooth.target \
                 && sudo -A systemctl start ModemManager.service \
-                && echo "%{o$red}%{o-}"
+                && printf "%s" "$red"
         else
             sudo -A systemctl stop bluetooth.service \
                 && sudo -A systemctl stop bluetooth.target \
                 && sudo -A systemctl stop ModemManager.service \
-                && echo "%{o$grey}%{o-}"
+                && printf "%s" "$grey"
         fi
         ;;
 esac

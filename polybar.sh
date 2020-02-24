@@ -3,7 +3,7 @@
 # path:       ~/projects/polybar/polybar.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-02-03T13:21:18+0100
+# date:       2020-02-24T08:28:11+0100
 
 pri=$(polybar -m | grep "(primary)" | sed -e 's/:.*$//g')
 sec=$(polybar -m | grep -v "(primary)" | sed -e 's/:.*$//g')
@@ -37,15 +37,15 @@ while pgrep -x polybar >/dev/null; do sleep 0.1; done
 
 # launch polybar and write errorlog to tmp
 if [ -z $bar_sec ]; then
-        echo "---" | tee -a /tmp/polybar_$bar_pri.log
+        printf "%s\n" "---" | tee -a /tmp/polybar_$bar_pri.log
         MONITOR=$pri polybar $bar_pri  >>/tmp/polybar_$bar_pri.log 2>&1 &
 else
     if [ "$(polybar -m | wc -l)" = 2 ]; then
-        echo "---" | tee -a /tmp/polybar_$bar_sec.log /tmp/polybar_$bar_sec_top.log
+        printf "%s\n" "---" | tee -a /tmp/polybar_$bar_sec.log /tmp/polybar_$bar_sec_top.log
         MONITOR=$pri polybar $bar_sec >>/tmp/polybar_$bar_sec.log 2>&1 &
         MONITOR=$sec polybar $bar_sec_top >>/tmp/polybar_$bar_sec_top.log 2>&1 &
     else
-        echo "---" | tee -a /tmp/polybar_$bar_sec.log /tmp/polybar_$bar_pri_btm.log
+        printf "%s\n" "---" | tee -a /tmp/polybar_$bar_sec.log /tmp/polybar_$bar_pri_btm.log
         MONITOR=$pri polybar $bar_sec >>/tmp/polybar_$bar_sec.log 2>&1 &
         MONITOR=$pri polybar $bar_pri_btm >>/tmp/polybar_$bar_pri_btm.log 2>&1 &
     fi
