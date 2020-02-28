@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# path:       ~/projects/polybar/polybar.sh
+# path:       ~/repos/polybar/polybar.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-02-24T08:28:11+0100
+# date:       2020-02-28T08:15:37+0100
 
 pri=$(polybar -m | grep "(primary)" | sed -e 's/:.*$//g')
 sec=$(polybar -m | grep -v "(primary)" | sed -e 's/:.*$//g')
