@@ -3,7 +3,7 @@
 # path:       ~/repos/polybar/polybar.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-02-28T08:15:37+0100
+# date:       2020-03-11T09:37:09+0100
 
 pri=$(polybar -m | grep "(primary)" | sed -e 's/:.*$//g')
 sec=$(polybar -m | grep -v "(primary)" | sed -e 's/:.*$//g')
@@ -35,7 +35,7 @@ killall -q polybar
 # wait until the processes have been shut down
 while pgrep -x polybar >/dev/null; do sleep 0.1; done
 
-# launch polybar and write errorlog to tmp
+# launch polybar and write log to tmp
 if [ -z $bar_sec ]; then
         printf "%s\n" "---" | tee -a /tmp/polybar_$bar_pri.log
         MONITOR=$pri polybar $bar_pri  >>/tmp/polybar_$bar_pri.log 2>&1 &
