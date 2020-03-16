@@ -3,7 +3,7 @@
 # path:       ~/repos/polybar/polybar_vpn_hades.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-02-28T08:17:13+0100
+# date:       2020-03-16T12:36:53+0100
 
 vpn_name=hades
 grey="%{o$(xrdb -query | grep Polybar.foreground1: | cut -f2)}%{o-}"
@@ -24,9 +24,9 @@ case "$1" in
             nmcli con down id $vpn_name \
                 && printf "%s" "$grey"
         else
-            gpg -o "/tmp/$vpn_name.txt" "$HOME/cloud/webde/Keys/$vpn_name.txt.gpg" \
-                && nmcli con up id $vpn_name passwd-file "/tmp/$vpn_name.txt" \
-                && rm -f "/tmp/$vpn_name.txt" \
+            gpg -o "/tmp/$vpn_name.gpg.txt" "$HOME/cloud/webde/Keys/$vpn_name.gpg" \
+                && nmcli con up id $vpn_name passwd-file "/tmp/$vpn_name.gpg.txt" \
+                && rm -f "/tmp/$vpn_name.gpg.txt" \
                 && printf "%s" "$red"
         fi
         ;;
