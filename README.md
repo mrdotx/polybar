@@ -12,10 +12,9 @@ shell scripts for polybar
 | polybar_printer.sh   | enable/disable printer and show printer status                  |
 | polybar_rss.sh       | shows the quantity of new articles in newsboat                  |
 | polybar_vpn_hades.sh | enable/disable vpn and show vpn status                          |
-| rss@.service         | systemd service to reveive rss feeds with newsboat              |
-| rss@klassiker.timer  | systemd timer for rss@.service                                  |
 
 config files: [dotfiles/polybar](https://github.com/mrdotx/dotfiles/tree/master/.config/polybar)
+config files: [dotfiles/systemd](https://github.com/mrdotx/dotfiles/tree/master/.config/systemd/user)
 
 ![monitor1](screenshot_monitor1.png)
 ![monitor2](screenshot_monitor2.png)
