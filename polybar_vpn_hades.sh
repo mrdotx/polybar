@@ -3,7 +3,7 @@
 # path:       ~/repos/polybar/polybar_vpn_hades.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-03-20T15:26:27+0100
+# date:       2020-03-20T16:15:32+0100
 
 vpn_name=hades
 
@@ -25,10 +25,10 @@ case "$1" in
         ;;
     *)
         if [ "$(pgrep -f "vpnc $vpn_name")" ]; then
-            sudo vpnc-disconnect \
+            sudo -A vpnc-disconnect \
                 && grey
         else
-            sudo vpnc $vpn_name \
+            sudo -A vpnc $vpn_name \
                 && red
         fi
         ;;
