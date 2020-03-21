@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# path:       ~/repos/polybar/polybar_polkit.sh
+# path:       ~/repos/polybar/polybar_authentication.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-03-20T22:07:12+0100
+# date:       2020-03-21T13:25:10+0100
 
 service=authentication.service
 icon=
