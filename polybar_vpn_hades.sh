@@ -3,7 +3,7 @@
 # path:       ~/repos/polybar/polybar_vpn_hades.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-03-20T22:20:47+0100
+# date:       2020-03-21T01:15:56+0100
 
 service=vpnc@hades.service
 icon=
@@ -26,10 +26,10 @@ case "$1" in
         ;;
     *)
         if [ "$(systemctl is-active $service)" = "active" ]; then
-            sudo -A systemctl disable $service --now \
+            sudo -A systemctl stop $service \
                 && grey
         else
-            sudo -A systemctl enable $service --now \
+            sudo -A systemctl start $service \
                 && red
         fi
         ;;
