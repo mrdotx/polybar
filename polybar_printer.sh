@@ -3,34 +3,39 @@
 # path:       ~/repos/polybar/polybar_printer.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-03-20T15:32:29+0100
+# date:       2020-03-20T22:28:05+0100
+
+service=org.cups.cupsd.service
+service_a=avahi-daemon.service
+socket_a=avahi-daemon.socket
+icon=
 
 grey() {
-    printf "%%{o%s}%%{o-}" "$(xrdb -query | grep Polybar.foreground1: | cut -f2)"
+    printf "%%{o%s}$icon%%{o-}" "$(xrdb -query | grep Polybar.foreground1: | cut -f2)"
 }
 
 red() {
-    printf "%%{o%s}%%{o-}" "$(xrdb -query | grep color9: | cut -f2)"
+    printf "%%{o%s}$icon%%{o-}" "$(xrdb -query | grep color9: | cut -f2)"
 }
 
 case "$1" in
     --status)
-        if [ "$(systemctl is-active org.cups.cupsd.service)" = "active" ]; then
+        if [ "$(systemctl is-active $service)" = "active" ]; then
             red
         else
             grey
         fi
         ;;
     *)
-        if [ "$(systemctl is-active org.cups.cupsd.service)" = "active" ]; then
-            sudo -A systemctl stop org.cups.cupsd.service \
-                && sudo -A systemctl stop avahi-daemon.service \
-                && sudo -A systemctl stop avahi-daemon.socket \
+        if [ "$(systemctl is-active $service)" = "active" ]; then
+            sudo -A systemctl disable $service --now \
+                && sudo -A systemctl disable $service_a --now \
+                && sudo -A systemctl disable $socket_a --now \
                 && grey
         else
-            sudo -A systemctl start org.cups.cupsd.service \
-                && sudo -A systemctl start avahi-daemon.service \
-                && sudo -A systemctl start avahi-daemon.socket \
+            sudo -A systemctl enable $service --now \
+                && sudo -A systemctl enable $service_a --now \
+                && sudo -A systemctl enable $socket_a --now \
                 && red
         fi
         ;;

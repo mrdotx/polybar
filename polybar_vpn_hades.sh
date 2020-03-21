@@ -3,32 +3,33 @@
 # path:       ~/repos/polybar/polybar_vpn_hades.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-03-20T16:15:32+0100
+# date:       2020-03-20T22:20:47+0100
 
-vpn_name=hades
+service=vpnc@hades.service
+icon=
 
 grey() {
-    printf "%%{o%s}%%{o-}" "$(xrdb -query | grep Polybar.foreground1: | cut -f2)"
+    printf "%%{o%s}$icon%%{o-}" "$(xrdb -query | grep Polybar.foreground1: | cut -f2)"
 }
 
 red() {
-    printf "%%{o%s}%%{o-}" "$(xrdb -query | grep color9: | cut -f2)"
+    printf "%%{o%s}$icon%%{o-}" "$(xrdb -query | grep color9: | cut -f2)"
 }
 
 case "$1" in
     --status)
-        if [ "$(pgrep -f "vpnc $vpn_name")" ]; then
+        if [ "$(systemctl is-active $service)" = "active" ]; then
             red
         else
             grey
         fi
         ;;
     *)
-        if [ "$(pgrep -f "vpnc $vpn_name")" ]; then
-            sudo -A vpnc-disconnect \
+        if [ "$(systemctl is-active $service)" = "active" ]; then
+            sudo -A systemctl disable $service --now \
                 && grey
         else
-            sudo -A vpnc $vpn_name \
+            sudo -A systemctl enable $service --now \
                 && red
         fi
         ;;

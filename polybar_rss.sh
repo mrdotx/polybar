@@ -3,19 +3,22 @@
 # path:       ~/repos/polybar/polybar_rss.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-03-20T15:28:59+0100
+# date:       2020-03-21T00:50:14+0100
+
+timer=rss.timer
+icon=
 
 grey() {
-    printf "%%{o%s}%%{o-}" "$(xrdb -query | grep Polybar.foreground1: | cut -f2)"
+    printf "%%{o%s}$icon%%{o-}" "$(xrdb -query | grep Polybar.foreground1: | cut -f2)"
 }
 
 red() {
-    unread=$(newsboat -x print-unread | awk '{printf " %d\n",$1}')
-    printf "%%{o%s}$unread%%{o-}" "$(xrdb -query | grep color9: | cut -f2)"
+    unread=$(newsboat -x print-unread | awk '$icon {printf "%d\n", $1}')
+    printf "%%{o%s}$icon $unread%%{o-}" "$(xrdb -query | grep color9: | cut -f2)"
 }
 
 status() {
-if [ "$(systemctl --user is-active rss.timer)" = "active" ]; then
+if [ "$(systemctl --user is-active $timer)" = "active" ]; then
     red
 else
     grey
@@ -27,13 +30,11 @@ case "$1" in
         status
         ;;
     --toggle)
-        if [ "$(systemctl --user is-active rss.timer)" = "active" ]; then
-            systemctl --user stop rss.timer \
-                && systemctl --user disable rss.timer \
+        if [ "$(systemctl --user is-active $timer)" = "active" ]; then
+            systemctl --user disable $timer --now \
                 && grey
         else
-            systemctl --user enable rss.timer \
-                && systemctl --user start rss.timer \
+            systemctl --user enable $timer --now \
                 && red
         fi
         ;;
