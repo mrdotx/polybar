@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# path:       ~/repos/polybar/polybar_resolver.sh
+# path:       ~/.local/share/repos/polybar/polybar_resolver.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-03-20T23:21:23+0100
+# date:       2020-03-25T23:20:19+0100
 
 service=systemd-resolved.service
 icon=

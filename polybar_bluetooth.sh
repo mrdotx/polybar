@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# path:       ~/repos/polybar/polybar_bluetooth.sh
+# path:       ~/.local/share/repos/polybar/polybar_bluetooth.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-03-20T22:14:17+0100
+# date:       2020-03-25T23:19:05+0100
 
 service=bluetooth.service
 target=bluetooth.target

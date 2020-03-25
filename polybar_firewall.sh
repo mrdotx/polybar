@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# path:       ~/repos/polybar/polybar_firewall.sh
+# path:       ~/.local/share/repos/polybar/polybar_firewall.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-03-20T22:10:42+0100
+# date:       2020-03-25T23:19:30+0100
 
 service=ufw.service
 icon=

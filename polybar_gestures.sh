@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# path:       ~/repos/polybar/polybar_gestures.sh
+# path:       ~/.local/share/repos/polybar/polybar_gestures.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-03-20T22:03:51+0100
+# date:       2020-03-25T23:19:45+0100
 
 service=gestures.service
 icon=

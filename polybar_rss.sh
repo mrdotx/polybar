@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# path:       ~/repos/polybar/polybar_rss.sh
+# path:       ~/.local/share/repos/polybar/polybar_rss.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-03-24T10:59:39+0100
+# date:       2020-03-25T23:20:31+0100
 
 timer=rss.timer
 icon=

@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# path:       ~/repos/polybar/polybar_printer.sh
+# path:       ~/.local/share/repos/polybar/polybar_printer.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-03-20T22:28:05+0100
+# date:       2020-03-25T23:19:57+0100
 
 service=org.cups.cupsd.service
 service_a=avahi-daemon.service
