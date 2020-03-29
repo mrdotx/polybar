@@ -3,10 +3,9 @@
 # path:       ~/.local/share/repos/polybar/polybar.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-03-25T23:18:18+0100
+# date:       2020-03-29T13:48:12+0200
 
-pri=$(polybar -m | grep "(primary)" | sed -e 's/:.*$//g')
-sec=$(polybar -m | grep -v "(primary)" | sed -e 's/:.*$//g')
+dual_bar=1
 
 # terminate already running bar instances
 killall -q polybar
@@ -15,7 +14,9 @@ killall -q polybar
 while pgrep -x polybar >/dev/null; do sleep 0.1; done
 
 # launch polybar
-if [ "$(polybar -m | wc -l)" = 2 ]; then
+pri=$(polybar -m | grep "(primary)" | sed -e 's/:.*$//g')
+if [ "$dual_bar" = 1 ] && [ "$(polybar -m | wc -l)" = 2 ]; then
+    sec=$(polybar -m | grep -v "(primary)" | sed -e 's/:.*$//g')
     MONITOR=$pri polybar i3_2_mon_pri &
     MONITOR=$sec polybar i3_2_mon_sec &
 else
