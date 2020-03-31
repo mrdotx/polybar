@@ -3,8 +3,11 @@
 # path:       ~/.local/share/repos/polybar/polybar_resolver.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-03-25T23:20:19+0100
+# date:       2020-03-31T23:15:50+0200
 
+# authorization can be something like sudo -A, doas -- or
+# nothing, depending on service configuration
+authorization="doas --"
 service=systemd-resolved.service
 icon=
 
@@ -26,10 +29,10 @@ case "$1" in
         ;;
     *)
         if [ "$(systemctl is-active $service)" = "active" ]; then
-            sudo -A systemctl disable $service --now \
+            $authorization systemctl disable $service --now \
                 && grey
         else
-            sudo -A systemctl enable $service --now \
+            $authorization systemctl enable $service --now \
                 && red
         fi
         ;;

@@ -3,8 +3,11 @@
 # path:       ~/.local/share/repos/polybar/polybar_bluetooth.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-03-25T23:19:05+0100
+# date:       2020-03-31T23:22:05+0200
 
+# authorization can be something like sudo -A, doas -- or
+# nothing, depending on service configuration
+authorization="doas --"
 service=bluetooth.service
 target=bluetooth.target
 icon=
@@ -27,12 +30,12 @@ case "$1" in
         ;;
     *)
         if [ "$(systemctl is-active $service)" = "active" ]; then
-            sudo -A systemctl disable $service --now \
-                && sudo -A systemctl stop $target \
+            $authorization systemctl disable $service --now \
+                && $authorization systemctl stop $target \
                 && grey
         else
-            sudo -A systemctl enable $service --now \
-                && sudo -A systemctl start $target \
+            $authorization systemctl enable $service --now \
+                && $authorization systemctl start $target \
                 && red
         fi
         ;;
