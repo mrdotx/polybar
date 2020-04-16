@@ -3,11 +3,11 @@
 # path:       ~/.local/share/repos/polybar/polybar_vpn_hades.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-04-02T13:45:26+0200
+# date:       2020-04-16T08:44:31+0200
 
-# authorization can be something like sudo -A, doas -- or
-# nothing, depending on service configuration
-authorization="sudo -A"
+# auth can be something like sudo -A, doas -- or
+# nothing, depending on configuration requirements
+auth="sudo -A"
 service=vpnc@hades.service
 icon=
 
@@ -29,10 +29,10 @@ case "$1" in
         ;;
     *)
         if [ "$(systemctl is-active $service)" = "active" ]; then
-            $authorization systemctl stop $service \
+            $auth systemctl stop $service \
                 && grey
         else
-            $authorization systemctl start $service \
+            $auth systemctl start $service \
                 && red
         fi
         ;;

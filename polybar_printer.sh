@@ -3,11 +3,11 @@
 # path:       ~/.local/share/repos/polybar/polybar_printer.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-04-02T13:44:55+0200
+# date:       2020-04-16T08:42:45+0200
 
-# authorization can be something like sudo -A, doas -- or
-# nothing, depending on service configuration
-authorization="sudo -a"
+# auth can be something like sudo -A, doas -- or
+# nothing, depending on configuration requirements
+auth="sudo -A"
 service=org.cups.cupsd.service
 service_a=avahi-daemon.service
 socket_a=avahi-daemon.socket
@@ -31,14 +31,14 @@ case "$1" in
         ;;
     *)
         if [ "$(systemctl is-active $service)" = "active" ]; then
-            $authorization systemctl disable $service --now \
-                && $authorization systemctl disable $service_a --now \
-                && $authorization systemctl disable $socket_a --now \
+            $auth systemctl disable $service --now \
+                && $auth systemctl disable $service_a --now \
+                && $auth systemctl disable $socket_a --now \
                 && grey
         else
-            $authorization systemctl enable $service --now \
-                && $authorization systemctl enable $service_a --now \
-                && $authorization systemctl enable $socket_a --now \
+            $auth systemctl enable $service --now \
+                && $auth systemctl enable $service_a --now \
+                && $auth systemctl enable $socket_a --now \
                 && red
         fi
         ;;
