@@ -3,11 +3,11 @@
 # path:       ~/.local/share/repos/polybar/polybar_firewall.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-04-16T08:41:44+0200
+# date:       2020-04-25T16:11:57+0200
 
 # auth can be something like sudo -A, doas -- or
 # nothing, depending on configuration requirements
-auth="sudo -A"
+auth="doas --"
 service=ufw.service
 icon=
 
