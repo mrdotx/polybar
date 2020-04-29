@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# path:       ~/.local/share/repos/polybar/polybar_resolver.sh
+# path:       /home/klassiker/.local/share/repos/polybar/polybar_resolver.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-04-25T16:12:28+0200
+# date:       2020-04-29T11:12:15+0200
 
 # auth can be something like sudo -A, doas -- or
 # nothing, depending on configuration requirements

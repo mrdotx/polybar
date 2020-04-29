@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# path:       ~/.local/share/repos/polybar/polybar_printer.sh
+# path:       /home/klassiker/.local/share/repos/polybar/polybar_printer.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-04-25T16:12:14+0200
+# date:       2020-04-29T11:12:11+0200
 
 # auth can be something like sudo -A, doas -- or
 # nothing, depending on configuration requirements
