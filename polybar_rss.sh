@@ -3,15 +3,15 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_rss.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-04-29T11:12:19+0200
+# date:       2020-04-29T22:39:16+0200
 
 timer=rss.timer
 icon=
 
+# xresources
 grey() {
     printf "%%{o%s}$icon%%{o-}" "$(xrdb -query | grep Polybar.foreground1: | cut -f2)"
 }
-
 # temporary fix for print-unread with newsboat 2.19 is devide by 4 ($1/4)
 red() {
     unread=$(newsboat -x print-unread | awk '$icon {printf "%d\n", $1/4}')
