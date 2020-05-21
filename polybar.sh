@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-05-21T21:24:50+0200
+# date:       2020-05-21T21:36:37+0200
 
 script=$(basename "$0")
 help="$script [-h/--help] -- script to start polybar
@@ -12,7 +12,7 @@ help="$script [-h/--help] -- script to start polybar
 
   Settings:
     without given setting re-/start polybar
-    -t = toggle between dual and single bar
+    -t = toggle between dual- and single bar
 
   Example:
     $script
