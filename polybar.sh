@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-05-21T21:36:37+0200
+# date:       2020-05-22T00:57:51+0200
 
 script=$(basename "$0")
 help="$script [-h/--help] -- script to start polybar
@@ -27,13 +27,13 @@ fi
 dual_bar=$(printf "%s" "$(xrdb -query | grep Polybar.dualbar: | cut -f2)")
 
 tog(){
-    file="$HOME/.config/xorg/Xresources"
+    file="$HOME/.config/xorg/polybar"
     if [ "$dual_bar" = true ]; then
-        sed -i "/Polybar.dualbar:/c\Polybar.dualbar:                    false" "$file"
+        sed -i "/Polybar.dualbar:/c\Polybar.dualbar:        false" "$file"
     else
-        sed -i "/Polybar.dualbar:/c\Polybar.dualbar:                    true" "$file"
+        sed -i "/Polybar.dualbar:/c\Polybar.dualbar:        true" "$file"
     fi
-    xrdb -merge "$file" \
+    xrdb -merge "$HOME/.config/xorg/Xresources" \
         && systemctl --user restart polybar.service
 }
 
