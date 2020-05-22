@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_bluetooth.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-04-29T22:39:51+0200
+# date:       2020-05-22T17:14:51+0200
 
 # auth can be something like sudo -A, doas -- or
 # nothing, depending on configuration requirements
@@ -11,32 +11,31 @@ auth="doas --"
 service=bluetooth.service
 target=bluetooth.target
 icon=
+xred="color1"
+xgrey="Polybar.foreground1"
 
 # xresources
-grey() {
-    printf "%%{o%s}$icon%%{o-}" "$(xrdb -query | grep Polybar.foreground1: | cut -f2)"
-}
-red() {
-    printf "%%{o%s}$icon%%{o-}" "$(xrdb -query | grep color9: | cut -f2)"
+xres() {
+    printf "%%{o%s}$icon%%{o-}" "$(xrdb -query | grep "$1:" | cut -f2)"
 }
 
 case "$1" in
     --status)
         if [ "$(systemctl is-active $service)" = "active" ]; then
-            red
+            xres "$xred"
         else
-            grey
+            xres "$xgrey"
         fi
         ;;
     *)
         if [ "$(systemctl is-active $service)" = "active" ]; then
             $auth systemctl disable $service --now \
                 && $auth systemctl stop $target \
-                && grey
+                && xres "$xgrey"
         else
             $auth systemctl enable $service --now \
                 && $auth systemctl start $target \
-                && red
+                && xres "$xred"
         fi
         ;;
 esac

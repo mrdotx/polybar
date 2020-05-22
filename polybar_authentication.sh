@@ -3,34 +3,33 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_authentication.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-04-29T22:40:03+0200
+# date:       2020-05-22T17:15:20+0200
 
 service=authentication.service
 icon=
+xred="color1"
+xgrey="Polybar.foreground1"
 
 # xresources
-grey() {
-    printf "%%{o%s}$icon%%{o-}" "$(xrdb -query | grep Polybar.foreground1: | cut -f2)"
-}
-red() {
-    printf "%%{o%s}$icon%%{o-}" "$(xrdb -query | grep color9: | cut -f2)"
+xres() {
+    printf "%%{o%s}$icon%%{o-}" "$(xrdb -query | grep "$1:" | cut -f2)"
 }
 
 case "$1" in
     --status)
         if [ "$(systemctl --user is-active $service)" = "active" ]; then
-            red
+            xres "$xred"
         else
-            grey
+            xres "$xgrey"
         fi
         ;;
     *)
         if [ "$(systemctl --user is-active $service)" = "active" ]; then
             systemctl --user disable $service --now \
-                && grey
+                && xres "$xgrey"
         else
             systemctl --user enable $service --now \
-                && red
+                && xres "$xred"
         fi
         ;;
 esac
