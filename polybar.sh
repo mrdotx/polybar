@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-05-22T00:57:51+0200
+# date:       2020-05-23T20:23:14+0200
 
 script=$(basename "$0")
 help="$script [-h/--help] -- script to start polybar
@@ -24,7 +24,10 @@ if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
 fi
 
 # xresources
-dual_bar=$(printf "%s" "$(xrdb -query | grep Polybar.dualbar: | cut -f2)")
+dual_bar=$(printf "%s" "$(xrdb -query \
+    | grep Polybar.dualbar: \
+    | cut -f2)" \
+)
 
 tog(){
     file="$HOME/.config/xorg/polybar"
@@ -45,8 +48,15 @@ st(){
     while pgrep -x polybar >/dev/null; do sleep 0.1; done
 
     # launch polybar
-    pri=$(polybar -m | grep "(primary)" | sed -e 's/:.*$//g')
-    sec=$(polybar -m | grep -v "(primary)" | sed q1 | sed -e 's/:.*$//g')
+    pri=$(polybar -m \
+        | grep "(primary)" \
+        | sed -e 's/:.*$//g' \
+    )
+    sec=$(polybar -m \
+        | grep -v "(primary)" \
+        | sed q1 \
+        | sed -e 's/:.*$//g' \
+    )
 
     if [ "$dual_bar" = true ] && [ "$(polybar -m | wc -l)" -ge 2 ]; then
         MONITOR=$pri polybar i3_2_mon_pri &

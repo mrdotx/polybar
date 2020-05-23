@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_bluetooth.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-05-22T17:14:51+0200
+# date:       2020-05-23T20:24:31+0200
 
 # auth can be something like sudo -A, doas -- or
 # nothing, depending on configuration requirements
@@ -16,7 +16,10 @@ xgrey="Polybar.foreground1"
 
 # xresources
 xres() {
-    printf "%%{o%s}$icon%%{o-}" "$(xrdb -query | grep "$1:" | cut -f2)"
+    printf "%%{o%s}$icon%%{o-}" "$(xrdb -query \
+            | grep "$1:" \
+            | cut -f2 \
+        )"
 }
 
 case "$1" in

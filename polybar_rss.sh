@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_rss.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-05-22T17:34:15+0200
+# date:       2020-05-23T20:28:19+0200
 
 timer=rss.timer
 icon=
@@ -11,13 +11,21 @@ xgrey="Polybar.foreground1"
 
 # xresources
 xres() {
-    printf "%%{o%s}$icon%%{o-}" "$(xrdb -query | grep "$1:" | cut -f2)"
+    printf "%%{o%s}$icon%%{o-}" "$(xrdb -query \
+            | grep "$1:" \
+            | cut -f2 \
+        )"
 }
 
 # temporary fix for print-unread with newsboat 2.19 is devide by 4 ($1/4)
 xred() {
-    unread=$(newsboat -x print-unread | awk '$icon {printf "%d\n", $1/4}')
-    printf "%%{o%s}$icon $unread%%{o-}" "$(xrdb -query | grep color1: | cut -f2)"
+    unread=$(newsboat -x print-unread \
+        | awk '$icon {printf "%d\n", $1/4}' \
+    )
+    printf "%%{o%s}$icon $unread%%{o-}" "$(xrdb -query \
+            | grep color1: \
+            | cut -f2 \
+        )"
 }
 
 status() {
