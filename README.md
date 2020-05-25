@@ -14,9 +14,9 @@ shell scripts for polybar
 | polybar_rss.sh       | shows the quantity of new articles in newsboat            |
 | polybar_vpn_hades.sh | enable/disable vpn and show status                        |
 
-config files: [dotfiles/polybar](https://github.com/mrdotx/dotfiles/tree/master/.config/polybar)
-
-config files: [dotfiles/systemd](https://github.com/mrdotx/dotfiles/tree/master/.config/systemd/user)
+config files:
+- [dotfiles/polybar](https://github.com/mrdotx/dotfiles/tree/master/.config/polybar)
+- [dotfiles/systemd](https://github.com/mrdotx/dotfiles/tree/master/.config/systemd/user)
 
 ![monitor1](screenshot_monitor1.png)
 ![monitor2](screenshot_monitor2.png)
