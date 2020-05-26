@@ -3,11 +3,11 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_rss.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-05-23T20:28:19+0200
+# date:       2020-05-26T20:06:24+0200
 
 timer=rss.timer
 icon=
-xgrey="Polybar.foreground1"
+xfg="Polybar.foreground1"
 
 # xresources
 xres() {
@@ -18,21 +18,21 @@ xres() {
 }
 
 # temporary fix for print-unread with newsboat 2.19 is devide by 4 ($1/4)
-xred() {
+xl() {
     unread=$(newsboat -x print-unread \
         | awk '$icon {printf "%d\n", $1/4}' \
     )
     printf "%%{o%s}$icon $unread%%{o-}" "$(xrdb -query \
-            | grep color1: \
+            | grep Polybar.main1: \
             | cut -f2 \
         )"
 }
 
 status() {
 if [ "$(systemctl --user is-active $timer)" = "active" ]; then
-    xred
+    xl
 else
-    xres "$xgrey"
+    xres "$xfg"
 fi
 }
 
@@ -43,10 +43,10 @@ case "$1" in
     --toggle)
         if [ "$(systemctl --user is-active $timer)" = "active" ]; then
             systemctl --user disable $timer --now \
-                && xres "$xgrey"
+                && xres "$xfg"
         else
             systemctl --user enable $timer --now \
-                && xred
+                && xl
         fi
         ;;
     *)

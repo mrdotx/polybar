@@ -3,15 +3,15 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_vpn_hades.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-05-23T20:28:42+0200
+# date:       2020-05-26T20:03:52+0200
 
 # auth can be something like sudo -A, doas -- or
 # nothing, depending on configuration requirements
 auth="doas --"
 service=vpnc@hades.service
 icon=
-xred="color1"
-xgrey="Polybar.foreground1"
+xl="Polybar.main1"
+xfg="Polybar.foreground1"
 
 # xresources
 xres() {
@@ -24,18 +24,18 @@ xres() {
 case "$1" in
     --status)
         if [ "$(systemctl is-active $service)" = "active" ]; then
-            xres "$xred"
+            xres "$xl"
         else
-            xres "$xgrey"
+            xres "$xfg"
         fi
         ;;
     *)
         if [ "$(systemctl is-active $service)" = "active" ]; then
             $auth systemctl disable $service --now \
-                && xres "$xgrey"
+                && xres "$xfg"
         else
             $auth systemctl enable $service --now \
-                && xres "$xred"
+                && xres "$xl"
         fi
         ;;
 esac

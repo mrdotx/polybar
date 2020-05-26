@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_printer.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-05-23T20:26:00+0200
+# date:       2020-05-26T20:02:15+0200
 
 # auth can be something like sudo -A, doas -- or
 # nothing, depending on configuration requirements
@@ -12,8 +12,8 @@ service=org.cups.cupsd.service
 service_a=avahi-daemon.service
 socket_a=avahi-daemon.socket
 icon=
-xred="color1"
-xgrey="Polybar.foreground1"
+xl="Polybar.main1"
+xfg="Polybar.foreground1"
 
 # xresources
 xres() {
@@ -26,9 +26,9 @@ xres() {
 case "$1" in
     --status)
         if [ "$(systemctl is-active $service)" = "active" ]; then
-            xres "$xred"
+            xres "$xl"
         else
-            xres "$xgrey"
+            xres "$xfg"
         fi
         ;;
     *)
@@ -36,12 +36,12 @@ case "$1" in
             $auth systemctl disable $service --now \
                 && $auth systemctl disable $service_a --now \
                 && $auth systemctl disable $socket_a --now \
-                && xres "$xgrey"
+                && xres "$xfg"
         else
             $auth systemctl enable $service --now \
                 && $auth systemctl enable $service_a --now \
                 && $auth systemctl enable $socket_a --now \
-                && xres "$xred"
+                && xres "$xl"
         fi
         ;;
 esac
