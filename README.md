@@ -6,6 +6,7 @@ shell scripts for polybar
 | :------------------- | :-------------------------------------------------------- |
 | polybar.sh           | start and toggle polybar                                  |
 | polybar_bluetooth.sh | enable/disable bluetooth, show status                     |
+| polybar_cmus.sh      | cmus statusbar and notification                           |
 | polybar_firewall.sh  | enable/disable firewall and show status                   |
 | polybar_gestures.sh  | enable/disable gestures and show status                   |
 | polybar_polkit.sh    | enable/disable gnome authentication agent and show status |
@@ -15,8 +16,12 @@ shell scripts for polybar
 | polybar_vpn_hades.sh | enable/disable vpn and show status                        |
 
 config files:
+
 - [dotfiles/polybar](https://github.com/mrdotx/dotfiles/tree/master/.config/polybar)
+- [dotfiles/cmus](https://github.com/mrdotx/dotfiles/tree/master/.config/cmus)
 - [dotfiles/systemd](https://github.com/mrdotx/dotfiles/tree/master/.config/systemd/user)
 
 ![monitor1](screenshot_monitor1.png)
 ![monitor2](screenshot_monitor2.png)
+![cmus polybar](screenshot_cmus_polybar.png)
+![cmus notify](screenshot_cmus_notify.png)
