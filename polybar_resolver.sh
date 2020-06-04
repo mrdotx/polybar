@@ -3,14 +3,14 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_resolver.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-05-26T20:03:06+0200
+# date:       2020-06-04T12:09:37+0200
 
 # auth can be something like sudo -A, doas -- or
 # nothing, depending on configuration requirements
 auth="doas --"
 service=systemd-resolved.service
 icon=
-xl="Polybar.main1"
+xl="color1"
 xfg="Polybar.foreground1"
 
 # xresources

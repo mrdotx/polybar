@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_printer.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-05-26T20:02:15+0200
+# date:       2020-06-04T12:09:48+0200
 
 # auth can be something like sudo -A, doas -- or
 # nothing, depending on configuration requirements
@@ -12,7 +12,7 @@ service=org.cups.cupsd.service
 service_a=avahi-daemon.service
 socket_a=avahi-daemon.socket
 icon=
-xl="Polybar.main1"
+xl="color1"
 xfg="Polybar.foreground1"
 
 # xresources

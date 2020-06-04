@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_cmus.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/cmus
-# date:       2020-05-28T14:26:04+0200
+# date:       2020-06-04T12:10:26+0200
 
 notify(){
     if [ "$duration" -ge 0 ]; then
@@ -55,7 +55,7 @@ bar(){
         | cut -f2 \
     )
     xl=$(xrdb -query \
-        | grep Polybar.main1: \
+        | grep color1: \
         | cut -f2 \
     )
 

@@ -3,11 +3,11 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_authentication.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-05-26T19:56:33+0200
+# date:       2020-06-04T12:10:51+0200
 
 service=authentication.service
 icon=
-xl="Polybar.main1"
+xl="color1"
 xfg="Polybar.foreground1"
 
 # xresources

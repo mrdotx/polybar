@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_rss.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-05-26T20:06:24+0200
+# date:       2020-06-04T12:09:11+0200
 
 timer=rss.timer
 icon=
@@ -23,7 +23,7 @@ xl() {
         | awk '$icon {printf "%d\n", $1/4}' \
     )
     printf "%%{o%s}$icon $unread%%{o-}" "$(xrdb -query \
-            | grep Polybar.main1: \
+            | grep color1: \
             | cut -f2 \
         )"
 }
