@@ -3,9 +3,9 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_cmus.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/cmus
-# date:       2020-06-04T12:10:26+0200
+# date:       2020-06-06T09:22:18+0200
 
-notify(){
+notify() {
     if [ "$duration" -ge 0 ]; then
         pos_min=$(printf "%02d" $((position / 60)))
         pos_sec=$(printf "%02d" $((position % 60)))
@@ -49,7 +49,7 @@ notify(){
     rm -f "$albumart"
 }
 
-bar(){
+bar() {
     xfg=$(xrdb -query \
         | grep Polybar.foreground1: \
         | cut -f2 \
