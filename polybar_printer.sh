@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_printer.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-06-04T12:09:48+0200
+# date:       2020-06-07T16:01:19+0200
 
 # auth can be something like sudo -A, doas -- or
 # nothing, depending on configuration requirements
@@ -33,9 +33,9 @@ case "$1" in
         ;;
     *)
         if [ "$(systemctl is-active $service)" = "active" ]; then
-            $auth systemctl disable $service --now \
+            $auth systemctl disable $socket_a --now \
                 && $auth systemctl disable $service_a --now \
-                && $auth systemctl disable $socket_a --now \
+                && $auth systemctl disable $service --now \
                 && xres "$xfg"
         else
             $auth systemctl enable $service --now \
