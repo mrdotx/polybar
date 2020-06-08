@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-06-06T09:22:00+0200
+# date:       2020-06-08T11:14:57+0200
 
 script=$(basename "$0")
 help="$script [-h/--help] -- script to start polybar
@@ -29,7 +29,7 @@ dual_bar=$(printf "%s" "$(xrdb -query \
     | cut -f2)" \
 )
 
-tog() {
+toggle() {
     file="$HOME/.config/xorg/polybar"
     if [ "$dual_bar" = true ]; then
         sed -i "/Polybar.dualbar:/c\Polybar.dualbar:        false" "$file"
@@ -40,7 +40,7 @@ tog() {
         && systemctl --user restart polybar.service
 }
 
-st() {
+start() {
     # terminate already running bar instances
     killall -q polybar
 
@@ -48,30 +48,30 @@ st() {
     while pgrep -x polybar >/dev/null; do sleep 0.1; done
 
     # launch polybar
-    pri=$(polybar -m \
+    primary=$(polybar -m \
         | grep "(primary)" \
         | sed -e 's/:.*$//g' \
     )
-    sec=$(polybar -m \
+    secondary=$(polybar -m \
         | grep -v "(primary)" \
         | sed q1 \
         | sed -e 's/:.*$//g' \
     )
 
     if [ "$dual_bar" = true ] && [ "$(polybar -m | wc -l)" -ge 2 ]; then
-        MONITOR=$pri polybar i3_2_mon_pri &
-        MONITOR=$sec polybar i3_2_mon_sec &
+        MONITOR=$primary polybar i3_2_mon_pri &
+        MONITOR=$secondary polybar i3_2_mon_sec &
     else
-        [ -n "$pri" ] && sec="$pri"
-        MONITOR=$sec polybar i3_1_mon &
+        [ -n "$primary" ] && secondary="$primary"
+        MONITOR=$secondary polybar i3_1_mon &
     fi
 }
 
 case "$1" in
     -t)
-        tog
+        toggle
         ;;
     *)
-        st
+        start
         ;;
 esac

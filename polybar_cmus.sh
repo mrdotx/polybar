@@ -3,15 +3,15 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_cmus.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/cmus
-# date:       2020-06-06T09:22:18+0200
+# date:       2020-06-08T11:45:11+0200
 
 notify() {
     if [ "$duration" -ge 0 ]; then
-        pos_min=$(printf "%02d" $((position / 60)))
-        pos_sec=$(printf "%02d" $((position % 60)))
-        dur_min=$(printf "%02d" $((duration / 60)))
-        dur_sec=$(printf "%02d" $((duration % 60)))
-        title_status="$pos_min:$pos_sec / $dur_min:$dur_sec"
+        position_minutes=$(printf "%02d" $((position / 60)))
+        position_seconds=$(printf "%02d" $((position % 60)))
+        duration_minutes=$(printf "%02d" $((duration / 60)))
+        duration_seconds=$(printf "%02d" $((duration % 60)))
+        title_status="$position_minutes:$position_seconds / $duration_minutes:$duration_seconds"
     fi
 
     case $status in
@@ -50,11 +50,11 @@ notify() {
 }
 
 bar() {
-    xfg=$(xrdb -query \
+    inactive_color=$(xrdb -query \
         | grep Polybar.foreground1: \
         | cut -f2 \
     )
-    xl=$(xrdb -query \
+    active_color=$(xrdb -query \
         | grep color1: \
         | cut -f2 \
     )
@@ -65,11 +65,11 @@ bar() {
             len=100
             ;;
         "paused")
-            info="%{o$xfg}"
+            info="%{o$inactive_color}"
             len=111
             ;;
         "stopped")
-            info="%{o$xl}"
+            info="%{o$active_color}"
             len=111
             ;;
         *)

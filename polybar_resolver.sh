@@ -3,18 +3,18 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_resolver.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-06-04T12:09:37+0200
+# date:       2020-06-08T11:37:24+0200
 
 # auth can be something like sudo -A, doas -- or
 # nothing, depending on configuration requirements
 auth="doas --"
 service=systemd-resolved.service
 icon=
-xl="color1"
-xfg="Polybar.foreground1"
+active_color="color1"
+inactive_color="Polybar.foreground1"
 
 # xresources
-xres() {
+xresources() {
     printf "%%{o%s}$icon%%{o-}" "$(xrdb -query \
             | grep "$1:" \
             | cut -f2 \
@@ -24,18 +24,18 @@ xres() {
 case "$1" in
     --status)
         if [ "$(systemctl is-active $service)" = "active" ]; then
-            xres "$xl"
+            xresources "$active_color"
         else
-            xres "$xfg"
+            xresources "$inactive_color"
         fi
         ;;
     *)
         if [ "$(systemctl is-active $service)" = "active" ]; then
             $auth systemctl disable $service --now \
-                && xres "$xfg"
+                && xresources "$inactive_color"
         else
             $auth systemctl enable $service --now \
-                && xres "$xl"
+                && xresources "$active_color"
         fi
         ;;
 esac
