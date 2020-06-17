@@ -3,15 +3,15 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_printer.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-06-17T01:32:07+0200
+# date:       2020-06-17T11:32:28+0200
 
 # auth can be something like sudo -A, doas -- or
 # nothing, depending on configuration requirements
 auth="doas --"
-service=org.cups.cupsd.service
-service_a=avahi-daemon.service
-socket_a=avahi-daemon.socket
-icon=
+service="org.cups.cupsd.service"
+avahi_service="avahi-daemon.service"
+avahi_socket="avahi-daemon.socket"
+icon=""
 line_color="color1"
 foreground_color="Polybar.foreground0"
 inactive_color="Polybar.foreground1"
@@ -38,14 +38,14 @@ case "$1" in
         ;;
     *)
         if [ "$(systemctl is-active $service)" = "active" ]; then
-            $auth systemctl disable $socket_a --now \
-                && $auth systemctl disable $service_a --now \
+            $auth systemctl disable $avahi_socket --now \
+                && $auth systemctl disable $avahi_service --now \
                 && $auth systemctl disable $service --now \
                 && xresources "$inactive_color" "$inactive_color"
         else
             $auth systemctl enable $service --now \
-                && $auth systemctl enable $service_a --now \
-                && $auth systemctl enable $socket_a --now \
+                && $auth systemctl enable $avahi_service --now \
+                && $auth systemctl enable $avahi_socket --now \
                 && xresources "$line_color" "$foreground_color"
         fi
         ;;

@@ -3,10 +3,10 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_rss.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-06-17T01:39:11+0200
+# date:       2020-06-17T11:33:34+0200
 
-timer=rss.timer
-icon=
+timer="rss.timer"
+icon=""
 line_color="color1"
 foreground_color="Polybar.foreground0"
 inactive_color="Polybar.foreground1"

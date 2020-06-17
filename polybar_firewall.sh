@@ -3,13 +3,13 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_firewall.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-06-17T01:29:17+0200
+# date:       2020-06-17T11:28:52+0200
 
 # auth can be something like sudo -A, doas -- or
 # nothing, depending on configuration requirements
 auth="doas --"
-service=ufw.service
-icon=
+service="ufw.service"
+icon=""
 line_color="color1"
 foreground_color="Polybar.foreground0"
 inactive_color="Polybar.foreground1"
