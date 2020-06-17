@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-06-08T11:14:57+0200
+# date:       2020-06-17T18:23:39+0200
 
 script=$(basename "$0")
 help="$script [-h/--help] -- script to start polybar
@@ -42,28 +42,28 @@ toggle() {
 
 start() {
     # terminate already running bar instances
-    killall -q polybar
+    killall -q /usr/bin/polybar
 
     # wait until the processes have been shut down
-    while pgrep -x polybar >/dev/null; do sleep 0.1; done
+    while pgrep -x /usr/bin/polybar >/dev/null; do sleep 0.1; done
 
     # launch polybar
-    primary=$(polybar -m \
+    primary=$(/usr/bin/polybar -m \
         | grep "(primary)" \
         | sed -e 's/:.*$//g' \
     )
-    secondary=$(polybar -m \
+    secondary=$(/usr/bin/polybar -m \
         | grep -v "(primary)" \
         | sed q1 \
         | sed -e 's/:.*$//g' \
     )
 
     if [ "$dual_bar" = true ] && [ "$(polybar -m | wc -l)" -ge 2 ]; then
-        MONITOR=$primary polybar i3_2_mon_pri &
-        MONITOR=$secondary polybar i3_2_mon_sec &
+        MONITOR=$primary /usr/bin/polybar i3_dual_bar_primary &
+        MONITOR=$secondary /usr/bin/polybar i3_dual_bar_secondary &
     else
         [ -n "$primary" ] && secondary="$primary"
-        MONITOR=$secondary polybar i3_1_mon &
+        MONITOR=$secondary /usr/bin/polybar i3_single_bar &
     fi
 }
 
