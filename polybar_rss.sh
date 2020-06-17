@@ -3,36 +3,45 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_rss.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-06-08T11:48:25+0200
+# date:       2020-06-17T01:39:11+0200
 
 timer=rss.timer
 icon=
+line_color="color1"
+foreground_color="Polybar.foreground0"
 inactive_color="Polybar.foreground1"
 
 # xresources
 xresources() {
-    printf "%%{o%s}$icon%%{o-}" "$(xrdb -query \
-            | grep "$1:" \
-            | cut -f2 \
-        )"
-}
-
-# temporary fix for print-unread with newsboat 2.19 is devide by 4 ($1/4)
-active_color() {
     unread=$(newsboat -x print-unread \
         | awk '$icon {printf "%d\n", $1/4}' \
     )
-    printf "%%{o%s}$icon $unread%%{o-}" "$(xrdb -query \
-            | grep color1: \
+    if [ "$3" = "unread" ]; then
+        printf "%%{o%s}%%{F%s}$icon $unread%%{F- o-}" "$(xrdb -query \
+            | grep "$1:" \
+            | cut -f2 \
+        )" \
+        "$(xrdb -query \
+            | grep "$2:" \
             | cut -f2 \
         )"
+    else
+        printf "%%{o%s}%%{F%s}$icon%%{F- o-}" "$(xrdb -query \
+            | grep "$1:" \
+            | cut -f2 \
+        )" \
+        "$(xrdb -query \
+            | grep "$2:" \
+            | cut -f2 \
+        )"
+    fi
 }
 
 status() {
 if [ "$(systemctl --user is-active $timer)" = "active" ]; then
-    active_color
+    xresources "$line_color" "$foreground_color" "unread"
 else
-    xresources "$inactive_color"
+    xresources "$inactive_color" "$inactive_color"
 fi
 }
 
@@ -43,10 +52,10 @@ case "$1" in
     --toggle)
         if [ "$(systemctl --user is-active $timer)" = "active" ]; then
             systemctl --user disable $timer --now \
-                && xresources "$inactive_color"
+                && xresources "$inactive_color" "$inactive_color"
         else
             systemctl --user enable $timer --now \
-                && active_color
+                && xresources "$line_color" "$foreground_color" "unread"
         fi
         ;;
     *)
