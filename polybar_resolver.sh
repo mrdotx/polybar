@@ -3,12 +3,13 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_resolver.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-06-17T11:37:23+0200
+# date:       2020-09-10T10:22:12+0200
 
 # auth can be something like sudo -A, doas -- or
 # nothing, depending on configuration requirements
 auth="doas --"
 service="systemd-resolved.service"
+network="systemd-networkd.service"
 icon=""
 line_color="color1"
 foreground_color="Polybar.foreground0"
@@ -37,9 +38,11 @@ case "$1" in
     *)
         if [ "$(systemctl is-active $service)" = "active" ]; then
             $auth systemctl disable $service --now \
+                && $auth systemctl disable $network --now \
                 && xresources "$inactive_color" "$inactive_color"
         else
             $auth systemctl enable $service --now \
+                && $auth systemctl enable $network --now \
                 && xresources "$line_color" "$foreground_color"
         fi
         ;;
