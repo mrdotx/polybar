@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-06-17T18:23:39+0200
+# date:       2020-09-12T14:55:07+0200
 
 script=$(basename "$0")
 help="$script [-h/--help] -- script to start polybar
@@ -17,11 +17,6 @@ help="$script [-h/--help] -- script to start polybar
   Example:
     $script
     $script -t"
-
-if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
-    printf "%s\n" "$help"
-    exit 0
-fi
 
 # xresources
 dual_bar=$(printf "%s" "$(xrdb -query \
@@ -68,6 +63,9 @@ start() {
 }
 
 case "$1" in
+    -h | --help)
+        printf "%s\n" "$help"
+        ;;
     -t)
         toggle
         ;;
