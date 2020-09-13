@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-09-12T14:55:07+0200
+# date:       2020-09-13T11:09:04+0200
 
 script=$(basename "$0")
 help="$script [-h/--help] -- script to start polybar
@@ -40,7 +40,9 @@ start() {
     killall -q /usr/bin/polybar
 
     # wait until the processes have been shut down
-    while pgrep -x /usr/bin/polybar >/dev/null; do sleep 0.1; done
+    while pgrep -x /usr/bin/polybar >/dev/null; do
+        sleep 0.1
+    done
 
     # launch polybar
     primary=$(/usr/bin/polybar -m \
