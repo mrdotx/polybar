@@ -3,20 +3,24 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-09-13T11:09:04+0200
+# date:       2020-09-17T10:29:44+0200
 
 script=$(basename "$0")
 help="$script [-h/--help] -- script to start polybar
   Usage:
-    $script [settings]
+    $script [-t/-r]
 
   Settings:
     without given setting re-/start polybar
     -t = toggle between dual- and single bar
+    -r = rotate single-/dual bar/disable/enable
 
   Example:
     $script
-    $script -t"
+    $script -t
+    $script -r"
+
+service="polybar.service"
 
 # xresources
 dual_bar=$(printf "%s" "$(xrdb -query \
@@ -24,15 +28,33 @@ dual_bar=$(printf "%s" "$(xrdb -query \
     | cut -f2)" \
 )
 
-toggle() {
+# set xresources
+set_dual_bar() {
     file="$HOME/.config/xorg/polybar"
+    sed -i "/Polybar.dualbar:/c\Polybar.dualbar:        $1" "$file"
+    xrdb -merge "$HOME/.config/xorg/Xresources"
+}
+
+toggle() {
     if [ "$dual_bar" = true ]; then
-        sed -i "/Polybar.dualbar:/c\Polybar.dualbar:        false" "$file"
+        set_dual_bar false
     else
-        sed -i "/Polybar.dualbar:/c\Polybar.dualbar:        true" "$file"
+        set_dual_bar true
     fi
-    xrdb -merge "$HOME/.config/xorg/Xresources" \
-        && systemctl --user restart polybar.service
+        systemctl --user restart $service
+}
+
+rotate() {
+    if [ "$(systemctl --user is-active $service)" = "active" ] \
+        && [ "$dual_bar" = true ]; then
+            systemctl --user disable $service --now
+            set_dual_bar false
+    elif [ "$(systemctl --user is-active $service)" = "active" ] \
+        && [ "$dual_bar" = false ]; then
+            toggle
+    else
+        systemctl --user enable $service --now
+    fi
 }
 
 start() {
@@ -70,6 +92,9 @@ case "$1" in
         ;;
     -t)
         toggle
+        ;;
+    -r)
+        rotate
         ;;
     *)
         start
