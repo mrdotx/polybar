@@ -2,8 +2,8 @@
 
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_cmus.sh
 # author:     klassiker [mrdotx]
-# github:     https://github.com/mrdotx/cmus
-# date:       2020-06-08T11:45:11+0200
+# github:     https://github.com/mrdotx/polybar
+# date:       2020-09-22T18:46:03+0200
 
 notify() {
     if [ "$duration" -ge 0 ]; then
