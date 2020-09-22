@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_rss.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-06-17T11:33:34+0200
+# date:       2020-09-22T08:44:10+0200
 
 timer="rss.timer"
 icon=""
@@ -14,7 +14,7 @@ inactive_color="Polybar.foreground1"
 # xresources
 xresources() {
     unread=$(newsboat -x print-unread \
-        | awk '$icon {printf "%d\n", $1/4}' \
+        | awk '$icon {printf "%d\n", $1}' \
     )
     if [ "$3" = "unread" ]; then
         printf "%%{o%s}%%{F%s}$icon $unread%%{F- o-}" "$(xrdb -query \
