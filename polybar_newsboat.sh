@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_newsboat.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-10-08T13:54:19+0200
+# date:       2020-10-08T14:35:24+0200
 
 timer="rss.timer"
 icon=""
@@ -66,7 +66,7 @@ case "$1" in
     *)
         # exit if newsboat is running
         pgrep -x newsboat >/dev/null 2>&1 \
-            && exit
+            && exit 0
 
         if ping -c1 -W1 -q 1.1.1.1 >/dev/null 2>&1; then
             newsboat -x reload && newsboat -q -X >/dev/null 2>&1 \
