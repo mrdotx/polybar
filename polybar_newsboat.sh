@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_newsboat.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-10-08T13:47:59+0200
+# date:       2020-10-08T13:54:19+0200
 
 timer="rss.timer"
 icon=""
@@ -51,7 +51,7 @@ case "$1" in
         ;;
     --open)
         polybar-msg hook module/rss 3 > /dev/null 2>&1 \
-            && $TERMINAL -e newsboat -q \
+            && newsboat -q \
             && polybar-msg hook module/rss 1 > /dev/null 2>&1
         ;;
     --toggle)
