@@ -9,10 +9,10 @@ shell scripts for polybar
 | polybar_cmus.sh      | cmus statusbar and notification                           |
 | polybar_firewall.sh  | enable/disable firewall and show status                   |
 | polybar_gestures.sh  | enable/disable gestures and show status                   |
+| polybar_newsboat.sh  | shows the quantity of new articles in newsboat            |
 | polybar_polkit.sh    | enable/disable gnome authentication agent and show status |
 | polybar_printer.sh   | enable/disable printer and show status                    |
 | polybar_resolver.sh  | enable/disable dns resolver and show status               |
-| polybar_rss.sh       | shows the quantity of new articles in newsboat            |
 | polybar_vpn_hades.sh | enable/disable vpn and show status                        |
 
 config files:
