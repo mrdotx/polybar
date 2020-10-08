@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# path:       /home/klassiker/.local/share/repos/polybar/polybar_rss.sh
+# path:       /home/klassiker/.local/share/repos/polybar/polybar_newsboat.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-09-22T08:44:10+0200
+# date:       2020-10-08T13:47:59+0200
 
 timer="rss.timer"
 icon=""
@@ -48,6 +48,11 @@ fi
 case "$1" in
     --status)
         status
+        ;;
+    --open)
+        polybar-msg hook module/rss 3 > /dev/null 2>&1 \
+            && $TERMINAL -e newsboat -q \
+            && polybar-msg hook module/rss 1 > /dev/null 2>&1
         ;;
     --toggle)
         if [ "$(systemctl --user is-active $timer)" = "active" ]; then
