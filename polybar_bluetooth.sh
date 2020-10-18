@@ -3,11 +3,11 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_bluetooth.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-10-17T21:49:11+0200
+# date:       2020-10-18T10:39:38+0200
 
 # auth can be something like sudo -A, doas -- or
 # nothing, depending on configuration requirements
-auth="doas --"
+auth="doas"
 service="bluetooth.service"
 icon=""
 line_color="color1"

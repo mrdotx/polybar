@@ -3,11 +3,11 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_resolver.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-09-10T10:22:12+0200
+# date:       2020-10-18T10:42:46+0200
 
 # auth can be something like sudo -A, doas -- or
 # nothing, depending on configuration requirements
-auth="doas --"
+auth="doas"
 service="systemd-resolved.service"
 network="systemd-networkd.service"
 icon=""

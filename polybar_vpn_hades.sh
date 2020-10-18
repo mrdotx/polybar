@@ -3,11 +3,11 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_vpn_hades.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-06-17T11:34:08+0200
+# date:       2020-10-18T10:46:58+0200
 
 # auth can be something like sudo -A, doas -- or
 # nothing, depending on configuration requirements
-auth="doas --"
+auth="doas"
 service="vpnc@hades.service"
 icon=""
 line_color="color1"
