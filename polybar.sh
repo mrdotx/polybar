@@ -3,7 +3,9 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-09-17T10:29:44+0200
+# date:       2020-10-18T10:37:21+0200
+
+service="polybar.service"
 
 script=$(basename "$0")
 help="$script [-h/--help] -- script to start polybar
@@ -19,8 +21,6 @@ help="$script [-h/--help] -- script to start polybar
     $script
     $script -t
     $script -r"
-
-service="polybar.service"
 
 # xresources
 dual_bar=$(printf "%s" "$(xrdb -query \
