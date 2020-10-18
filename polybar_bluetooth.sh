@@ -3,13 +3,12 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_bluetooth.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-06-17T11:28:11+0200
+# date:       2020-10-17T21:49:11+0200
 
 # auth can be something like sudo -A, doas -- or
 # nothing, depending on configuration requirements
 auth="doas --"
 service="bluetooth.service"
-target="bluetooth.target"
 icon=""
 line_color="color1"
 foreground_color="Polybar.foreground0"
@@ -37,12 +36,10 @@ case "$1" in
         ;;
     *)
         if [ "$(systemctl is-active $service)" = "active" ]; then
-            $auth systemctl stop $target \
-                && $auth systemctl disable $service --now \
+            $auth systemctl disable $service --now \
                 && xresources "$inactive_color" "$inactive_color"
         else
             $auth systemctl enable $service --now \
-                && $auth systemctl start $target \
                 && xresources "$line_color" "$foreground_color"
         fi
         ;;
