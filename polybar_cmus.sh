@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_cmus.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-09-22T18:46:03+0200
+# date:       2020-10-19T19:45:02+0200
 
 notify() {
     if [ "$duration" -ge 0 ]; then
@@ -40,8 +40,9 @@ notify() {
         info_body="<b>$stream</b>\n$genre\n$title\n$comment"
     fi
 
-    if [ -z "$artist" ] && [ -z "$title" ]; then
-        notify-send -i "$albumart" "C* Music Player | $info" "${file##*/}"
+    if [ -z "$artist" ] \
+        && [ -z "$title" ]; then
+            notify-send -i "$albumart" "C* Music Player | $info" "${file##*/}"
     else
         notify-send -i "$albumart" "C* Music Player | $info" "$info_body"
     fi
@@ -83,9 +84,10 @@ bar() {
         info_body="$stream | $genre | $title"
     fi
 
-    if [ -z "$artist" ] && [ -z "$title" ]; then
-        printf "%s %s" "$info" "${file##*/}" \
-            | cut -c 1-$len
+    if [ -z "$artist" ] \
+        && [ -z "$title" ]; then
+            printf "%s %s" "$info" "${file##*/}" \
+                | cut -c 1-$len
     else
         printf "%s %s" "$info" "$info_body" \
             | cut -c 1-$len
