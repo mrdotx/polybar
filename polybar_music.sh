@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# path:       /home/klassiker/.local/share/repos/polybar/polybar_cmus.sh
+# path:       /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-10-19T19:45:02+0200
+# date:       2020-10-28T15:35:45+0100
 
 notify() {
     if [ "$duration" -ge 0 ]; then
@@ -55,7 +55,7 @@ bar() {
         | grep Polybar.foreground1: \
         | cut -f2 \
     )
-    active_color=$(xrdb -query \
+    stop_color=$(xrdb -query \
         | grep color1: \
         | cut -f2 \
     )
@@ -70,7 +70,7 @@ bar() {
             len=111
             ;;
         "stopped")
-            info="%{o$active_color}"
+            info="%{o$stop_color}"
             len=111
             ;;
         *)
@@ -151,6 +151,6 @@ case "$1" in
         bar
         ;;
     *)
-        polybar-msg hook module/cmus 2
+        polybar-msg hook module/music 2
         ;;
 esac

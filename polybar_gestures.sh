@@ -3,11 +3,11 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_gestures.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-10-25T18:35:14+0100
+# date:       2020-10-28T15:23:59+0100
 
 service="gestures.service"
 icon=""
-line_color="color1"
+line_color="Polybar.linecolor0"
 foreground_color="Polybar.foreground0"
 inactive_color="Polybar.foreground1"
 

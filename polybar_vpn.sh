@@ -1,15 +1,15 @@
 #!/bin/sh
 
-# path:       /home/klassiker/.local/share/repos/polybar/polybar_firewall.sh
+# path:       /home/klassiker/.local/share/repos/polybar/polybar_vpn.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-10-28T15:23:50+0100
+# date:       2020-10-28T15:25:44+0100
 
 # auth can be something like sudo -A, doas -- or
 # nothing, depending on configuration requirements
 auth="doas"
-service="ufw.service"
-icon=""
+service="vpnc@hades.service"
+icon=""
 line_color="Polybar.linecolor0"
 foreground_color="Polybar.foreground0"
 inactive_color="Polybar.foreground1"

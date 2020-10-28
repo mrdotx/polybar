@@ -1,13 +1,13 @@
 #!/bin/sh
 
-# path:       /home/klassiker/.local/share/repos/polybar/polybar_newsboat.sh
+# path:       /home/klassiker/.local/share/repos/polybar/polybar_rss.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-10-08T14:35:24+0200
+# date:       2020-10-28T15:25:12+0100
 
 timer="rss.timer"
 icon=""
-line_color="color1"
+line_color="Polybar.linecolor0"
 foreground_color="Polybar.foreground0"
 inactive_color="Polybar.foreground1"
 

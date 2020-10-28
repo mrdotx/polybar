@@ -1,15 +1,12 @@
 #!/bin/sh
 
-# path:       /home/klassiker/.local/share/repos/polybar/polybar_firewall.sh
+# path:       /home/klassiker/.local/share/repos/polybar/polybar_mousepointer.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-10-28T15:23:50+0100
+# date:       2020-10-28T15:24:07+0100
 
-# auth can be something like sudo -A, doas -- or
-# nothing, depending on configuration requirements
-auth="doas"
-service="ufw.service"
-icon=""
+service="xbanish.service"
+icon=""
 line_color="Polybar.linecolor0"
 foreground_color="Polybar.foreground0"
 inactive_color="Polybar.foreground1"
@@ -28,18 +25,18 @@ xresources() {
 
 case "$1" in
     --status)
-        if [ "$(systemctl is-active $service)" = "active" ]; then
+        if [ "$(systemctl --user is-active $service)" = "active" ]; then
             xresources "$line_color" "$foreground_color"
         else
             xresources "$inactive_color" "$inactive_color"
         fi
         ;;
     *)
-        if [ "$(systemctl is-active $service)" = "active" ]; then
-            $auth systemctl disable $service --now \
+        if [ "$(systemctl --user is-active $service)" = "active" ]; then
+            systemctl --user disable $service --now \
                 && xresources "$inactive_color" "$inactive_color"
         else
-            $auth systemctl enable $service --now \
+            systemctl --user enable $service --now \
                 && xresources "$line_color" "$foreground_color"
         fi
         ;;

@@ -3,14 +3,14 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_timesync.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-10-25T18:39:19+0100
+# date:       2020-10-28T15:25:31+0100
 
 # auth can be something like sudo -A, doas -- or
 # nothing, depending on configuration requirements
 auth="doas"
 service="systemd-timesyncd.service"
 icon=""
-line_color="color1"
+line_color="Polybar.linecolor0"
 foreground_color="Polybar.foreground0"
 inactive_color="Polybar.foreground1"
 
