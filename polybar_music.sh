@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-10-28T15:35:45+0100
+# date:       2020-10-30T22:54:43+0100
 
 notify() {
     if [ "$duration" -ge 0 ]; then
@@ -42,9 +42,15 @@ notify() {
 
     if [ -z "$artist" ] \
         && [ -z "$title" ]; then
-            notify-send -i "$albumart" "C* Music Player | $info" "${file##*/}"
+            notify-send \
+                -i "$albumart" \
+                "C* Music Player | $info" \
+                "${file##*/}"
     else
-        notify-send -i "$albumart" "C* Music Player | $info" "$info_body"
+        notify-send \
+            -i "$albumart" \
+            "C* Music Player | $info" \
+            "$info_body"
     fi
 
     rm -f "$albumart"
