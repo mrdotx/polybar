@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_rss.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-11-02T14:14:27+0100
+# date:       2020-11-02T21:11:49+0100
 
 timer="rss.timer"
 icon=""
@@ -11,7 +11,6 @@ line_color="Polybar.linecolor0"
 foreground_color="Polybar.foreground0"
 inactive_color="Polybar.foreground1"
 
-# xresources
 xresources() {
     unread=$(newsboat -x print-unread \
         | awk '$icon {printf "%d\n", $1}' \
@@ -38,11 +37,11 @@ xresources() {
 }
 
 status() {
-if [ "$(systemctl --user is-active $timer)" = "active" ]; then
-    xresources "$line_color" "$foreground_color" "unread"
-else
-    xresources "$inactive_color" "$inactive_color"
-fi
+    if [ "$(systemctl --user is-active $timer)" = "active" ]; then
+        xresources "$line_color" "$foreground_color" "unread"
+    else
+        xresources "$inactive_color" "$inactive_color"
+    fi
 }
 
 case "$1" in
@@ -50,6 +49,9 @@ case "$1" in
         status
         ;;
     --open)
+        pgrep -x newsboat >/dev/null 2>&1 \
+            && exit 0
+
         polybar-msg hook module/rss 3 > /dev/null 2>&1 \
             && newsboat -q \
             && polybar-msg hook module/rss 1 > /dev/null 2>&1
@@ -64,12 +66,12 @@ case "$1" in
         fi
         ;;
     *)
-        # exit if newsboat is running
         pgrep -x newsboat >/dev/null 2>&1 \
             && exit 0
 
         if ping -c1 -W1 -q 1.1.1.1 >/dev/null 2>&1; then
-            newsboat -x reload \
+            polybar-msg hook module/rss 3 > /dev/null 2>&1 \
+                && newsboat -x reload \
                 && newsboat -q -X >/dev/null 2>&1 \
                 && polybar-msg hook module/rss 1 >/dev/null 2>&1
         else
