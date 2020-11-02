@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_rss.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-10-28T15:25:12+0100
+# date:       2020-11-02T14:14:27+0100
 
 timer="rss.timer"
 icon=""
@@ -69,7 +69,8 @@ case "$1" in
             && exit 0
 
         if ping -c1 -W1 -q 1.1.1.1 >/dev/null 2>&1; then
-            newsboat -x reload && newsboat -q -X >/dev/null 2>&1 \
+            newsboat -x reload \
+                && newsboat -q -X >/dev/null 2>&1 \
                 && polybar-msg hook module/rss 1 >/dev/null 2>&1
         else
             status
