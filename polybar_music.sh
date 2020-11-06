@@ -3,16 +3,15 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-10-30T22:54:43+0100
+# date:       2020-11-06T11:53:48+0100
 
 notify() {
-    if [ "$duration" -ge 0 ]; then
-        position_minutes=$(printf "%02d" $((position / 60)))
-        position_seconds=$(printf "%02d" $((position % 60)))
-        duration_minutes=$(printf "%02d" $((duration / 60)))
-        duration_seconds=$(printf "%02d" $((duration % 60)))
-        title_status="$position_minutes:$position_seconds / $duration_minutes:$duration_seconds"
-    fi
+    [ "$duration" -ge 0 ] \
+        && position_minutes=$(printf "%02d" $((position / 60))) \
+        && position_seconds=$(printf "%02d" $((position % 60))) \
+        && duration_minutes=$(printf "%02d" $((duration / 60))) \
+        && duration_seconds=$(printf "%02d" $((duration % 60))) \
+        && title_status="$position_minutes:$position_seconds / $duration_minutes:$duration_seconds"
 
     case $status in
         "playing")
@@ -29,10 +28,9 @@ notify() {
             ;;
     esac
 
-    if [ -n "$file" ]; then
-        albumart=$(mktemp "/tmp/cmus_notify.XXXXXX.png")
-        ffmpeg -y -i "$file" -c:v copy "$albumart" >/dev/null 2>&1
-    fi
+    [ -n "$file" ] \
+        && albumart=$(mktemp "/tmp/polybar_music.XXXXXX.png") \
+        && ffmpeg -y -i "$file" -c:v copy "$albumart" >/dev/null 2>&1
 
     if [ -z "$stream" ]; then
         info_body="Artist: $artist\nAlbum : $album\nTrack : $tracknumber\nTitle : <b>$title</b>"
@@ -40,17 +38,20 @@ notify() {
         info_body="<b>$stream</b>\n$genre\n$title\n$comment"
     fi
 
-    if [ -z "$artist" ] \
-        && [ -z "$title" ]; then
-            notify-send \
-                -i "$albumart" \
-                "C* Music Player | $info" \
-                "${file##*/}"
-    else
+    notification () {
         notify-send \
+            -u low  \
             -i "$albumart" \
             "C* Music Player | $info" \
-            "$info_body"
+            "$@" \
+            -h string:x-canonical-private-synchronous:"C* Music Player |"
+    }
+
+    if [ -z "$artist" ] \
+        && [ -z "$title" ]; then
+            notification "${file##*/}"
+    else
+        notification "$info_body"
     fi
 
     rm -f "$albumart"
@@ -85,7 +86,7 @@ bar() {
     esac
 
     if [ -z "$stream" ]; then
-        info_body="$artist | $title | $album"
+        info_body="$artist - $title | $album"
     else
         info_body="$stream | $genre | $title"
     fi
