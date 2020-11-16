@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-11-16T16:05:59+0100
+# date:       2020-11-16T17:11:10+0100
 
 line_color="Polybar.linecolor0"
 foreground_color="Polybar.foreground0"
@@ -64,6 +64,6 @@ case "$1" in
         polybar-msg hook module/services 1 >/dev/null 2>&1
         ;;
     *)
-        i3_tooltip_services.sh
+        i3_services.sh
         ;;
 esac
