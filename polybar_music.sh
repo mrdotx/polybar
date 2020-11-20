@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-11-06T11:53:48+0100
+# date:       2020-11-20T20:27:30+0100
 
 notify() {
     [ "$duration" -ge 0 ] \
@@ -57,7 +57,7 @@ notify() {
     rm -f "$albumart"
 }
 
-bar() {
+status() {
     inactive_color=$(xrdb -query \
         | grep Polybar.foreground1: \
         | cut -f2 \
@@ -151,11 +151,11 @@ else
 fi
 
 case "$1" in
-    --notify-send)
+    --notify)
         notify
         ;;
-    --polybar)
-        bar
+    --status)
+        status
         ;;
     *)
         polybar-msg hook module/music 2
