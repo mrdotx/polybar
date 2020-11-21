@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-11-18T22:05:45+0100
+# date:       2020-11-21T20:57:17+0100
 
 line_color="Polybar.linecolor0"
 foreground_color="Polybar.foreground0"
@@ -53,7 +53,7 @@ case "$1" in
         service_status "authentication.service" "" "user"
         service_status "xbanish.service" "" "user"
         service_status "systemd-resolved.service" ""
-        service_status "org.cups.cupsd.service" ""
+        service_status "cups.service" ""
         service_status "i3_tiling.service" "" "user"
         service_status "vpnc@hades.service" ""
         service_status "systemd-timesyncd.service" ""
