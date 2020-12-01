@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-11-21T20:57:17+0100
+# date:       2020-12-01T21:32:48+0100
 
 line_color="Polybar.linecolor0"
 foreground_color="Polybar.foreground0"
@@ -50,7 +50,6 @@ case "$1" in
         service_status "picom.service" "" "user"
         service_status "ufw.service" ""
         service_status "gestures.service" "" "user"
-        service_status "authentication.service" "" "user"
         service_status "xbanish.service" "" "user"
         service_status "systemd-resolved.service" ""
         service_status "cups.service" ""
