@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-11-20T20:27:30+0100
+# date:       2020-12-03T18:05:14+0100
 
 notify() {
     [ "$duration" -ge 0 ] \
@@ -29,7 +29,7 @@ notify() {
     esac
 
     [ -n "$file" ] \
-        && albumart=$(mktemp "/tmp/polybar_music.XXXXXX.png") \
+        && albumart=$(mktemp -t polybar_music.XXXXXX.png) \
         && ffmpeg -y -i "$file" -c:v copy "$albumart" >/dev/null 2>&1
 
     if [ -z "$stream" ]; then
