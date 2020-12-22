@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-10-19T19:44:04+0200
+# date:       2020-12-22T12:16:00+0100
 
 service="polybar.service"
 
@@ -36,22 +36,34 @@ set_dual_bar() {
 }
 
 toggle() {
-    if [ "$dual_bar" = true ]; then
-        set_dual_bar false
-    else
-        set_dual_bar true
-    fi
-        systemctl --user restart $service
+    case "$dual_bar" in
+        true)
+            set_dual_bar false
+            ;;
+        false)
+            set_dual_bar true
+            ;;
+        *)
+            exit 1
+            ;;
+    esac
+    systemctl --user restart $service
 }
 
 rotate() {
-    if [ "$(systemctl --user is-active $service)" = "active" ] \
-        && [ "$dual_bar" = true ]; then
-            systemctl --user disable $service --now
-            set_dual_bar false
-    elif [ "$(systemctl --user is-active $service)" = "active" ] \
-        && [ "$dual_bar" = false ]; then
-            toggle
+    if [ "$(systemctl --user is-active $service)" = "active" ]; then
+        case "$dual_bar" in
+            true)
+                systemctl --user disable $service --now
+                set_dual_bar false
+                ;;
+            false)
+                toggle
+                ;;
+            *)
+                exit 1
+                ;;
+        esac
     else
         systemctl --user enable $service --now
     fi
@@ -63,7 +75,7 @@ start() {
 
     # wait until the processes have been shut down
     while pgrep -x /usr/bin/polybar >/dev/null; do
-        sleep 0.1
+        sleep .1
     done
 
     # launch polybar
@@ -99,6 +111,7 @@ case "$1" in
         rotate
         ;;
     *)
+        sleep .1
         start
         ;;
 esac
