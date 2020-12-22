@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_rss.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-11-16T15:24:58+0100
+# date:       2020-12-22T19:34:12+0100
 
 timer="rss.timer"
 icon=""
@@ -12,28 +12,20 @@ foreground_color="Polybar.foreground0"
 inactive_color="Polybar.foreground1"
 
 xresources() {
-    unread=$(newsboat -x print-unread \
-        | awk '$icon {printf "%d\n", $1}' \
-    )
-    if [ "$3" = "unread" ]; then
-        printf "%%{o%s}%%{F%s}$icon $unread%%{F- o-}" "$(xrdb -query \
+    xrdb_query() {
+        xrdb -query \
             | grep "$1:" \
-            | cut -f2 \
-        )" \
-        "$(xrdb -query \
-            | grep "$2:" \
-            | cut -f2 \
-        )"
-    else
-        printf "%%{o%s}%%{F%s}$icon%%{F- o-}" "$(xrdb -query \
-            | grep "$1:" \
-            | cut -f2 \
-        )" \
-        "$(xrdb -query \
-            | grep "$2:" \
-            | cut -f2 \
-        )"
-    fi
+            | cut -f2
+    }
+
+    [ "$3" = "unread" ] \
+        && icon="$icon $(newsboat -x print-unread \
+                | cut -d ' ' -f1 \
+            )"
+
+    printf "%%{o%s}%%{F%s}$icon%%{F- o-}" \
+    "$(xrdb_query "$1")" \
+    "$(xrdb_query "$2")"
 }
 
 status() {

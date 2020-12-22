@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-12-03T18:05:14+0100
+# date:       2020-12-22T19:38:15+0100
 
 notify() {
     [ "$duration" -ge 0 ] \
@@ -58,14 +58,14 @@ notify() {
 }
 
 status() {
-    inactive_color=$(xrdb -query \
-        | grep Polybar.foreground1: \
-        | cut -f2 \
-    )
-    stop_color=$(xrdb -query \
-        | grep color1: \
-        | cut -f2 \
-    )
+    xrdb_query() {
+        xrdb -query \
+            | grep "$1:" \
+            | cut -f2
+    }
+
+    inactive_color=$(xrdb_query "Polybar.foreground1")
+    stop_color=$(xrdb_query "color1")
 
     case $status in
         "playing")
