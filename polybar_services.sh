@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-12-25T09:01:58+0100
+# date:       2020-12-25T10:22:31+0100
 
 line_color="Polybar.linecolor0"
 foreground_color="Polybar.foreground0"
@@ -47,16 +47,16 @@ service_status() {
 case "$1" in
     --status)
         service_status "xautolock.service" "" "user"
+        service_status "i3_autotiling.service" "" "user"
         service_status "bluetooth.service" ""
         service_status "picom.service" "" "user"
         service_status "ufw.service" ""
         service_status "gestures.service" "" "user"
         service_status "xbanish.service" "" "user"
-        service_status "systemd-resolved.service" ""
         service_status "cups.service" ""
-        service_status "i3_autotiling.service" "" "user"
-        service_status "vpnc@hades.service" ""
+        service_status "systemd-resolved.service" ""
         service_status "systemd-timesyncd.service" ""
+        service_status "vpnc@hades.service" ""
 
         xresources "$line_color" "$foreground_color"
         ;;
