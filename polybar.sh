@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-12-22T20:00:02+0100
+# date:       2020-12-25T09:09:47+0100
 
 service="polybar.service"
 
@@ -13,7 +13,7 @@ help="$script [-h/--help] -- script to start polybar
     $script [-t/-r]
 
   Settings:
-    without given setting re-/start polybar
+    without given settings, re-/start polybar
     -t = toggle between dual- and single bar
     -r = rotate single-/dual bar/disable/enable
 
