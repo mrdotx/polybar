@@ -3,9 +3,9 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-12-25T10:22:31+0100
+# date:       2021-01-10T10:48:51+0100
 
-line_color="Polybar.linecolor0"
+line_color="Polybar.main0"
 foreground_color="Polybar.foreground0"
 
 # xresources
