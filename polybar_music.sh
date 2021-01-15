@@ -3,7 +3,7 @@
 # path:       /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author:     klassiker [mrdotx]
 # github:     https://github.com/mrdotx/polybar
-# date:       2020-12-22T19:38:15+0100
+# date:       2021-01-15T09:23:40+0100
 
 notify() {
     [ "$duration" -ge 0 ] \
@@ -38,7 +38,7 @@ notify() {
         info_body="<b>$stream</b>\n$genre\n$title\n$comment"
     fi
 
-    notification () {
+    notification() {
         notify-send \
             -u low  \
             -i "$albumart" \
