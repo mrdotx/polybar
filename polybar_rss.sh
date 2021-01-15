@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# path:       /home/klassiker/.local/share/repos/polybar/polybar_rss.sh
-# author:     klassiker [mrdotx]
-# github:     https://github.com/mrdotx/polybar
-# date:       2021-01-10T10:48:31+0100
+# path:   /home/klassiker/.local/share/repos/polybar/polybar_rss.sh
+# author: klassiker [mrdotx]
+# github: https://github.com/mrdotx/polybar
+# date:   2021-01-15T13:50:43+0100
 
 timer="rss.timer"
 icon=""

@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# path:       /home/klassiker/.local/share/repos/polybar/polybar_music.sh
-# author:     klassiker [mrdotx]
-# github:     https://github.com/mrdotx/polybar
-# date:       2021-01-15T09:23:40+0100
+# path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
+# author: klassiker [mrdotx]
+# github: https://github.com/mrdotx/polybar
+# date:   2021-01-15T13:50:37+0100
 
 notify() {
     [ "$duration" -ge 0 ] \
