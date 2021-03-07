@@ -3,7 +3,58 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2021-01-15T13:50:37+0100
+# date:   2021-03-07T13:21:44+0100
+
+cmus_data() {
+    if info=$(cmus-remote -Q 2> /dev/null); then
+        status=$(printf "%s" "$info" \
+            | grep '^status ' \
+            | sed 's/^status //' \
+        )
+        stream=$(printf "%s" "$info" \
+            | grep '^stream ' \
+            | sed 's/^stream //' \
+        )
+        duration=$(printf "%s" "$info" \
+            | grep '^duration ' \
+            | sed 's/^duration //' \
+        )
+        position=$(printf "%s" "$info" \
+            | grep '^position ' \
+            | sed 's/^position //' \
+        )
+        file=$(printf "%s" "$info" \
+            | grep '^file ' \
+            | sed 's/^file //' \
+        )
+        artist=$(printf "%s" "$info" \
+            | grep '^tag artist ' \
+            | sed 's/^tag artist //' \
+        )
+        album=$(printf "%s" "$info" \
+            | grep '^tag album ' \
+            | sed 's/^tag album //' \
+        )
+        tracknumber=$(printf "%s" "$info" \
+            | grep '^tag tracknumber ' \
+            | sed 's/^tag tracknumber //' \
+        )
+        title=$(printf "%s" "$info" \
+            | grep '^tag title ' \
+            | sed 's/^tag title //' \
+        )
+        genre=$(printf "%s" "$info" \
+            | grep '^tag genre ' \
+            | sed 's/^tag genre //' \
+        )
+        comment=$(printf "%s" "$info" \
+            | grep '^tag comment ' \
+            | sed 's/^tag comment //' \
+        )
+    else
+        exit 2
+    fi
+}
 
 notify() {
     [ "$duration" -ge 0 ] \
@@ -101,61 +152,18 @@ status() {
     fi
 }
 
-if info=$(cmus-remote -Q 2> /dev/null); then
-    status=$(printf "%s" "$info" \
-        | grep '^status ' \
-        | sed 's/^status //' \
-    )
-    stream=$(printf "%s" "$info" \
-        | grep '^stream ' \
-        | sed 's/^stream //' \
-    )
-    duration=$(printf "%s" "$info" \
-        | grep '^duration ' \
-        | sed 's/^duration //' \
-    )
-    position=$(printf "%s" "$info" \
-        | grep '^position ' \
-        | sed 's/^position //' \
-    )
-    file=$(printf "%s" "$info" \
-        | grep '^file ' \
-        | sed 's/^file //' \
-    )
-    artist=$(printf "%s" "$info" \
-        | grep '^tag artist ' \
-        | sed 's/^tag artist //' \
-    )
-    album=$(printf "%s" "$info" \
-        | grep '^tag album ' \
-        | sed 's/^tag album //' \
-    )
-    tracknumber=$(printf "%s" "$info" \
-        | grep '^tag tracknumber ' \
-        | sed 's/^tag tracknumber //' \
-    )
-    title=$(printf "%s" "$info" \
-        | grep '^tag title ' \
-        | sed 's/^tag title //' \
-    )
-    genre=$(printf "%s" "$info" \
-        | grep '^tag genre ' \
-        | sed 's/^tag genre //' \
-    )
-    comment=$(printf "%s" "$info" \
-        | grep '^tag comment ' \
-        | sed 's/^tag comment //' \
-    )
-else
-    exit 2
-fi
-
 case "$1" in
     --notify)
+        cmus_data
         notify
         ;;
     --status)
+        cmus_data
         status
+        ;;
+    --start)
+        cmus \
+            && polybar-msg hook module/music 1
         ;;
     *)
         polybar-msg hook module/music 2
