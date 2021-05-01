@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2021-01-15T13:50:29+0100
+# date:   2021-05-01T22:48:05+0200
 
 service="polybar.service"
 
@@ -91,8 +91,8 @@ start() {
 
     if [ "$dual_bar" = true ] \
         && [ "$(polybar -m | wc -l)" -ge 2 ]; then
-            MONITOR=$primary /usr/bin/polybar i3_dual_bar_primary &
-            MONITOR=$secondary /usr/bin/polybar i3_dual_bar_secondary &
+            MONITOR=$primary /usr/bin/polybar i3_primary_bar &
+            MONITOR=$secondary /usr/bin/polybar i3_secondary_bar &
     else
         [ -n "$primary" ] \
             && secondary="$primary"
