@@ -3,24 +3,26 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2021-05-13T06:36:35+0200
+# date:   2021-06-23T09:51:10+0200
 
 service="polybar.service"
 
 script=$(basename "$0")
 help="$script [-h/--help] -- script to start polybar
   Usage:
-    $script [-t/-r]
+    $script [-k/-r/-t]
 
   Settings:
     without given settings, re-/start polybar
+    -k = kill single-/dual bar
+    -r = rotate single-/dual bar disable/enable
     -t = toggle between dual- and single bar
-    -r = rotate single-/dual bar/disable/enable
 
   Example:
     $script
-    $script -t
-    $script -r"
+    $script -k
+    $script -r
+    $script -t"
 
 # xresources
 dual_bar=$(xrdb -query \
@@ -91,11 +93,14 @@ case "$1" in
     -h | --help)
         printf "%s\n" "$help"
         ;;
-    -t)
-        toggle
+    -k)
+        killall -q /usr/bin/polybar
         ;;
     -r)
         rotate
+        ;;
+    -t)
+        toggle
         ;;
     *)
         start
