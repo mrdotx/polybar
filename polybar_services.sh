@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2021-05-09T18:25:19+0200
+# date:   2021-06-23T13:42:50+0200
 
 line_color="Polybar.main0"
 foreground_color="Polybar.foreground0"
@@ -48,11 +48,11 @@ case "$1" in
     --status)
         service_status "xautolock.service" "" "user"
         service_status "i3_autotiling.service" "" "user"
-        service_status "bluetooth.service" ""
         service_status "picom.service" "" "user"
-        service_status "ufw.service" ""
         service_status "gestures.service" "" "user"
         service_status "xbanish.service" "" "user"
+        service_status "bluetooth.service" ""
+        service_status "ufw.service" ""
         service_status "cups.service" ""
         service_status "systemd-resolved.service" ""
         service_status "sshd.service" ""
