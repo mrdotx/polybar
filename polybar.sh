@@ -3,8 +3,10 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2021-06-23T09:51:10+0200
+# date:   2021-07-03T18:25:26+0200
 
+config="$HOME/.config/xorg/modules/polybar"
+xresource="$HOME/.config/xorg/Xresources"
 service="polybar.service"
 
 script=$(basename "$0")
@@ -32,9 +34,8 @@ dual_bar=$(xrdb -query \
 
 # set xresources
 set_dual_bar() {
-    file="$HOME/.config/xorg/polybar"
-    sed -i "/Polybar.dualbar:/c\Polybar.dualbar:        $1" "$file"
-    xrdb -merge "$HOME/.config/xorg/Xresources"
+    sed -i "/Polybar.dualbar:/c\Polybar.dualbar:        $1" "$config"
+    xrdb -merge "$xresource"
 }
 
 toggle() {
