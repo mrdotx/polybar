@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2021-07-03T18:25:26+0200
+# date:   2021-07-10T11:04:18+0200
 
 config="$HOME/.config/xorg/modules/polybar"
 xresource="$HOME/.config/xorg/Xresources"
@@ -81,12 +81,22 @@ start() {
         sleep .1
     done
 
+    primary=$(/usr/bin/polybar -m \
+        | grep "(primary)" \
+        | cut -d ':' -f1 \
+    )
+    secondary=$(/usr/bin/polybar -m \
+        | grep -v "(primary)" \
+        | head -n1 \
+        | cut -d ':' -f1 \
+    )
+
     if [ "$dual_bar" = true ] \
         && [ "$(polybar -m | wc -l)" -ge 2 ]; then
-            /usr/bin/polybar i3_primary_bar &
-            /usr/bin/polybar i3_secondary_bar &
+            MONITOR=$primary /usr/bin/polybar i3_primary_bar &
+            MONITOR=$secondary /usr/bin/polybar i3_secondary_bar &
     else
-        /usr/bin/polybar i3_single_bar &
+        MONITOR=$primary /usr/bin/polybar i3_single_bar &
     fi
 }
 
