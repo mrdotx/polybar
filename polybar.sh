@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2021-07-10T11:04:18+0200
+# date:   2021-11-16T10:49:03+0100
 
 config="$HOME/.config/xorg/modules/polybar"
 xresource="$HOME/.config/xorg/Xresources"
@@ -16,9 +16,9 @@ help="$script [-h/--help] -- script to start polybar
 
   Settings:
     without given settings, re-/start polybar
-    -k = kill single-/dual bar
-    -r = rotate single-/dual bar disable/enable
-    -t = toggle between dual- and single bar
+    -k = kill single-/multi-/stats bar
+    -r = rotate single-/multi-/stats bar disable/enable
+    -t = toggle between single-/multi- and stats bar
 
   Example:
     $script
@@ -27,24 +27,27 @@ help="$script [-h/--help] -- script to start polybar
     $script -t"
 
 # xresources
-dual_bar=$(xrdb -query \
-    | grep Polybar.dualbar: \
+bar_type=$(xrdb -query \
+    | grep Polybar.type: \
     | cut -f2 \
 )
 
 # set xresources
-set_dual_bar() {
-    sed -i "/Polybar.dualbar:/c\Polybar.dualbar:        $1" "$config"
+set_bar_type() {
+    sed -i "/Polybar.type:/c\Polybar.type:           $1" "$config"
     xrdb -merge "$xresource"
 }
 
 toggle() {
-    case "$dual_bar" in
-        true)
-            set_dual_bar false
+    case "$bar_type" in
+        single)
+            set_bar_type multi
             ;;
-        false)
-            set_dual_bar true
+        multi)
+            set_bar_type stats
+            ;;
+        stats)
+            set_bar_type single
             ;;
         *)
             exit 1
@@ -55,12 +58,15 @@ toggle() {
 
 rotate() {
     if [ "$(systemctl --user is-active $service)" = "active" ]; then
-        case "$dual_bar" in
-            true)
+        case "$bar_type" in
+            stats)
                 systemctl --user disable $service --now
-                set_dual_bar false
+                set_bar_type single
                 ;;
-            false)
+            multi)
+                toggle
+                ;;
+            single)
                 toggle
                 ;;
             *)
@@ -91,12 +97,22 @@ start() {
         | cut -d ':' -f1 \
     )
 
-    if [ "$dual_bar" = true ] \
-        && [ "$(polybar -m | wc -l)" -ge 2 ]; then
-            MONITOR=$primary /usr/bin/polybar i3_primary_bar &
-            MONITOR=$secondary /usr/bin/polybar i3_secondary_bar &
+    if [ "$(polybar -m | wc -l)" -ge 2 ]; then
+        case $bar_type in
+            multi)
+                MONITOR=$primary /usr/bin/polybar primary &
+                MONITOR=$secondary /usr/bin/polybar secondary &
+                ;;
+            stats)
+                MONITOR=$primary /usr/bin/polybar primary_stats &
+                MONITOR=$secondary /usr/bin/polybar secondary_stats &
+                ;;
+            *)
+                MONITOR=$primary /usr/bin/polybar single &
+                ;;
+        esac
     else
-        MONITOR=$primary /usr/bin/polybar i3_single_bar &
+        MONITOR=$primary /usr/bin/polybar single &
     fi
 }
 
