@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2021-11-22T11:19:26+0100
+# date:   2021-11-22T18:00:34+0100
 
 config="$HOME/.config/X11/modules/polybar"
 xresource="$HOME/.config/X11/Xresources"
@@ -80,18 +80,18 @@ rotate() {
 
 start() {
     # terminate already running bar instances
-    killall -q /usr/bin/polybar
+    killall -q polybar
 
     # wait until the processes have been shut down
-    while pgrep -x /usr/bin/polybar >/dev/null; do
+    while pgrep -x polybar >/dev/null; do
         sleep .1
     done
 
-    primary=$(/usr/bin/polybar -m \
+    primary=$(polybar -m \
         | grep "(primary)" \
         | cut -d ':' -f1 \
     )
-    secondary=$(/usr/bin/polybar -m \
+    secondary=$(polybar -m \
         | grep -v "(primary)" \
         | head -n1 \
         | cut -d ':' -f1 \
@@ -100,19 +100,19 @@ start() {
     if [ "$(polybar -m | wc -l)" -ge 2 ]; then
         case $bar_type in
             multi)
-                MONITOR=$primary /usr/bin/polybar primary &
-                MONITOR=$secondary /usr/bin/polybar secondary &
+                MONITOR=$primary polybar primary &
+                MONITOR=$secondary polybar secondary &
                 ;;
             stats)
-                MONITOR=$primary /usr/bin/polybar primary_stats &
-                MONITOR=$secondary /usr/bin/polybar secondary_stats &
+                MONITOR=$primary polybar primary_stats &
+                MONITOR=$secondary polybar secondary_stats &
                 ;;
             *)
-                MONITOR=$primary /usr/bin/polybar single &
+                MONITOR=$primary polybar single &
                 ;;
         esac
     else
-        MONITOR=$primary /usr/bin/polybar single &
+        MONITOR=$primary polybar single &
     fi
 }
 
@@ -121,7 +121,7 @@ case "$1" in
         printf "%s\n" "$help"
         ;;
     -k)
-        killall -q /usr/bin/polybar
+        killall -q polybar
         ;;
     -r)
         rotate
