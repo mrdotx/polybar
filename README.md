@@ -14,7 +14,7 @@ config files:
 - [dotfiles/polybar](https://github.com/mrdotx/dotfiles/tree/master/.config/polybar)
 - [dotfiles/i3](https://github.com/mrdotx/dotfiles/tree/master/.config/i3)
 - [dotfiles/cmus](https://github.com/mrdotx/dotfiles/tree/master/.config/cmus)
-- [dotfiles/xresource](https://github.com/mrdotx/dotfiles/tree/master/.config/xorg)
+- [dotfiles/xresource](https://github.com/mrdotx/dotfiles/tree/master/.config/X11)
 - [dotfiles/systemd](https://github.com/mrdotx/dotfiles/tree/master/.config/systemd/user)
 
 ![monitor1](screenshot_monitor1.png)

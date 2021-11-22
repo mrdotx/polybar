@@ -3,10 +3,10 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2021-11-16T10:49:03+0100
+# date:   2021-11-22T11:19:26+0100
 
-config="$HOME/.config/xorg/modules/polybar"
-xresource="$HOME/.config/xorg/Xresources"
+config="$HOME/.config/X11/modules/polybar"
+xresource="$HOME/.config/X11/Xresources"
 service="polybar.service"
 
 script=$(basename "$0")
