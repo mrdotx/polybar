@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2021-09-02T12:17:44+0200
+# date:   2021-12-15T10:38:10+0100
 
 line_color="Polybar.main0"
 foreground_color="Polybar.foreground0"
@@ -50,7 +50,6 @@ case "$1" in
         service_status "i3_autotiling.service" "" "user"
         service_status "picom.service" "" "user"
         service_status "xbanish.service" "" "user"
-        service_status "gestures.service" "" "user"
         service_status "bluetooth.service" ""
         service_status "cups.service" ""
         service_status "systemd-resolved.service" ""
