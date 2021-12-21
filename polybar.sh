@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2021-11-22T18:00:34+0100
+# date:   2021-12-21T15:39:11+0100
 
 config="$HOME/.config/X11/modules/polybar"
 xresource="$HOME/.config/X11/Xresources"
@@ -12,19 +12,22 @@ service="polybar.service"
 script=$(basename "$0")
 help="$script [-h/--help] -- script to start polybar
   Usage:
-    $script [-k/-r/-t]
+    $script [-k/--kill/-r/--rotate/-c/--cycle]
 
   Settings:
     without given settings, re-/start polybar
-    -k = kill single-/multi-/stats bar
-    -r = rotate single-/multi-/stats bar disable/enable
-    -t = toggle between single-/multi- and stats bar
+    [-k/--kill]   = kill single-/multi-/stats bar
+    [-r/--rotate] = rotate single-/multi-/stats bar disable/enable
+    [-c/--cycle]  = cycle single-/multi- and stats bar
 
   Example:
     $script
     $script -k
+    $script --kill
     $script -r
-    $script -t"
+    $script --rotate
+    $script -c
+    $script --cycle"
 
 # xresources
 bar_type=$(xrdb -query \
@@ -38,7 +41,7 @@ set_bar_type() {
     xrdb -merge "$xresource"
 }
 
-toggle() {
+cycle() {
     case "$bar_type" in
         single)
             set_bar_type multi
@@ -64,10 +67,10 @@ rotate() {
                 set_bar_type single
                 ;;
             multi)
-                toggle
+                cycle
                 ;;
             single)
-                toggle
+                cycle
                 ;;
             *)
                 exit 1
@@ -120,14 +123,14 @@ case "$1" in
     -h | --help)
         printf "%s\n" "$help"
         ;;
-    -k)
+    -k | --kill)
         killall -q polybar
         ;;
-    -r)
+    -r | --rotate)
         rotate
         ;;
-    -t)
-        toggle
+    -c | --cycle)
+        cycle
         ;;
     *)
         start
