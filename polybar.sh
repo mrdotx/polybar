@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2021-12-21T15:39:11+0100
+# date:   2021-12-22T08:46:16+0100
 
 config="$HOME/.config/X11/modules/polybar"
 xresource="$HOME/.config/X11/Xresources"
@@ -42,21 +42,22 @@ set_bar_type() {
 }
 
 cycle() {
-    case "$bar_type" in
-        single)
-            set_bar_type multi
-            ;;
-        multi)
-            set_bar_type stats
-            ;;
-        stats)
-            set_bar_type single
-            ;;
-        *)
-            exit 1
-            ;;
-    esac
-    systemctl --user restart $service
+    [ "$(systemctl --user is-active $service)" = "active" ] \
+        && case "$bar_type" in
+            single)
+                set_bar_type multi
+                ;;
+            multi)
+                set_bar_type stats
+                ;;
+            stats)
+                set_bar_type single
+                ;;
+            *)
+                exit 1
+                ;;
+        esac \
+        && systemctl --user restart $service
 }
 
 rotate() {
