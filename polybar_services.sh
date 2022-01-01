@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2021-12-15T10:38:10+0100
+# date:   2021-12-31T20:05:13+0100
 
 line_color="Polybar.main0"
 foreground_color="Polybar.foreground0"
@@ -16,9 +16,10 @@ xresources() {
             | cut -f2
     }
 
-    printf "%%{o%s}%%{F%s}$message%%{F- o-}" \
-    "$(xrdb_query "$1")" \
-    "$(xrdb_query "$2")"
+    printf "%%{o%s}%%{F%s}%s%%{F- o-}" \
+        "$(xrdb_query "$1")" \
+        "$(xrdb_query "$2")" \
+        "$message"
 }
 
 service_status() {
