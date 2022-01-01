@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_packages.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2021-12-31T20:30:45+0100
+# date:   2022-01-01T12:10:35+0100
 
 icon=""
 line_color="Polybar.main0"
@@ -16,7 +16,7 @@ xresources() {
             | cut -f2
     }
 
-    printf "%%{o%s}%%{F%s}%s %s%%{F- o-}" \
+    printf "%%{o%s}%%{F%s}%s %d%%{F- o-}" \
         "$(xrdb_query "$1")" \
         "$(xrdb_query "$2")" \
         "$icon" \
