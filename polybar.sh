@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2021-12-22T08:46:16+0100
+# date:   2022-01-01T09:16:50+0100
 
 config="$HOME/.config/X11/modules/polybar"
 xresource="$HOME/.config/X11/Xresources"
@@ -16,14 +16,17 @@ help="$script [-h/--help] -- script to start polybar
 
   Settings:
     without given settings, re-/start polybar
-    [-k/--kill]   = kill single-/multi-/stats bar
-    [-r/--rotate] = rotate single-/multi-/stats bar disable/enable
-    [-c/--cycle]  = cycle single-/multi- and stats bar
+    [-k/--kill]    = kill single-/multi-/stats bar
+    [-s/--restart] = restart polybar when it is running
+    [-r/--rotate]  = rotate single-/multi-/stats bar disable/enable
+    [-c/--cycle]   = cycle single-/multi- and stats bar
 
   Example:
     $script
     $script -k
     $script --kill
+    $script -s
+    $script --restart
     $script -r
     $script --rotate
     $script -c
@@ -126,6 +129,10 @@ case "$1" in
         ;;
     -k | --kill)
         killall -q polybar
+        ;;
+    -s | --restart)
+        [ "$(systemctl --user is-active $service)" = "active" ] \
+            && systemctl --user restart $service
         ;;
     -r | --rotate)
         rotate
