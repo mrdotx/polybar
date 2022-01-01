@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_rss.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2021-07-15T09:18:30+0200
+# date:   2021-12-31T20:05:57+0100
 
 timer="rss.timer"
 icon=""
@@ -23,9 +23,10 @@ xresources() {
                 | cut -d ' ' -f1 \
             )"
 
-    printf "%%{o%s}%%{F%s}$icon%%{F- o-}" \
-    "$(xrdb_query "$1")" \
-    "$(xrdb_query "$2")"
+    printf "%%{o%s}%%{F%s}%s%%{F- o-}" \
+        "$(xrdb_query "$1")" \
+        "$(xrdb_query "$2")" \
+        "$icon"
 }
 
 status() {
