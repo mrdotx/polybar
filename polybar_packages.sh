@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_packages.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-01-01T12:10:35+0100
+# date:   2022-01-09T18:40:29+0100
 
 icon=""
 line_color="Polybar.main0"
@@ -35,4 +35,6 @@ else
     updates=0
 fi
 
-xresources "$line_color" "$foreground_color" "$updates"
+if [ $updates -gt 0 ]; then
+    xresources "$line_color" "$foreground_color" "$updates"
+fi
