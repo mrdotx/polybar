@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-01-01T09:16:50+0100
+# date:   2022-02-15T11:06:08+0100
 
 config="$HOME/.config/X11/modules/polybar"
 xresource="$HOME/.config/X11/Xresources"
@@ -12,23 +12,20 @@ service="polybar.service"
 script=$(basename "$0")
 help="$script [-h/--help] -- script to start polybar
   Usage:
-    $script [-k/--kill/-r/--rotate/-c/--cycle]
+    $script [-k/--kill/-r/--restart/-c/--cycle]
 
   Settings:
     without given settings, re-/start polybar
     [-k/--kill]    = kill single-/multi-/stats bar
-    [-s/--restart] = restart polybar when it is running
-    [-r/--rotate]  = rotate single-/multi-/stats bar disable/enable
+    [-r/--restart] = restart polybar when it is running
     [-c/--cycle]   = cycle single-/multi- and stats bar
 
   Example:
     $script
     $script -k
     $script --kill
-    $script -s
-    $script --restart
     $script -r
-    $script --rotate
+    $script --restart
     $script -c
     $script --cycle"
 
@@ -61,28 +58,6 @@ cycle() {
                 ;;
         esac \
         && systemctl --user restart $service
-}
-
-rotate() {
-    if [ "$(systemctl --user is-active $service)" = "active" ]; then
-        case "$bar_type" in
-            stats)
-                systemctl --user disable $service --now
-                set_bar_type single
-                ;;
-            multi)
-                cycle
-                ;;
-            single)
-                cycle
-                ;;
-            *)
-                exit 1
-                ;;
-        esac
-    else
-        systemctl --user enable $service --now
-    fi
 }
 
 start() {
@@ -130,12 +105,9 @@ case "$1" in
     -k | --kill)
         killall -q polybar
         ;;
-    -s | --restart)
+    -r | --restart)
         [ "$(systemctl --user is-active $service)" = "active" ] \
             && systemctl --user restart $service
-        ;;
-    -r | --rotate)
-        rotate
         ;;
     -c | --cycle)
         cycle
