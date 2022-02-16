@@ -3,12 +3,11 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-02-16T18:28:58+0100
+# date:   2022-02-16T19:39:35+0100
 
 config="$HOME/.config/X11/modules/polybar"
 xresource="$HOME/.config/X11/Xresources"
 service="polybar.service"
-battery="/sys/class/power_supply/BAT0"
 
 script=$(basename "$0")
 help="$script [-h/--help] -- script to start polybar
@@ -84,27 +83,18 @@ start() {
         case $bar_type in
             multi)
                 MONITOR=$primary polybar primary &
-                if [ -d $battery ]; then
-                    MONITOR=$secondary polybar laptop_secondary &
-                else
-                    MONITOR=$secondary polybar secondary &
-                fi
+                MONITOR=$secondary polybar secondary &
                 ;;
             stats)
                 MONITOR=$primary polybar primary_stats &
-                if [ -d $battery ]; then
-                    MONITOR=$secondary polybar laptop_secondary_stats &
-                else
-                    MONITOR=$secondary polybar secondary_stats &
-                fi
+                MONITOR=$secondary polybar secondary_stats &
+                ;;
+            *)
+                MONITOR=$primary polybar single &
                 ;;
         esac
     else
-        if [ -d $battery ]; then
-            MONITOR=$primary polybar laptop_single &
-        else
-            MONITOR=$primary polybar single &
-        fi
+        MONITOR=$primary polybar single &
     fi
 }
 
