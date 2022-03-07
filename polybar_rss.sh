@@ -3,13 +3,14 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_rss.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2021-12-31T20:05:57+0100
+# date:   2022-03-07T19:17:51+0100
 
 timer="rss.timer"
 icon=""
 line_color="Polybar.main0"
 foreground_color="Polybar.foreground0"
 inactive_color="Polybar.foreground1"
+bar_id=$(pgrep -f "polybar primary")
 
 xresources() {
     xrdb_query() {
@@ -44,15 +45,15 @@ case "$1" in
     --update)
         # workaround (sleep -> https://github.com/i3/i3/issues/3298)
         sleep .5 \
-        && polybar-msg hook module/rss 1 >/dev/null 2>&1
+        && polybar-msg -p "$bar_id" hook module/rss 1 >/dev/null 2>&1
         ;;
     --open)
         pgrep -x newsboat >/dev/null 2>&1 \
             && exit 0
 
-        polybar-msg hook module/rss 3 > /dev/null 2>&1 \
+        polybar-msg -p "$bar_id" hook module/rss 3 > /dev/null 2>&1 \
             && newsboat -q \
-            && polybar-msg hook module/rss 1 > /dev/null 2>&1
+            && polybar-msg -p "$bar_id" hook module/rss 1 > /dev/null 2>&1
         ;;
     --toggle)
         if [ "$(systemctl --user is-active $timer)" = "active" ]; then
@@ -68,10 +69,10 @@ case "$1" in
             && exit 0
 
         if ping -c1 -W1 -q 1.1.1.1 >/dev/null 2>&1; then
-            polybar-msg hook module/rss 3 > /dev/null 2>&1 \
+            polybar-msg -p "$bar_id" hook module/rss 3 > /dev/null 2>&1 \
                 && newsboat -x reload \
                 && newsboat -q -X >/dev/null 2>&1 \
-                && polybar-msg hook module/rss 1 >/dev/null 2>&1
+                && polybar-msg -p "$bar_id" hook module/rss 1 >/dev/null 2>&1
         else
             status
         fi
