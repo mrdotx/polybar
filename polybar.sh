@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-02-16T19:39:35+0100
+# date:   2022-03-07T19:11:45+0100
 
 config="$HOME/.config/X11/modules/polybar"
 xresource="$HOME/.config/X11/Xresources"
@@ -90,11 +90,11 @@ start() {
                 MONITOR=$secondary polybar secondary_stats &
                 ;;
             *)
-                MONITOR=$primary polybar single &
+                MONITOR=$primary polybar primary_single &
                 ;;
         esac
     else
-        MONITOR=$primary polybar single &
+        MONITOR=$primary polybar primary_single &
     fi
 }
 
