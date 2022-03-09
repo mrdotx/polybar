@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_rss.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-03-07T19:17:51+0100
+# date:   2022-03-09T15:13:45+0100
 
 timer="rss.timer"
 icon=""
@@ -43,9 +43,7 @@ case "$1" in
         status
         ;;
     --update)
-        # workaround (sleep -> https://github.com/i3/i3/issues/3298)
-        sleep .5 \
-        && polybar-msg -p "$bar_id" hook module/rss 1 >/dev/null 2>&1
+        polybar-msg -p "$bar_id" hook module/rss 1 >/dev/null 2>&1 &
         ;;
     --open)
         pgrep -x newsboat >/dev/null 2>&1 \

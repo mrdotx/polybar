@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-03-07T19:19:18+0100
+# date:   2022-03-09T14:48:52+0100
 
 line_color="Polybar.main0"
 foreground_color="Polybar.foreground0"
@@ -62,7 +62,7 @@ case "$1" in
         ;;
     --update)
         bar_id=$(pgrep -f "polybar primary")
-        polybar-msg -p "$bar_id" hook module/services 1 >/dev/null 2>&1
+        polybar-msg -p "$bar_id" hook module/services 1 >/dev/null 2>&1 &
         ;;
     *)
         i3_services.sh
