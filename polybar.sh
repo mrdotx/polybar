@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-03-07T19:11:45+0100
+# date:   2022-03-15T07:28:55+0100
 
 config="$HOME/.config/X11/modules/polybar"
 xresource="$HOME/.config/X11/Xresources"
@@ -37,7 +37,7 @@ bar_type=$(xrdb -query \
 
 # set xresources
 set_bar_type() {
-    sed -i "/Polybar.type:/c\Polybar.type:           $1" "$config"
+    sed -i "/Polybar.type:/c\Polybar.type:        $1" "$config"
     xrdb -merge "$xresource"
 }
 
