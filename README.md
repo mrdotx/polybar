@@ -6,7 +6,6 @@ shell scripts for polybar
 | :------------------ | :------------------------------------------------------------ |
 | polybar.sh          | start and toggle polybar                                      |
 | polybar_music.sh    | cmus statusbar and notification                               |
-| polybar_rss.sh      | enable/disable newsboat and show the quantity of new articles |
 | polybar_services.sh | show status of defined services                               |
 
 config files:
