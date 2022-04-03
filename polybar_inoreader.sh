@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-03T08:18:46+0200
+# date:   2022-04-03T11:15:58+0200
 
 icon_rss=""
 icon_star=""
@@ -12,8 +12,8 @@ foreground_color="Polybar.foreground0"
 
 url_login="https://www.inoreader.com/accounts/ClientLogin"
 url_request="https://www.inoreader.com/reader/api/0/unread-count"
-appid="999999505"
-appkey="EQsZICxpsbFczwbXrsrkRbXUUw8DdfwO"
+app_id="999999505"
+app_key="EQsZICxpsbFczwbXrsrkRbXUUw8DdfwO"
 user="klassiker"
 pass=$( \
     gpg -q -d ~/.local/share/repos/password-store/www/social/inoreader.gpg \
@@ -34,9 +34,7 @@ xrdb_query() {
         | cut -f2
 }
 
-sleep 3
-
-if ping -c1 -W1 -q 1.1.1.1 >/dev/null 2>&1; then
+if sleep 3 && ping -c1 -W1 -q 1.1.1.1 >/dev/null 2>&1; then
     auth=$( \
         curl --silent -s "$url_login?Email=$user&Passwd=$pass" \
             | grep 'Auth=' \
@@ -45,7 +43,7 @@ if ping -c1 -W1 -q 1.1.1.1 >/dev/null 2>&1; then
 
     request=$( \
         curl --silent -H "Authorization: GoogleLogin $auth" \
-            "$url_request?AppId=$appid&AppKey=$appkey" \
+            "$url_request?AppId=$app_id&AppKey=$app_key" \
     )
 
     unreaded="$icon_rss $(extract_data 'reading-list",')"
