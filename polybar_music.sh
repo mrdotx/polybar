@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-03-09T14:46:50+0100
+# date:   2022-04-03T08:07:33+0200
 
 bar_id=$(pgrep -f "polybar primary")
 
@@ -146,10 +146,10 @@ status() {
 
     if [ -z "$artist" ] \
         && [ -z "$title" ]; then
-            printf "%s %s" "$info" "${file##*/}" \
+            printf "%s %s\n" "$info" "${file##*/}" \
                 | cut -c 1-$len
     else
-        printf "%s %s" "$info" "$info_body" \
+        printf "%s %s\n" "$info" "$info_body" \
             | cut -c 1-$len
     fi
 }
