@@ -2,11 +2,12 @@
 
 shell scripts for polybar
 
-| name                | comment                                                       |
-| :------------------ | :------------------------------------------------------------ |
-| polybar.sh          | start and toggle polybar                                      |
-| polybar_music.sh    | cmus statusbar and notification                               |
-| polybar_services.sh | show status of defined services                               |
+| name                 | comment                                  |
+| :------------------- | :--------------------------------------- |
+| polybar.sh           | start and toggle polybar                 |
+| polybar_inoreader.sh | shows status of rss feeds from inoreader |
+| polybar_music.sh     | cmus statusbar and notification          |
+| polybar_services.sh  | show status of defined services          |
 
 config files:
 
