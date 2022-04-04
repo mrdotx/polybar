@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-04T13:02:23+0200
+# date:   2022-04-04T15:32:42+0200
 
 icon_rss=""
 icon_star=""
@@ -53,7 +53,7 @@ output() {
         "$1"
 }
 
-if sleep 1 && ping -c1 -W1 -q 1.1.1.1 >/dev/null 2>&1; then
+if sleep 3 && ping -c1 -W1 -q 1.1.1.1 >/dev/null 2>&1; then
     data=$(request)
     unreaded=$(extract_data "$data" 'reading-list",')
     starred=$(extract_data "$data" 'starred",')
