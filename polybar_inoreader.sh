@@ -3,12 +3,29 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-04T15:32:42+0200
+# date:   2022-04-04T19:10:53+0200
 
 icon_rss=""
 icon_star=""
 line_color="Polybar.main0"
 foreground_color="Polybar.foreground0"
+
+check_connection() {
+    # check connection x tenth of a second
+    check_connection=50
+
+    while ! ping -c1 -W1 -q 1.1.1.1 >/dev/null 2>&1 \
+        && [ $check_connection -gt 0 ]; do
+            sleep .1
+            check_connection=$((check_connection - 1))
+    done
+
+    if [ $check_connection -eq 0 ]; then
+        return 1
+    else
+        return 0
+    fi
+}
 
 request() {
     url_login="https://www.inoreader.com/accounts/ClientLogin"
@@ -53,7 +70,7 @@ output() {
         "$1"
 }
 
-if sleep 3 && ping -c1 -W1 -q 1.1.1.1 >/dev/null 2>&1; then
+if check_connection; then
     data=$(request)
     unreaded=$(extract_data "$data" 'reading-list",')
     starred=$(extract_data "$data" 'starred",')

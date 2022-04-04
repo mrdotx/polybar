@@ -3,12 +3,29 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_pacman.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-04T15:32:25+0200
+# date:   2022-04-04T19:10:56+0200
 
 icon_pacman=""
 icon_aur=""
 line_color="Polybar.main0"
 foreground_color="Polybar.foreground0"
+
+check_connection() {
+    # check connection x tenth of a second
+    check_connection=50
+
+    while ! ping -c1 -W1 -q 1.1.1.1 >/dev/null 2>&1 \
+        && [ $check_connection -gt 0 ]; do
+            sleep .1
+            check_connection=$((check_connection - 1))
+    done
+
+    if [ $check_connection -eq 0 ]; then
+        return 1
+    else
+        return 0
+    fi
+}
 
 output() {
     # get xresources
@@ -24,7 +41,7 @@ output() {
         "$1"
 }
 
-if sleep 3 && ping -c1 -W1 -q 1.1.1.1 >/dev/null 2>&1; then
+if check_connection; then
     updates_pacman=$(checkupdates 2> /dev/null | wc -l)
     updates_aur=$(paru -Qua 2> /dev/null | wc -l)
 
