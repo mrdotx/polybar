@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-03T08:07:33+0200
+# date:   2022-04-04T08:34:46+0200
 
 bar_id=$(pgrep -f "polybar primary")
 
@@ -111,6 +111,7 @@ notify() {
 }
 
 status() {
+    # get xresources
     xrdb_query() {
         xrdb -query \
             | grep "$1:" \
