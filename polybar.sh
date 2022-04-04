@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-03-15T07:28:55+0100
+# date:   2022-04-04T08:34:10+0200
 
 config="$HOME/.config/X11/modules/polybar"
 xresource="$HOME/.config/X11/Xresources"
@@ -29,7 +29,7 @@ help="$script [-h/--help] -- script to start polybar
     $script -c
     $script --cycle"
 
-# xresources
+# get xresources
 bar_type=$(xrdb -query \
     | grep Polybar.type: \
     | cut -f2 \
