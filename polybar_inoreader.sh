@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-04T12:33:04+0200
+# date:   2022-04-04T13:02:23+0200
 
 icon_rss=""
 icon_star=""
@@ -48,9 +48,9 @@ output() {
     }
 
     printf "%%{o%s}%%{F%s}%s%%{F- o-}\n" \
-        "$(xrdb_query "$1")" \
-        "$(xrdb_query "$2")" \
-        "$3"
+        "$(xrdb_query "$line_color")" \
+        "$(xrdb_query "$foreground_color")" \
+        "$1"
 }
 
 if sleep 1 && ping -c1 -W1 -q 1.1.1.1 >/dev/null 2>&1; then
@@ -60,21 +60,12 @@ if sleep 1 && ping -c1 -W1 -q 1.1.1.1 >/dev/null 2>&1; then
 
     if [ "$unreaded" -gt 0 ] \
         && [ "$starred" -gt 0 ]; then \
-            output \
-                "$line_color" \
-                "$foreground_color" \
-                "$icon_rss $unreaded $icon_star $starred"
+            output "$icon_rss $unreaded $icon_star $starred"
     else
         [ "$unreaded" -gt 0 ] \
-            && output \
-                "$line_color" \
-                "$foreground_color" \
-                "$icon_rss $unreaded"
+            && output "$icon_rss $unreaded"
 
         [ "$starred" -gt 0 ] \
-            && output \
-                "$line_color" \
-                "$foreground_color" \
-                "$icon_star $starred"
+            && output "$icon_star $starred"
     fi
 fi
