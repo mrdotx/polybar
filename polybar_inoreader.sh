@@ -3,22 +3,42 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-04T08:33:29+0200
+# date:   2022-04-04T10:49:20+0200
 
 icon_rss=""
 icon_star=""
 line_color="Polybar.main0"
 foreground_color="Polybar.foreground0"
+connection_color="color1"
 
-url_login="https://www.inoreader.com/accounts/ClientLogin"
-url_request="https://www.inoreader.com/reader/api/0/unread-count"
-app_id="999999505"
-app_key="EQsZICxpsbFczwbXrsrkRbXUUw8DdfwO"
-user="klassiker"
-pass=$( \
-    gpg -q -d ~/.local/share/repos/password-store/www/social/inoreader.gpg \
-        | head -n1 \
-)
+request() {
+    url_login="https://www.inoreader.com/accounts/ClientLogin"
+    url_request="https://www.inoreader.com/reader/api/0/unread-count"
+    user="klassiker"
+    gpg_file="$HOME/.local/share/repos/password-store/www/social/inoreader.gpg"
+    app_id="999999505"
+    app_key="EQsZICxpsbFczwbXrsrkRbXUUw8DdfwO"
+
+    get_pass() {
+        gpg -q -d "$gpg_file" \
+            | head -n1
+    }
+
+    curl --silent -H "Authorization: GoogleLogin $( \
+        curl --silent -s "$url_login?Email=$user&Passwd=$(get_pass)" \
+            | grep 'Auth=' \
+            | sed 's/Auth/auth/' \
+        )" \
+        "$url_request?AppId=$app_id&AppKey=$app_key"
+}
+
+extract_data() {
+    printf "%s" "$1" \
+        | awk -F "$2" '{print $2}' \
+        | cut -d ',' -f1 \
+        | sed 's/"count"://' \
+        | tr -d "\""
+}
 
 output() {
     # get xresources
@@ -28,39 +48,51 @@ output() {
             | cut -f2
     }
 
-    printf "%%{o%s}%%{F%s}%s %s%%{F- o-}\n" \
+    printf "%%{o%s}%%{F%s}%s%s%%{F- o-}\n" \
         "$(xrdb_query "$1")" \
         "$(xrdb_query "$2")" \
         "$3" \
         "$4"
 }
 
-extract_data() {
-    printf "%s" "$request" \
-        | awk -F "$1" '{print $2}' \
-        | cut -d ',' -f1 \
-        | sed 's/"count"://' \
-        | tr -d "\""
-}
-
 if sleep 1 && ping -c1 -W1 -q 1.1.1.1 >/dev/null 2>&1; then
-    auth=$(curl --silent -s "$url_login?Email=$user&Passwd=$pass" \
-        | grep 'Auth=' \
-        | sed 's/Auth/auth/' \
-    )
+    data=$(request)
+    unreaded=$(extract_data "$data" 'reading-list",')
+    starred=$(extract_data "$data" 'starred",')
 
-    request=$(curl --silent -H "Authorization: GoogleLogin $auth" \
-        "$url_request?AppId=$app_id&AppKey=$app_key" \
-    )
+    [ "$unreaded" -eq 0 ] \
+        && [ "$starred" -eq 0 ] \
+        && output \
+            "$line_color" \
+            "$foreground_color" \
+            "$icon_rss" \
+            ""
 
-    output \
-        "$line_color" \
-        "$foreground_color" \
-        "$icon_rss $(extract_data 'reading-list",')" \
-        "$icon_star $(extract_data 'starred",')"
+    if [ "$unreaded" -gt 0 ] \
+        && [ "$starred" -gt 0 ]; then \
+            output \
+                "$line_color" \
+                "$foreground_color" \
+                "$icon_rss $unreaded" \
+                " $icon_star $starred"
+    else
+        [ "$unreaded" -gt 0 ] \
+            && output \
+                "$line_color" \
+                "$foreground_color" \
+                "$icon_rss $unreaded" \
+                ""
+
+        [ "$starred" -gt 0 ] \
+            && output \
+                "$line_color" \
+                "$foreground_color" \
+                "" \
+                "$icon_star $starred"
+    fi
 else
     output \
-        "$line_color" \
+        "$connection_color" \
         "$foreground_color" \
         "$icon_rss"
 fi
