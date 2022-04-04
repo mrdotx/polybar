@@ -3,13 +3,13 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-03T08:05:03+0200
+# date:   2022-04-04T08:30:47+0200
 
 line_color="Polybar.main0"
 foreground_color="Polybar.foreground0"
 
-# xresources
-xresources() {
+output() {
+    # get xresources
     xrdb_query() {
         xrdb -query \
             | grep "$1:" \
@@ -58,7 +58,7 @@ case "$1" in
         service_status "systemd-timesyncd.service" ""
         service_status "vpnc@hades.service" ""
 
-        xresources "$line_color" "$foreground_color"
+        output "$line_color" "$foreground_color"
         ;;
     --update)
         bar_id=$(pgrep -f "polybar primary")
