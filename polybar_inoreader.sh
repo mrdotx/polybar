@@ -3,13 +3,12 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-04T11:39:56+0200
+# date:   2022-04-04T12:33:04+0200
 
 icon_rss=""
 icon_star=""
 line_color="Polybar.main0"
 foreground_color="Polybar.foreground0"
-connection_color="color1"
 
 request() {
     url_login="https://www.inoreader.com/accounts/ClientLogin"
@@ -59,13 +58,6 @@ if sleep 1 && ping -c1 -W1 -q 1.1.1.1 >/dev/null 2>&1; then
     unreaded=$(extract_data "$data" 'reading-list",')
     starred=$(extract_data "$data" 'starred",')
 
-    [ "$unreaded" -eq 0 ] \
-        && [ "$starred" -eq 0 ] \
-        && output \
-            "$line_color" \
-            "$foreground_color" \
-            "$icon_rss"
-
     if [ "$unreaded" -gt 0 ] \
         && [ "$starred" -gt 0 ]; then \
             output \
@@ -85,9 +77,4 @@ if sleep 1 && ping -c1 -W1 -q 1.1.1.1 >/dev/null 2>&1; then
                 "$foreground_color" \
                 "$icon_star $starred"
     fi
-else
-    output \
-        "$connection_color" \
-        "$foreground_color" \
-        "$icon_rss"
 fi
