@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-04T08:34:10+0200
+# date:   2022-04-05T09:37:23+0200
 
 config="$HOME/.config/X11/modules/polybar"
 xresource="$HOME/.config/X11/Xresources"
@@ -103,7 +103,7 @@ case "$1" in
         printf "%s\n" "$help"
         ;;
     -k | --kill)
-        killall -q polybar
+        polybar-msg cmd quit >/dev/null 2>&1
         ;;
     -r | --restart)
         [ "$(systemctl --user is-active $service)" = "active" ] \
