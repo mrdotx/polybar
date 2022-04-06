@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-05T09:37:23+0200
+# date:   2022-04-06T17:20:32+0200
 
 config="$HOME/.config/X11/modules/polybar"
 xresource="$HOME/.config/X11/Xresources"
@@ -62,12 +62,7 @@ cycle() {
 
 start() {
     # terminate already running bar instances
-    killall -q polybar
-
-    # wait until the processes have been shut down
-    while pgrep -x polybar >/dev/null; do
-        sleep .1
-    done
+    polybar-msg cmd quit >/dev/null 2>&1
 
     primary=$(polybar -m \
         | grep "(primary)" \
@@ -106,8 +101,7 @@ case "$1" in
         polybar-msg cmd quit >/dev/null 2>&1
         ;;
     -r | --restart)
-        [ "$(systemctl --user is-active $service)" = "active" ] \
-            && systemctl --user restart $service
+        polybar-msg cmd restart >/dev/null 2>&1
         ;;
     -c | --cycle)
         cycle
