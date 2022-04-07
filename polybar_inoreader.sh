@@ -3,12 +3,10 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-05T09:01:48+0200
+# date:   2022-04-07T18:22:23+0200
 
 icon_rss=""
 icon_star=""
-line_color="Polybar.main0"
-foreground_color="Polybar.foreground0"
 
 net_check() {
     # check connection x tenth of a second
@@ -57,6 +55,9 @@ extract_data() {
 }
 
 output() {
+    line_color=${2:-Polybar.main0}
+    foreground_color=${3:-Polybar.foreground0}
+
     # get xresources
     xrdb_query() {
         xrdb -query \
