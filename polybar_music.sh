@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-07T19:00:14+0200
+# date:   2022-04-07T20:47:14+0200
 
 cmus_data() {
     if info=$(cmus-remote -Q 2> /dev/null); then
@@ -57,18 +57,22 @@ cmus_data() {
 }
 
 notify() {
-    [ "$duration" -ge 0 ] \
-        && position_min=$(printf "%02d" $((position / 60))) \
-        && position_sec=$(printf "%02d" $((position % 60))) \
-        && duration_min=$(printf "%02d" $((duration / 60))) \
-        && duration_sec=$(printf "%02d" $((duration % 60))) \
-        && runtime="$position_min:$position_sec/$duration_min:$duration_sec"
+    position_min=$(printf "%02d" $((position / 60)))
+    position_sec=$(printf "%02d" $((position % 60)))
+    if [ "$duration" -eq -1 ]; then
+        duration_min="00"
+        duration_sec="00"
+    else
+        duration_min=$(printf "%02d" $((duration / 60)))
+        duration_sec=$(printf "%02d" $((duration % 60)))
+    fi
+    runtime="$position_min:$position_sec/$duration_min:$duration_sec"
 
     notification() {
         header=$1
         shift
 
-        [ -n "$file" ] \
+        [ -z "$stream" ] \
             && albumart=$(mktemp -t polybar_music_albumart.XXXXXX.png) \
             && ffmpeg -y -i "$file" -c:v copy "$albumart" >/dev/null 2>&1 \
             && convert "$albumart" -resize 100 "$albumart" >/dev/null 2>&1
