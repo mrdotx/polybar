@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-07T20:47:14+0200
+# date:   2022-04-07T20:52:49+0200
 
 cmus_data() {
     if info=$(cmus-remote -Q 2> /dev/null); then
@@ -73,18 +73,18 @@ notify() {
         shift
 
         [ -z "$stream" ] \
-            && albumart=$(mktemp -t polybar_music_albumart.XXXXXX.png) \
-            && ffmpeg -y -i "$file" -c:v copy "$albumart" >/dev/null 2>&1 \
-            && convert "$albumart" -resize 100 "$albumart" >/dev/null 2>&1
+            && cover=$(mktemp -t polybar_music_cover.XXXXXX.png) \
+            && ffmpeg -y -i "$file" -c:v copy "$cover" >/dev/null 2>&1 \
+            && convert "$cover" -resize 100 "$cover" >/dev/null 2>&1
 
         notify-send \
             -u low  \
-            -i "$albumart" \
+            -i "$cover" \
             "C* Music Player | $header" \
             "$@" \
             -h string:x-canonical-private-synchronous:"C* Music Player |"
 
-        rm -f "$albumart"
+        rm -f "$cover"
     }
 
     if [ -z "$artist" ] \
