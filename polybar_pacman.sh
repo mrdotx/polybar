@@ -3,12 +3,10 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_pacman.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-05T09:03:21+0200
+# date:   2022-04-07T18:21:43+0200
 
 icon_pacman=""
 icon_aur=""
-line_color="Polybar.main0"
-foreground_color="Polybar.foreground0"
 
 net_check() {
     # check connection x tenth of a second
@@ -28,6 +26,9 @@ net_check() {
 }
 
 output() {
+    line_color=${2:-Polybar.main0}
+    foreground_color=${3:-Polybar.foreground0}
+
     # get xresources
     xrdb_query() {
         xrdb -query \
