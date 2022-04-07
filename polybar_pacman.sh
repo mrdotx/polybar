@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_pacman.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-07T18:59:06+0200
+# date:   2022-04-07T19:37:59+0200
 
 icon_pacman=""
 icon_aur=""
@@ -24,11 +24,11 @@ case "$1" in
                         "$icon_pacman $updates_pacman $icon_aur $updates_aur"
             else
                 [ "$updates_pacman" -gt 0 ] \
-                    && polybar_helper_output \
+                    && polybar_helper_output.sh \
                         "$icon_pacman $updates_pacman"
 
                 [ "$updates_aur" -gt 0 ] \
-                    && polybar_helper_output \
+                    && polybar_helper_output.sh \
                         "$icon_aur $updates_aur"
             fi
         fi
