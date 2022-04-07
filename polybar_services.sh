@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-07T16:53:34+0200
+# date:   2022-04-07T17:01:21+0200
 
 line_color="Polybar.main0"
 foreground_color="Polybar.foreground0"
@@ -26,19 +26,19 @@ service_status() {
     case "$3" in
         user)
             if [ "$(systemctl --user is-active "$1")" = "active" ]; then
-                if [ -z "$message" ]; then
-                    message="$(printf "%s" "$2")"
+                if [ -z "$services" ]; then
+                    services="$(printf "%s" "$2")"
                 else
-                    message="$(printf "%s %s" "$message" "$2")"
+                    services="$(printf "%s %s" "$services" "$2")"
                 fi
             fi
             ;;
         *)
             if [ "$(systemctl is-active "$1")" = "active" ]; then
-                if [ -z "$message" ]; then
-                    message="$(printf "%s" "$2")"
+                if [ -z "$services" ]; then
+                    services="$(printf "%s" "$2")"
                 else
-                    message="$(printf "%s %s" "$message" "$2")"
+                    services="$(printf "%s %s" "$services" "$2")"
                 fi
             fi
             ;;
@@ -58,7 +58,7 @@ case "$1" in
         service_status "systemd-timesyncd.service" ""
         service_status "vpnc@hades.service" ""
 
-        output "$message"
+        output "$services"
         ;;
     --update)
         polybar-msg -p "$(pgrep -f "polybar primary")" \
