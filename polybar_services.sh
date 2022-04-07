@@ -3,24 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-07T17:01:21+0200
-
-line_color="Polybar.main0"
-foreground_color="Polybar.foreground0"
-
-output() {
-    # get xresources
-    xrdb_query() {
-        xrdb -query \
-            | grep "$1:" \
-            | cut -f2
-    }
-
-    printf "%%{o%s}%%{F%s}%s%%{F- o-}\n" \
-        "$(xrdb_query "$line_color")" \
-        "$(xrdb_query "$foreground_color")" \
-        "$1"
-}
+# date:   2022-04-07T18:20:39+0200
 
 service_status() {
     case "$3" in
@@ -43,6 +26,23 @@ service_status() {
             fi
             ;;
     esac
+}
+
+output() {
+    line_color=${2:-Polybar.main0}
+    foreground_color=${3:-Polybar.foreground0}
+
+    # get xresources
+    xrdb_query() {
+        xrdb -query \
+            | grep "$1:" \
+            | cut -f2
+    }
+
+    printf "%%{o%s}%%{F%s}%s%%{F- o-}\n" \
+        "$(xrdb_query "$line_color")" \
+        "$(xrdb_query "$foreground_color")" \
+        "$1"
 }
 
 case "$1" in
