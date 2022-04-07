@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-07T09:00:35+0200
+# date:   2022-04-07T11:08:44+0200
 
 cmus_data() {
     if info=$(cmus-remote -Q 2> /dev/null); then
@@ -80,7 +80,7 @@ notify() {
     esac
 
     [ -n "$file" ] \
-        && albumart=$(mktemp -t polybar_music.XXXXXX.png) \
+        && albumart=$(mktemp -t polybar_music_albumart.XXXXXX.png) \
         && ffmpeg -y -i "$file" -c:v copy "$albumart" >/dev/null 2>&1 \
         && convert "$albumart" -resize 100 "$albumart" >/dev/null 2>&1
 
@@ -165,6 +165,7 @@ case "$1" in
         ;;
     --start)
         cmus \
+            && sleep .5 \
             && polybar-msg -p "$(pgrep -f "polybar primary")" \
                 action "#music.hook.0" >/dev/null 2>&1
         ;;
