@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-07T11:08:44+0200
+# date:   2022-04-07T18:14:21+0200
 
 cmus_data() {
     if info=$(cmus-remote -Q 2> /dev/null); then
@@ -58,58 +58,92 @@ cmus_data() {
 
 notify() {
     [ "$duration" -ge 0 ] \
-        && position_minutes=$(printf "%02d" $((position / 60))) \
-        && position_seconds=$(printf "%02d" $((position % 60))) \
-        && duration_minutes=$(printf "%02d" $((duration / 60))) \
-        && duration_seconds=$(printf "%02d" $((duration % 60))) \
-        && title_status="$position_minutes:$position_seconds / $duration_minutes:$duration_seconds"
-
-    case $status in
-        "playing")
-            info=" $title_status"
-            ;;
-        "paused")
-            info=" $title_status"
-            ;;
-        "stopped")
-            info=" $title_status"
-            ;;
-        *)
-            info=""
-            ;;
-    esac
-
-    [ -n "$file" ] \
-        && albumart=$(mktemp -t polybar_music_albumart.XXXXXX.png) \
-        && ffmpeg -y -i "$file" -c:v copy "$albumart" >/dev/null 2>&1 \
-        && convert "$albumart" -resize 100 "$albumart" >/dev/null 2>&1
-
-    if [ -z "$stream" ]; then
-        info_body="\nArtist: $artist\nAlbum : $album\nTrack : $tracknumber\nTitle : <b>$title</b>"
-    else
-        info_body="\n<b>$stream</b>\n$genre\n$title\n$comment"
-    fi
+        && position_min=$(printf "%02d" $((position / 60))) \
+        && position_sec=$(printf "%02d" $((position % 60))) \
+        && duration_min=$(printf "%02d" $((duration / 60))) \
+        && duration_sec=$(printf "%02d" $((duration % 60))) \
+        && runtime="$position_min:$position_sec/$duration_min:$duration_sec"
 
     notification() {
+        header=$1
+        shift
+
+        [ -n "$file" ] \
+            && albumart=$(mktemp -t polybar_music_albumart.XXXXXX.png) \
+            && ffmpeg -y -i "$file" -c:v copy "$albumart" >/dev/null 2>&1 \
+            && convert "$albumart" -resize 100 "$albumart" >/dev/null 2>&1
+
         notify-send \
             -u low  \
             -i "$albumart" \
-            "C* Music Player | $info" \
+            "C* Music Player | $header" \
             "$@" \
             -h string:x-canonical-private-synchronous:"C* Music Player |"
+
+        rm -f "$albumart"
     }
 
     if [ -z "$artist" ] \
         && [ -z "$title" ]; then
-            notification "${file##*/}"
+            info="${file##*/}"
+    elif [ -z "$stream" ]; then
+        info="\nArtist: $artist\nAlbum : $album\nTrack : $tracknumber\nTitle : <b>$title</b>"
     else
-        notification "$info_body"
+        info="\n<b>$stream</b>\n$genre\n$title\n$comment"
     fi
 
-    rm -f "$albumart"
+    case $status in
+        "playing")
+            notification " $runtime" "$info"
+            ;;
+        "paused")
+            notification " $runtime" "$info"
+            ;;
+        "stopped")
+            notification " $runtime" "$info"
+            ;;
+        *)
+            notification "$runtime" "$info"
+            ;;
+    esac
 }
 
 status() {
+    if [ -z "$stream" ]; then
+        info="$artist - $title | $album"
+    else
+        info="$stream | $genre | $title"
+    fi
+
+    if [ -z "$artist" ] \
+        && [ -z "$title" ]; then
+            info=$(printf "%s\n" "${file##*/}" \
+                | cut -c 1-98)
+    else
+        info=$(printf "%s\n" "$info" \
+            | cut -c 1-98)
+    fi
+
+    case $status in
+        "playing")
+            output " $info"
+            ;;
+        "paused")
+            output " $info" "Polybar.foreground1"
+            ;;
+        "stopped")
+            output " $info" "color1"
+            ;;
+        *)
+            output "$info"
+            ;;
+    esac
+}
+
+output() {
+    line_color=${2:-Polybar.main0}
+    foreground_color=${3:-Polybar.foreground0}
+
     # get xresources
     xrdb_query() {
         xrdb -query \
@@ -117,41 +151,10 @@ status() {
             | cut -f2
     }
 
-    inactive_color=$(xrdb_query "Polybar.foreground1")
-    stop_color=$(xrdb_query "color1")
-
-    case $status in
-        "playing")
-            info=""
-            len=100
-            ;;
-        "paused")
-            info="%{o$inactive_color}"
-            len=111
-            ;;
-        "stopped")
-            info="%{o$stop_color}"
-            len=111
-            ;;
-        *)
-            info=""
-            ;;
-    esac
-
-    if [ -z "$stream" ]; then
-        info_body="$artist - $title | $album"
-    else
-        info_body="$stream | $genre | $title"
-    fi
-
-    if [ -z "$artist" ] \
-        && [ -z "$title" ]; then
-            printf "%s %s\n" "$info" "${file##*/}" \
-                | cut -c 1-$len
-    else
-        printf "%s %s\n" "$info" "$info_body" \
-            | cut -c 1-$len
-    fi
+    printf "%%{o%s}%%{F%s}%s%%{F- o-}\n" \
+        "$(xrdb_query "$line_color")" \
+        "$(xrdb_query "$foreground_color")" \
+        "$1"
 }
 
 case "$1" in
