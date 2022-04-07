@@ -3,27 +3,10 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-07T18:22:23+0200
+# date:   2022-04-07T19:02:21+0200
 
 icon_rss=""
 icon_star=""
-
-net_check() {
-    # check connection x tenth of a second
-    check=$1
-
-    while ! ping -c1 -W1 -q "$2" >/dev/null 2>&1 \
-        && [ "$check" -gt 0 ]; do
-            sleep .1
-            check=$((check - 1))
-    done
-
-    if [ $check -eq 0 ]; then
-        return 1
-    else
-        return 0
-    fi
-}
 
 request() {
     url_login="https://www.inoreader.com/accounts/ClientLogin"
@@ -54,43 +37,29 @@ extract_data() {
         | tr -d "\""
 }
 
-output() {
-    line_color=${2:-Polybar.main0}
-    foreground_color=${3:-Polybar.foreground0}
-
-    # get xresources
-    xrdb_query() {
-        xrdb -query \
-            | grep "$1:" \
-            | cut -f2
-    }
-
-    printf "%%{o%s}%%{F%s}%s%%{F- o-}\n" \
-        "$(xrdb_query "$line_color")" \
-        "$(xrdb_query "$foreground_color")" \
-        "$1"
-}
-
 case "$1" in
     --update)
         polybar-msg -p "$(pgrep -f "polybar primary")" \
             action "#inoreader.hook.0" >/dev/null 2>&1 &
         ;;
     *)
-        if net_check 50 "1.1.1.1"; then
+        if polybar_helper_net_check.sh; then
             data=$(request)
             unreaded=$(extract_data "$data" 'reading-list",')
             starred=$(extract_data "$data" 'starred",')
 
             if [ "$unreaded" -gt 0 ] \
                 && [ "$starred" -gt 0 ]; then \
-                    output "$icon_rss $unreaded $icon_star $starred"
+                    polybar_helper_output.sh \
+                        "$icon_rss $unreaded $icon_star $starred"
             else
                 [ "$unreaded" -gt 0 ] \
-                    && output "$icon_rss $unreaded"
+                    && polybar_helper_output.sh \
+                        "$icon_rss $unreaded"
 
                 [ "$starred" -gt 0 ] \
-                    && output "$icon_star $starred"
+                    && polybar_helper_output.sh \
+                        "$icon_star $starred"
             fi
         fi
         ;;

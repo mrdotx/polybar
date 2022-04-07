@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-07T18:14:21+0200
+# date:   2022-04-07T19:00:14+0200
 
 cmus_data() {
     if info=$(cmus-remote -Q 2> /dev/null); then
@@ -126,35 +126,18 @@ status() {
 
     case $status in
         "playing")
-            output " $info"
+            polybar_helper_output.sh " $info"
             ;;
         "paused")
-            output " $info" "Polybar.foreground1"
+            polybar_helper_output.sh " $info" "Polybar.foreground1"
             ;;
         "stopped")
-            output " $info" "color1"
+            polybar_helper_output.sh " $info" "color1"
             ;;
         *)
-            output "$info"
+            polybar_helper_output.sh "$info"
             ;;
     esac
-}
-
-output() {
-    line_color=${2:-Polybar.main0}
-    foreground_color=${3:-Polybar.foreground0}
-
-    # get xresources
-    xrdb_query() {
-        xrdb -query \
-            | grep "$1:" \
-            | cut -f2
-    }
-
-    printf "%%{o%s}%%{F%s}%s%%{F- o-}\n" \
-        "$(xrdb_query "$line_color")" \
-        "$(xrdb_query "$foreground_color")" \
-        "$1"
 }
 
 case "$1" in
