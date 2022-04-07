@@ -1,14 +1,21 @@
 # polybar
 
+general helper scripts for polybar
+
+| name                        | comment                                            |
+| :-------------------------- | :------------------------------------------------- |
+| polybar_helper_net_check.sh | check a defined time for an internet connection    |
+| polybar_helper_output.sh    | format line/foreground color output from xresource |
+
 shell scripts for polybar
 
-| name                 | comment                                         |
-| :------------------- | :---------------------------------------------- |
-| polybar.sh           | start and toggle polybar                        |
-| polybar_inoreader.sh | shows number of rss feeds from inoreader        |
-| polybar_music.sh     | cmus statusbar and notification                 |
-| polybar_pacman.sh    | shows number of package updates from pacman/aur |
-| polybar_services.sh  | shows status of defined services                |
+| name                 | comment                                          | used helper       |
+| :------------------- | :----------------------------------------------- | :---------------- |
+| polybar.sh           | start, toggle and cycle polybar                  |                   |
+| polybar_inoreader.sh | shows number of rss/starred feeds from inoreader | output, net_check |
+| polybar_music.sh     | cmus statusbar and notification                  | output            |
+| polybar_pacman.sh    | shows number of package updates from pacman/aur  | output, net_check |
+| polybar_services.sh  | shows status of defined services                 | output            |
 
 config files:
 
