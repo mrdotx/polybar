@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-08T21:48:14+0200
+# date:   2022-04-08T22:33:53+0200
 
 config="$HOME/.config/X11/modules/polybar"
 xresource="$HOME/.config/X11/Xresources"
@@ -12,19 +12,19 @@ service="polybar.service"
 script=$(basename "$0")
 help="$script [-h/--help] -- script to start polybar
   Usage:
-    $script [--kill/--restart/--monitor1/--monitor2]
+    $script [--kill/--reload/--monitor1/--monitor2]
 
   Settings:
     without given settings, re-/start polybar
     [--kill]     = kill single-/multi-/stats bar
-    [--restart]  = restart polybar when it is running
+    [--reload]   = reload polybar when it is running
     [--monitor1] = cycle bars on primary monitor
     [--monitor2] = cycle bars on secondary monitor
 
   Example:
     $script
     $script --kill
-    $script --restart
+    $script --reload
     $script --monitor1
     $script --monitor2"
 
@@ -113,7 +113,7 @@ case "$1" in
     --kill)
         polybar-msg cmd quit >/dev/null 2>&1
         ;;
-    --restart)
+    --reload)
         polybar-msg cmd restart >/dev/null 2>&1
         ;;
     --monitor1)
