@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-06T17:20:32+0200
+# date:   2022-04-08T09:08:27+0200
 
 config="$HOME/.config/X11/modules/polybar"
 xresource="$HOME/.config/X11/Xresources"
@@ -30,10 +30,11 @@ help="$script [-h/--help] -- script to start polybar
     $script --cycle"
 
 # get xresources
-bar_type=$(xrdb -query \
-    | grep Polybar.type: \
-    | cut -f2 \
-)
+get_bar_type() {
+    xrdb -query \
+        | grep "Polybar.type:" \
+        | cut -f2
+}
 
 # set xresources
 set_bar_type() {
@@ -43,18 +44,15 @@ set_bar_type() {
 
 cycle() {
     [ "$(systemctl --user is-active $service)" = "active" ] \
-        && case "$bar_type" in
+        && case "$(get_bar_type)" in
             single)
                 set_bar_type multi
                 ;;
             multi)
                 set_bar_type stats
                 ;;
-            stats)
-                set_bar_type single
-                ;;
             *)
-                exit 1
+                set_bar_type single
                 ;;
         esac \
         && systemctl --user restart $service
@@ -74,8 +72,8 @@ start() {
         | cut -d ':' -f1 \
     )
 
-    if [ "$(polybar -m | wc -l)" -ge 2 ]; then
-        case $bar_type in
+    if [ -n "$secondary" ]; then
+        case "$(get_bar_type)" in
             multi)
                 MONITOR=$primary polybar primary &
                 MONITOR=$secondary polybar secondary &
