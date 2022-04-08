@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-08T09:08:27+0200
+# date:   2022-04-08T17:43:33+0200
 
 config="$HOME/.config/X11/modules/polybar"
 xresource="$HOME/.config/X11/Xresources"
@@ -29,30 +29,28 @@ help="$script [-h/--help] -- script to start polybar
     $script -c
     $script --cycle"
 
-# get xresources
-get_bar_type() {
+get_xresource() {
     xrdb -query \
-        | grep "Polybar.type:" \
+        | grep "$1:" \
         | cut -f2
 }
 
-# set xresources
-set_bar_type() {
-    sed -i "/Polybar.type:/c\Polybar.type:        $1" "$config"
+set_xresource() {
+    sed -i "/$1:/c\\$1:        $2" "$config"
     xrdb -merge "$xresource"
 }
 
 cycle() {
     [ "$(systemctl --user is-active $service)" = "active" ] \
-        && case "$(get_bar_type)" in
+        && case "$(get_xresource "Polybar.type")" in
             single)
-                set_bar_type multi
+                set_xresource "Polybar.type" "multi"
                 ;;
             multi)
-                set_bar_type stats
+                set_xresource "Polybar.type" "stats"
                 ;;
             *)
-                set_bar_type single
+                set_xresource "Polybar.type" "single"
                 ;;
         esac \
         && systemctl --user restart $service
@@ -73,7 +71,7 @@ start() {
     )
 
     if [ -n "$secondary" ]; then
-        case "$(get_bar_type)" in
+        case "$(get_xresource "Polybar.type")" in
             multi)
                 MONITOR=$primary polybar primary &
                 MONITOR=$secondary polybar secondary &
