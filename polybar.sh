@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-08T17:43:33+0200
+# date:   2022-04-08T21:48:14+0200
 
 config="$HOME/.config/X11/modules/polybar"
 xresource="$HOME/.config/X11/Xresources"
@@ -12,22 +12,21 @@ service="polybar.service"
 script=$(basename "$0")
 help="$script [-h/--help] -- script to start polybar
   Usage:
-    $script [-k/--kill/-r/--restart/-c/--cycle]
+    $script [--kill/--restart/--monitor1/--monitor2]
 
   Settings:
     without given settings, re-/start polybar
-    [-k/--kill]    = kill single-/multi-/stats bar
-    [-r/--restart] = restart polybar when it is running
-    [-c/--cycle]   = cycle single-/multi- and stats bar
+    [--kill]     = kill single-/multi-/stats bar
+    [--restart]  = restart polybar when it is running
+    [--monitor1] = cycle bars on primary monitor
+    [--monitor2] = cycle bars on secondary monitor
 
   Example:
     $script
-    $script -k
     $script --kill
-    $script -r
     $script --restart
-    $script -c
-    $script --cycle"
+    $script --monitor1
+    $script --monitor2"
 
 get_xresource() {
     xrdb -query \
@@ -36,21 +35,35 @@ get_xresource() {
 }
 
 set_xresource() {
-    sed -i "/$1:/c\\$1:        $2" "$config"
+    sed -i "/$1:/c\\$1: $2" "$config"
     xrdb -merge "$xresource"
 }
 
 cycle() {
     [ "$(systemctl --user is-active $service)" = "active" ] \
-        && case "$(get_xresource "Polybar.type")" in
-            single)
-                set_xresource "Polybar.type" "multi"
+        && case "$(get_xresource "Polybar.type.$1")" in
+            main)
+                set_xresource "Polybar.type.$1" "main_small"
                 ;;
-            multi)
-                set_xresource "Polybar.type" "stats"
+            main_small)
+                set_xresource "Polybar.type.$1" "empty"
+                ;;
+            empty)
+                set_xresource "Polybar.type.$1" "sys_info"
+                ;;
+            sys_info)
+                monitor1="$(get_xresource "Polybar.type.monitor1")"
+                monitor2="$(get_xresource "Polybar.type.monitor2")"
+
+                if [ "$monitor1" = "disabled" ] \
+                    || [ "$monitor2" = "disabled" ]; then
+                        set_xresource "Polybar.type.$1" "main"
+                else
+                    set_xresource "Polybar.type.$1" "disabled"
+                fi
                 ;;
             *)
-                set_xresource "Polybar.type" "single"
+                set_xresource "Polybar.type.$1" "main"
                 ;;
         esac \
         && systemctl --user restart $service
@@ -70,22 +83,26 @@ start() {
         | cut -d ':' -f1 \
     )
 
-    if [ -n "$secondary" ]; then
-        case "$(get_xresource "Polybar.type")" in
-            multi)
-                MONITOR=$primary polybar primary &
-                MONITOR=$secondary polybar secondary &
-                ;;
-            stats)
-                MONITOR=$primary polybar primary_stats &
-                MONITOR=$secondary polybar secondary_stats &
-                ;;
-            *)
-                MONITOR=$primary polybar primary_single &
-                ;;
-        esac
+    monitor1="$(get_xresource "Polybar.type.monitor1")"
+    monitor2="$(get_xresource "Polybar.type.monitor2")"
+
+    if [ "$monitor1" = "disabled" ] \
+        || [ "$monitor2" = "disabled" ]; then
+            pin_i3=false
     else
-        MONITOR=$primary polybar primary_single &
+        pin_i3=true
+    fi
+
+    if [ -n "$secondary" ]; then
+        [ ! "$monitor1" = "disabled" ] \
+            && I3PIN=$pin_i3 MONITOR=$primary polybar "$monitor1" &
+
+        [ ! "$monitor2" = "disabled" ] \
+            && I3PIN=$pin_i3 MONITOR=$secondary polybar "$monitor2" &
+    elif [ "$monitor1" = "disabled" ]; then
+        MONITOR=$primary polybar "$monitor2" &
+    else
+        MONITOR=$primary polybar "$monitor1" &
     fi
 }
 
@@ -93,14 +110,17 @@ case "$1" in
     -h | --help)
         printf "%s\n" "$help"
         ;;
-    -k | --kill)
+    --kill)
         polybar-msg cmd quit >/dev/null 2>&1
         ;;
-    -r | --restart)
+    --restart)
         polybar-msg cmd restart >/dev/null 2>&1
         ;;
-    -c | --cycle)
-        cycle
+    --monitor1)
+        cycle "monitor1"
+        ;;
+    --monitor2)
+        cycle "monitor2"
         ;;
     *)
         start
