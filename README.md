@@ -11,7 +11,7 @@ shell scripts for polybar
 
 | name                 | comment                                          | used helper       |
 | :------------------- | :----------------------------------------------- | :---------------- |
-| polybar.sh           | start, toggle and cycle polybar                  |                   |
+| polybar.sh           | start, restart, kill and cycle polybars          |                   |
 | polybar_inoreader.sh | shows number of rss/starred feeds from inoreader | output, net_check |
 | polybar_music.sh     | cmus statusbar and notification                  | output            |
 | polybar_pacman.sh    | shows number of package updates from pacman/aur  | output, net_check |
