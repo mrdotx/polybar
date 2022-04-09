@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-08T22:33:53+0200
+# date:   2022-04-09T08:22:11+0200
 
 config="$HOME/.config/X11/modules/polybar"
 xresource="$HOME/.config/X11/Xresources"
@@ -40,7 +40,7 @@ set_xresource() {
 }
 
 cycle() {
-    [ "$(systemctl --user is-active $service)" = "active" ] \
+    systemctl --user -q is-active "$service" \
         && case "$(get_xresource "Polybar.type.$1")" in
             main)
                 set_xresource "Polybar.type.$1" "main_small"
@@ -66,7 +66,7 @@ cycle() {
                 set_xresource "Polybar.type.$1" "main"
                 ;;
         esac \
-        && systemctl --user restart $service
+        && systemctl --user restart "$service"
 }
 
 start() {
