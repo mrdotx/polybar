@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-07T20:52:49+0200
+# date:   2022-04-09T08:44:51+0200
 
 cmus_data() {
     if info=$(cmus-remote -Q 2> /dev/null); then
@@ -156,11 +156,15 @@ case "$1" in
     --start)
         cmus \
             && sleep .5 \
-            && polybar-msg -p "$(pgrep -f "polybar primary")" \
-                action "#music.hook.0" >/dev/null 2>&1
+            && for id in $(pgrep -f "polybar main"); do
+                    polybar-msg -p "$id" \
+                        action "#music.hook.0" >/dev/null 2>&1 &
+                done
         ;;
     *)
-        polybar-msg -p "$(pgrep -f "polybar primary")" \
-            action "#music.hook.1" >/dev/null 2>&1 &
+        for id in $(pgrep -f "polybar main"); do
+            polybar-msg -p "$id" \
+                action "#music.hook.1" >/dev/null 2>&1 &
+        done
         ;;
 esac

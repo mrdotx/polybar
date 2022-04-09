@@ -3,12 +3,12 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-07T18:57:13+0200
+# date:   2022-04-09T08:39:25+0200
 
 service_status() {
     case "$3" in
         user)
-            if [ "$(systemctl --user is-active "$1")" = "active" ]; then
+            if systemctl --user -q is-active "$1"; then
                 if [ -z "$services" ]; then
                     services="$(printf "%s" "$2")"
                 else
@@ -17,7 +17,7 @@ service_status() {
             fi
             ;;
         *)
-            if [ "$(systemctl is-active "$1")" = "active" ]; then
+            if systemctl -q is-active "$1"; then
                 if [ -z "$services" ]; then
                     services="$(printf "%s" "$2")"
                 else
@@ -44,8 +44,10 @@ case "$1" in
         polybar_helper_output.sh "$services"
         ;;
     --update)
-        polybar-msg -p "$(pgrep -f "polybar primary")" \
-            action "#services.hook.0" >/dev/null 2>&1 &
+        for id in $(pgrep -f "polybar main"); do
+            polybar-msg -p "$id" \
+                action "#services.hook.0" >/dev/null 2>&1 &
+        done
         ;;
     *)
         i3_services.sh

@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-07T19:02:21+0200
+# date:   2022-04-09T08:48:20+0200
 
 icon_rss=""
 icon_star=""
@@ -39,8 +39,10 @@ extract_data() {
 
 case "$1" in
     --update)
-        polybar-msg -p "$(pgrep -f "polybar primary")" \
-            action "#inoreader.hook.0" >/dev/null 2>&1 &
+        for id in $(pgrep -f "polybar main"); do
+            polybar-msg -p "$id" \
+                action "#inoreader.hook.0" >/dev/null 2>&1 &
+        done
         ;;
     *)
         if polybar_helper_net_check.sh; then
