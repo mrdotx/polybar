@@ -3,11 +3,11 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_helper_net_check.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-07T18:55:47+0200
+# date:   2022-04-10T17:57:16+0200
 
-# check connection address (default 1.1.1.1)
+# check ip/address to connect to (default 1.1.1.1)
 net=${1:-1.1.1.1}
-# check connection x tenth of a second (default 50)
+# check connection for x tenth of a second (default 50)
 check=${2:-50}
 
 while ! ping -c1 -W1 -q "$net" >/dev/null 2>&1 \
