@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-09T08:48:20+0200
+# date:   2022-04-10T17:36:18+0200
 
 icon_rss=""
 icon_star=""
@@ -45,7 +45,7 @@ case "$1" in
         done
         ;;
     *)
-        if polybar_helper_net_check.sh; then
+        if polybar_helper_net_check.sh "inoreader.com"; then
             data=$(request)
             unreaded=$(extract_data "$data" 'reading-list",')
             starred=$(extract_data "$data" 'starred",')

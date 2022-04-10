@@ -3,10 +3,16 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_pacman.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-09T08:42:06+0200
+# date:   2022-04-10T17:39:04+0200
 
 icon_pacman=""
 icon_aur=""
+
+get_pacman_mirror() {
+    grep '^Server' /etc/pacman.d/mirrorlist \
+        | head -n1 \
+        | cut -d'/' -f3
+}
 
 case "$1" in
     --update)
@@ -16,7 +22,7 @@ case "$1" in
         done
         ;;
     *)
-        if polybar_helper_net_check.sh; then
+        if polybar_helper_net_check.sh "$(get_pacman_mirror)"; then
             updates_pacman=$(checkupdates 2> /dev/null | wc -l)
             updates_aur=$(paru -Qua 2> /dev/null | wc -l)
 
