@@ -3,11 +3,20 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-11T20:33:26+0200
+# date:   2022-04-11T21:21:01+0200
 
 request() {
-    city=
+    # needed/optional data from openweathermap in gpg file
+    # needed api key: api_key = a2d...
+    # optional city id (eg munich): city_id = 2867714
+    # without city id the location is determined by mozilla service
     gpg_file="$HOME/.local/share/repos/password-store/www/development/openweathermap.gpg"
+
+    get_gpg_data() {
+        gpg -q -d "$1" \
+            | grep "^$2 =" \
+            | awk -F ' = ' '{print $2}'
+    }
 
     get_location() {
         url_geo="https://location.services.mozilla.com/v1/geolocate?key=geoclue"
@@ -34,14 +43,10 @@ request() {
         fi
     }
 
-    get_apikey() {
-        gpg -q -d "$1" \
-            | grep "^api_key =" \
-            | awk -F ' = ' '{print $2}'
-    }
-
     url_api="https://api.openweathermap.org/data/2.5"
-    url_para="appid=$(get_apikey "$gpg_file")&mode=xml&units=metric"
+    url_para="appid=$(get_gpg_data "$gpg_file" "api_key")&mode=xml&units=metric"
+
+    city=$(get_gpg_data "$gpg_file" "city_id")
 
     curl -sf "$url_api/$1?$url_para&$(get_location "$city")"
 }
