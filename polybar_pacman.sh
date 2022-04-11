@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_pacman.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-10T17:39:04+0200
+# date:   2022-04-11T12:01:19+0200
 
 icon_pacman=""
 icon_aur=""
@@ -18,7 +18,7 @@ case "$1" in
     --update)
         for id in $(pgrep -f "polybar main"); do
             polybar-msg -p "$id" \
-                action "#pacman.hook.0" >/dev/null 2>&1 &
+                action "#packages.hook.0" >/dev/null 2>&1 &
         done
         ;;
     *)
