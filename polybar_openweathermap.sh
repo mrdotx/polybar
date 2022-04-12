@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-11T21:21:01+0200
+# date:   2022-04-12T08:47:39+0200
 
 request() {
     # needed/optional data from openweathermap in gpg file
@@ -96,20 +96,23 @@ get_data() {
             | sed '/^$/d'
     }
 
-    current=$(request "weather")
-    current_temp=$(printf "%.0f" "$(extract_data "temperature" "value" "$current")")
-    current_icon=$(extract_data "temperature" "icon" "$current")
-    current_sunrise=$(extract_data "sun" "rise" "$current")
-    current_sunset=$(extract_data "sun" "set" "$current")
+    # request data
+    # https://openweathermap.org/current
+    current_data=$(request "weather")
+    # https://openweathermap.org/forecast5
+    forecast_data=$(request "forecast")
 
-    current_output="$(get_icon "$current_icon") $current_temp°"
+    # current
+    current_temp=$(printf "%.0f" "$(extract_data "temperature" "value" "$current_data")")
+    current_icon=$(extract_data "temperature" "icon" "$current_data")
+    current="$(get_icon "$current_icon") $current_temp°"
 
-    forecast=$(request "forecast")
-    forecast_temp=$(printf "%.0f" "$(extract_data "temperature" "value" "$forecast")")
-    forecast_icon=$(extract_data "symbol" "var" "$forecast")
+    # forecast
+    forecast_temp=$(printf "%.0f" "$(extract_data "temperature" "value" "$forecast_data")")
+    forecast_icon=$(extract_data "symbol" "var" "$forecast_data")
+    forecast="$(get_icon "$forecast_icon") $forecast_temp°"
 
-    forecast_output="$(get_icon "$forecast_icon") $forecast_temp°"
-
+    # trend
     if [ "$forecast_temp" -gt "$current_temp" ]; then
         trend=""
     elif [ "$current_temp" -gt "$forecast_temp" ]; then
@@ -118,15 +121,24 @@ get_data() {
         trend=""
     fi
 
+    # precipitation
+    forecast_precipitation=$(extract_data "precipitation" "probability" "$forecast_data")
+    [ "$forecast_precipitation" -gt 0 ] \
+        && precipitation="  $forecast_precipitation% "
+
+    # daytime
+    current_sunrise=$(extract_data "sun" "rise" "$current_data")
+    current_sunset=$(extract_data "sun" "set" "$current_data")
+
     now=$(date +%s)
     sunrise=$(convert_date "$current_sunrise" "Epoch")
     sunset=$(convert_date "$current_sunset" "Epoch")
 
     if [ "$sunrise" -ge "$now" ] \
         || [ "$now" -gt "$sunset" ]; then
-        daytime=" $(convert_date "$sunrise")"
+        daytime="  $(convert_date "$sunrise")"
     elif [ "$sunset" -ge "$now" ]; then
-        daytime=" $(convert_date "$sunset")"
+        daytime="  $(convert_date "$sunset")"
     fi
 }
 
@@ -142,7 +154,7 @@ case "$1" in
             get_data
 
             polybar_helper_output.sh \
-                "$current_output $trend $forecast_output $daytime"
+                "$current $trend $forecast$precipitation$daytime"
         fi
         ;;
 esac
