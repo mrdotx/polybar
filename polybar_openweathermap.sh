@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-12T08:51:25+0200
+# date:   2022-04-12T10:31:47+0200
 
 request() {
     # needed/optional data from openweathermap in gpg file
@@ -55,19 +55,19 @@ get_data() {
     get_icon() {
         case  $1 in
             # https://openweathermap.org/weather-conditions
-            01d) icon="";;
-            01n) icon="";;
-            02d) icon="";;
-            02n) icon="";;
-            03*) icon="";;
-            04*) icon="";;
-            09d) icon="";;
-            09n) icon="";;
-            10*) icon="";;
-            11*) icon="";;
-            13*) icon="";;
-            50*) icon="";;
-            *)   icon="";;
+            01d) icon="";; # clear sky day
+            01n) icon="";; # clear sky night
+            02d) icon="";; # few cloud day
+            02n) icon="";; # few cloud night
+            03*) icon="";; # scattered clouds
+            04*) icon="";; # broken clouds
+            09d) icon="";; # shower rain day
+            09n) icon="";; # shower rain night
+            10*) icon="";; # rain
+            11*) icon="";; # thunderstorm
+            13*) icon="";; # snow
+            50*) icon="";; # mist
+            *)   icon="";; # unknown
         esac
 
         printf "%s" "$icon"
