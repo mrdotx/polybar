@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-12T10:31:47+0200
+# date:   2022-04-12T14:36:23+0200
 
 request() {
     # needed/optional data from openweathermap in gpg file
@@ -60,14 +60,14 @@ get_data() {
             02d) icon="";; # few cloud day
             02n) icon="";; # few cloud night
             03*) icon="";; # scattered clouds
-            04*) icon="";; # broken clouds
-            09d) icon="";; # shower rain day
-            09n) icon="";; # shower rain night
-            10*) icon="";; # rain
+            04*) icon="";; # broken clouds
+            09*) icon="";; # shower rain
+            10d) icon="";; # rain day
+            10n) icon="";; # rain night
             11*) icon="";; # thunderstorm
             13*) icon="";; # snow
             50*) icon="";; # mist
-            *)   icon="";; # unknown
+            *)   icon="";; # unknown
         esac
 
         printf "%s" "$icon"
@@ -124,9 +124,9 @@ get_data() {
     # precipitation
     forecast_precipitation=$(extract_data "precipitation" "probability" "$forecast_data")
     [ "$forecast_precipitation" -gt 0 ] \
-        && precipitation="  $forecast_precipitation%"
+        && precipitation="  $forecast_precipitation%"
 
-    # daytime
+    # sun
     current_sunrise=$(extract_data "sun" "rise" "$current_data")
     current_sunset=$(extract_data "sun" "set" "$current_data")
 
@@ -136,9 +136,9 @@ get_data() {
 
     if [ "$sunrise" -ge "$now" ] \
         || [ "$now" -gt "$sunset" ]; then
-        daytime="  $(convert_date "$sunrise")"
+        sun="  $(convert_date "$sunrise")"
     elif [ "$sunset" -ge "$now" ]; then
-        daytime="  $(convert_date "$sunset")"
+        sun="  $(convert_date "$sunset")"
     fi
 }
 
@@ -154,7 +154,7 @@ case "$1" in
             get_data
 
             polybar_helper_output.sh \
-                "$current $trend $forecast$precipitation$daytime"
+                "$current $trend $forecast$precipitation$sun"
         fi
         ;;
 esac
