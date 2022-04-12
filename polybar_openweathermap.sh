@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-12T08:47:39+0200
+# date:   2022-04-12T08:51:25+0200
 
 request() {
     # needed/optional data from openweathermap in gpg file
@@ -124,7 +124,7 @@ get_data() {
     # precipitation
     forecast_precipitation=$(extract_data "precipitation" "probability" "$forecast_data")
     [ "$forecast_precipitation" -gt 0 ] \
-        && precipitation="  $forecast_precipitation% "
+        && precipitation="  $forecast_precipitation%"
 
     # daytime
     current_sunrise=$(extract_data "sun" "rise" "$current_data")
