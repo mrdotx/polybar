@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-13T11:39:28+0200
+# date:   2022-04-13T13:04:39+0200
 
 request() {
     # needed/optional data from openweathermap in gpg file
@@ -112,13 +112,15 @@ get_data() {
     forecast_icon=$(extract_data "symbol" "var" "$forecast_data")
     forecast="$(get_icon "$forecast_icon") $forecast_temp°"
 
-    # trend
+    # weather
     if [ "$forecast_temp" -gt "$current_temp" ]; then
-        trend=""
+        weather="$current  $forecast"
     elif [ "$current_temp" -gt "$forecast_temp" ]; then
-        trend=""
+        weather="$current  $forecast"
+    elif [ "$current_icon" = "$forecast_icon" ]; then
+        weather="$current"
     else
-        trend=""
+        weather="$current  $forecast"
     fi
 
     # precipitation
@@ -154,7 +156,7 @@ case "$1" in
             get_data
 
             polybar_helper_output.sh \
-                "$current $trend $forecast$precipitation$sun"
+                "$weather$precipitation$sun"
         fi
         ;;
 esac
