@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_trash-cli.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-13T11:06:28+0200
+# date:   2022-04-13T11:17:55+0200
 
 icon_trash=""
 
@@ -15,7 +15,7 @@ case "$1" in
         done
         ;;
     *)
-        trash=$(trash-list 2> /dev/null | wc -l)
+        trash=$($EXEC_AS_USER trash-list 2> /dev/null | wc -l)
 
         [ "$trash" -gt 0 ] \
             && polybar_helper_output.sh \
