@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-13T07:54:42+0200
+# date:   2022-04-13T11:39:28+0200
 
 request() {
     # needed/optional data from openweathermap in gpg file
@@ -59,8 +59,8 @@ get_data() {
             01n) icon="";; # clear sky night
             02d) icon="";; # few cloud day
             02n) icon="";; # few cloud night
-            03*) icon="";; # scattered clouds
-            04*) icon="";; # broken clouds
+            03*) icon="";; # scattered clouds
+            04*) icon="";; # broken clouds
             09*) icon="";; # shower rain
             10d) icon="";; # rain day
             10n) icon="";; # rain night
