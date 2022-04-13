@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-12T14:36:23+0200
+# date:   2022-04-13T07:54:42+0200
 
 request() {
     # needed/optional data from openweathermap in gpg file
@@ -136,9 +136,9 @@ get_data() {
 
     if [ "$sunrise" -ge "$now" ] \
         || [ "$now" -gt "$sunset" ]; then
-        sun="  $(convert_date "$sunrise")"
+        sun="  $(convert_date "$sunrise")"
     elif [ "$sunset" -ge "$now" ]; then
-        sun="  $(convert_date "$sunset")"
+        sun="  $(convert_date "$sunset")"
     fi
 }
 
