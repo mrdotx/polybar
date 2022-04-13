@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-13T13:04:39+0200
+# date:   2022-04-13T19:04:01+0200
 
 request() {
     # needed/optional data from openweathermap in gpg file
@@ -43,17 +43,18 @@ request() {
         fi
     }
 
-    url_api="https://api.openweathermap.org/data/2.5"
-    url_para="appid=$(get_gpg_data "$gpg_file" "api_key")&mode=xml&units=metric"
+    url_api="https://api.openweathermap.org/data/2.5/$1"
+    url_appid="appid=$(get_gpg_data "$gpg_file" "api_key")"
+    url_para="mode=xml&units=metric"
 
     city=$(get_gpg_data "$gpg_file" "city_id")
 
-    curl -sf "$url_api/$1?$url_para&$(get_location "$city")"
+    curl -sf "$url_api?$url_appid&$url_para&$(get_location "$city")"
 }
 
 get_data() {
     get_icon() {
-        case  $1 in
+        case $1 in
             # https://openweathermap.org/weather-conditions
             01d) icon="";; # clear sky day
             01n) icon="";; # clear sky night
