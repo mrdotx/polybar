@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-13T19:04:01+0200
+# date:   2022-04-14T09:08:42+0200
 
 request() {
     # needed/optional data from openweathermap in gpg file
@@ -19,25 +19,25 @@ request() {
     }
 
     get_location() {
-        url_geo="https://location.services.mozilla.com/v1/geolocate?key=geoclue"
+        extract_json() {
+            tag="$1"
+            shift
+
+            printf "%s\n" "$*" \
+                | awk -F "\"$tag\": " '{print $2}' \
+                | cut -d"," -f1 \
+                | sed '/^$/d'
+        }
 
         if [ "$1" -gt 0 ]; then
             printf "%s" "id=$1"
         elif [ -n "$1" ]; then
             printf "%s" "q=$*"
         else
-            data=$(curl -sf "$url_geo")
+            data=$(curl -sf -H 'Accept: */json' "https://geoip.me")
 
-            location_lat=$( \
-                printf "%s\n" "$data" \
-                    | awk -F '"lat": ' '{print $2}' \
-                    | cut -d',' -f1 \
-            )
-            location_lng=$( \
-                printf "%s\n" "$data" \
-                    | awk -F '"lng": ' '{print $2}' \
-                    | cut -d'}' -f1
-            )
+            location_lat=$(extract_json "latitude" "$data")
+            location_lng=$(extract_json "longitude" "$data")
 
             printf "lat=%s&lon=%s" "$location_lat" "$location_lng"
         fi
@@ -85,12 +85,12 @@ get_data() {
         esac
     }
 
-    extract_data() {
+    extract_xml() {
         tag="$1"
         value="$2"
         shift 2
 
-        printf "%s\n" "$@" \
+        printf "%s\n" "$*" \
             | awk -F "<$tag" '{print $2}' \
             | awk -F "$value=" '{print $2}' \
             | cut -d'"' -f2 \
@@ -104,13 +104,13 @@ get_data() {
     forecast_data=$(request "forecast")
 
     # current
-    current_temp=$(printf "%.0f" "$(extract_data "temperature" "value" "$current_data")")
-    current_icon=$(extract_data "temperature" "icon" "$current_data")
+    current_temp=$(printf "%.0f" "$(extract_xml "temperature" "value" "$current_data")")
+    current_icon=$(extract_xml "temperature" "icon" "$current_data")
     current="$(get_icon "$current_icon") $current_temp°"
 
     # forecast
-    forecast_temp=$(printf "%.0f" "$(extract_data "temperature" "value" "$forecast_data")")
-    forecast_icon=$(extract_data "symbol" "var" "$forecast_data")
+    forecast_temp=$(printf "%.0f" "$(extract_xml "temperature" "value" "$forecast_data")")
+    forecast_icon=$(extract_xml "symbol" "var" "$forecast_data")
     forecast="$(get_icon "$forecast_icon") $forecast_temp°"
 
     # weather
@@ -125,13 +125,13 @@ get_data() {
     fi
 
     # precipitation
-    forecast_precipitation=$(extract_data "precipitation" "probability" "$forecast_data")
+    forecast_precipitation=$(extract_xml "precipitation" "probability" "$forecast_data")
     [ "$forecast_precipitation" -gt 0 ] \
         && precipitation="  $forecast_precipitation%"
 
     # sun
-    current_sunrise=$(extract_data "sun" "rise" "$current_data")
-    current_sunset=$(extract_data "sun" "set" "$current_data")
+    current_sunrise=$(extract_xml "sun" "rise" "$current_data")
+    current_sunset=$(extract_xml "sun" "set" "$current_data")
 
     now=$(date +%s)
     sunrise=$(convert_date "$current_sunrise" "Epoch")
