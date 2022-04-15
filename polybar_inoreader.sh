@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-11T12:00:37+0200
+# date:   2022-04-14T21:18:37+0200
 
 icon_rss=""
 icon_star=""
@@ -21,8 +21,8 @@ request() {
             | head -n1
     }
 
-    curl --silent -H "Authorization: GoogleLogin $( \
-        curl --silent -s "$url_login?Email=$user&Passwd=$(get_pass)" \
+    curl -fsS -H "Authorization: GoogleLogin $( \
+        curl -fsS "$url_login?Email=$user&Passwd=$(get_pass)" \
             | grep 'Auth=' \
             | sed 's/Auth/auth/' \
         )" \
