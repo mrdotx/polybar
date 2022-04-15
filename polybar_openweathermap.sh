@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-14T09:08:42+0200
+# date:   2022-04-14T21:19:07+0200
 
 request() {
     # needed/optional data from openweathermap in gpg file
@@ -34,7 +34,7 @@ request() {
         elif [ -n "$1" ]; then
             printf "%s" "q=$*"
         else
-            data=$(curl -sf -H 'Accept: */json' "https://geoip.me")
+            data=$(curl -fsS -H 'Accept: */json' "https://geoip.me")
 
             location_lat=$(extract_json "latitude" "$data")
             location_lng=$(extract_json "longitude" "$data")
@@ -153,11 +153,9 @@ case "$1" in
         done
         ;;
     *)
-        if polybar_helper_net_check.sh "openweathermap.org"; then
-            get_data
-
-            polybar_helper_output.sh \
+        polybar_helper_net_check.sh "openweathermap.org" \
+            && get_data \
+            && polybar_helper_output.sh \
                 "$weather$precipitation$sun"
-        fi
         ;;
 esac
