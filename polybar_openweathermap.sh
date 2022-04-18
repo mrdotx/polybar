@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-18T09:54:18+0200
+# date:   2022-04-18T16:50:10+0200
 
 request() {
     # needed/optional data from openweathermap in gpg file
@@ -104,12 +104,16 @@ get_data() {
     forecast_data=$(request "forecast")
 
     # current
-    current_temp=$(printf "%.0f" "$(extract_xml "temperature" "value" "$current_data")")
+    current_temp=$(printf "%.0f" \
+        "$(extract_xml "temperature" "value" "$current_data")" \
+    )
     current_icon=$(extract_xml "temperature" "icon" "$current_data")
     current="$(get_icon "$current_icon") $current_temp°"
 
     # forecast
-    forecast_temp=$(printf "%.0f" "$(extract_xml "temperature" "value" "$forecast_data")")
+    forecast_temp=$(printf "%.0f" \
+        "$(extract_xml "temperature" "value" "$forecast_data")" \
+    )
     forecast_icon=$(extract_xml "symbol" "var" "$forecast_data")
     forecast="$(get_icon "$forecast_icon") $forecast_temp°"
 
@@ -125,9 +129,11 @@ get_data() {
     fi
 
     # precipitation
-    forecast_precipitation=$(extract_xml "precipitation" "probability" "$forecast_data")
     forecast_precipitation=$(printf "%.0f" \
-        "$(printf "%s * 100\n" "$forecast_precipitation" | bc -l)" \
+        "$(printf "%s * 100\n" \
+            "$(extract_xml "precipitation" "probability" "$forecast_data")" \
+            | bc -l \
+        )" \
     )
     [ "$forecast_precipitation" -gt 0 ] \
         && precipitation="  $forecast_precipitation%"
