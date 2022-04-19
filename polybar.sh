@@ -3,9 +3,9 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-09T08:22:11+0200
+# date:   2022-04-19T19:47:15+0200
 
-config="$HOME/.config/X11/modules/polybar"
+config="$HOME/.config/X11/Xresources.d/polybar"
 xresource="$HOME/.config/X11/Xresources"
 service="polybar.service"
 
