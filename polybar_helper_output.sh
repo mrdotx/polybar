@@ -3,12 +3,12 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_helper_output.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-10T17:58:42+0200
+# date:   2022-04-20T07:56:20+0200
 
-# xresource value for line color (default Polybar.main0)
-line_color=${2:-Polybar.main0}
-# xresource value for foreground color (default Polybar.foreground0)
-foreground_color=${3:-Polybar.foreground0}
+# xresource value for line color (default Polybar.primary)
+line_color=${2:-Polybar.primary}
+# xresource value for foreground color (default Polybar.foreground)
+foreground_color=${3:-Polybar.foreground}
 
 xrdb_query() {
     xrdb -query \

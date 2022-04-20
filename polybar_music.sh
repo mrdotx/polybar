@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-09T08:44:51+0200
+# date:   2022-04-20T08:06:17+0200
 
 cmus_data() {
     if info=$(cmus-remote -Q 2> /dev/null); then
@@ -133,10 +133,10 @@ status() {
             polybar_helper_output.sh " $info"
             ;;
         "paused")
-            polybar_helper_output.sh " $info" "Polybar.foreground1"
+            polybar_helper_output.sh " $info" "Polybar.secondary"
             ;;
         "stopped")
-            polybar_helper_output.sh " $info" "color1"
+            polybar_helper_output.sh " $info" "Polybar.red"
             ;;
         *)
             polybar_helper_output.sh "$info"
