@@ -3,7 +3,11 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-09T08:39:25+0200
+# date:   2022-04-21T11:39:00+0200
+
+# speed up script by using posix
+LC_ALL=C
+LANG=C
 
 service_status() {
     case "$3" in

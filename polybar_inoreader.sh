@@ -3,7 +3,11 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-14T21:18:37+0200
+# date:   2022-04-21T11:38:39+0200
+
+# speed up script by using posix
+LC_ALL=C
+LANG=C
 
 icon_rss=""
 icon_star=""

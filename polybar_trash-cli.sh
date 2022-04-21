@@ -3,7 +3,11 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_trash-cli.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-13T11:17:55+0200
+# date:   2022-04-21T11:39:07+0200
+
+# speed up script by using posix
+LC_ALL=C
+LANG=C
 
 icon_trash=""
 

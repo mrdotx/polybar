@@ -3,7 +3,11 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-18T16:50:10+0200
+# date:   2022-04-21T11:38:51+0200
+
+# speed up script by using posix
+LC_ALL=C
+LANG=C
 
 request() {
     # needed/optional data from openweathermap in gpg file
