@@ -3,11 +3,15 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_trash-cli.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-21T11:39:07+0200
+# date:   2022-04-21T18:57:49+0200
 
 # speed up script by using posix
 LC_ALL=C
 LANG=C
+
+# auth can be something like sudo -A, doas -- or nothing,
+# depending on configuration requirements
+auth="${EXEC_AS_USER:-sudo}"
 
 icon_trash=""
 
@@ -19,7 +23,7 @@ case "$1" in
         done
         ;;
     *)
-        trash=$($EXEC_AS_USER trash-list 2> /dev/null | wc -l)
+        trash=$($auth trash-list 2> /dev/null | wc -l)
 
         [ "$trash" -gt 0 ] \
             && polybar_helper_output.sh \
