@@ -3,9 +3,9 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_pacman.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-21T19:52:33+0200
+# date:   2022-04-24T08:03:07+0200
 
-# use posix to identify paru ignored updates
+# use standard c to identify paru ignored updates
 LC_ALL=C
 LANG=C
 
