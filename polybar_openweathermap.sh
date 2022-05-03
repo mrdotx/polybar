@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-05-03T12:47:34+0200
+# date:   2022-05-03T21:17:12+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -75,12 +75,12 @@ get_data() {
             13d) icon="  ";;    # snow day
             13n) icon="  ";;    # snow night
             50*) icon="  ";;    # mist
-            x01) icon="  ";;    # precipitation
+            x01) icon="  ";;    # precipitation
             x02) icon=" ";;    # up
             x03) icon=" ";;    # down
             x04) icon=" ";;    # constant
-            x05) icon="  ";;    # sunrise
-            x06) icon="滋  ";;   # sunset
+            x05) icon="    ";;    # sunrise
+            x06) icon=" 滋  ";;   # sunset
             x07) icon="°";;     # degree
             *)   icon="  ";;    # not available
         esac
@@ -133,13 +133,13 @@ get_data() {
 
     # weather
     if [ "$forecast_temp" -gt "$current_temp" ]; then
-        weather="$current $(get_icon "x02")$forecast"
+        weather="$current$(get_icon "x02")$forecast"
     elif [ "$current_temp" -gt "$forecast_temp" ]; then
-        weather="$current $(get_icon "x03")$forecast"
+        weather="$current$(get_icon "x03")$forecast"
     elif [ "$current_icon" = "$forecast_icon" ]; then
         weather="$current"
     else
-        weather="$current $(get_icon "x04")$forecast"
+        weather="$current$(get_icon "x04")$forecast"
     fi
 
     # precipitation
@@ -150,7 +150,7 @@ get_data() {
         )" \
     )
     [ "$forecast_precipitation" -gt 0 ] \
-        && precipitation=" $(get_icon "x01")$forecast_precipitation%"
+        && precipitation="$(get_icon "x01")$forecast_precipitation%"
 
     # sun
     current_sunrise=$(extract_xml "sun" "rise" "$current_data")
@@ -162,9 +162,9 @@ get_data() {
 
     if [ "$sunrise" -ge "$now" ] \
         || [ "$now" -gt "$sunset" ]; then
-        sun=" $(get_icon "x05")$(convert_date "$sunrise")"
+        sun="$(get_icon "x05")$(convert_date "$sunrise")"
     elif [ "$sunset" -ge "$now" ]; then
-        sun=" $(get_icon "x06")$(convert_date "$sunset")"
+        sun="$(get_icon "x06")$(convert_date "$sunset")"
     fi
 }
 
