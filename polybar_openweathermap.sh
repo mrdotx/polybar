@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-24T08:02:49+0200
+# date:   2022-05-03T12:47:34+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -60,19 +60,29 @@ get_data() {
     get_icon() {
         case $1 in
             # https://openweathermap.org/weather-conditions
-            01d) icon="";; # clear sky day
-            01n) icon="";; # clear sky night
-            02d) icon="";; # few cloud day
-            02n) icon="";; # few cloud night
-            03*) icon="";; # scattered clouds
-            04*) icon="";; # broken clouds
-            09*) icon="";; # shower rain
-            10d) icon="";; # rain day
-            10n) icon="";; # rain night
-            11*) icon="";; # thunderstorm
-            13*) icon="";; # snow
-            50*) icon="";; # mist
-            *)   icon="";; # unknown
+            01d) icon="  ";;    # clear sky day
+            01n) icon="  ";;    # clear sky night
+            02d) icon="  ";;    # few cloud day
+            02n) icon="  ";;    # few cloud night
+            03*) icon="  ";;    # scattered clouds
+            04*) icon="  ";;    # broken clouds
+            09d) icon="  ";;    # shower rain day
+            09n) icon="  ";;    # shower rain night
+            10d) icon="  ";;    # rain day
+            10n) icon="  ";;    # rain night
+            11d) icon="  ";;    # thunderstorm day
+            11n) icon="  ";;    # thunderstorm night
+            13d) icon="  ";;    # snow day
+            13n) icon="  ";;    # snow night
+            50*) icon="  ";;    # mist
+            x01) icon="  ";;    # precipitation
+            x02) icon=" ";;    # up
+            x03) icon=" ";;    # down
+            x04) icon=" ";;    # constant
+            x05) icon="  ";;    # sunrise
+            x06) icon="滋  ";;   # sunset
+            x07) icon="°";;     # degree
+            *)   icon="  ";;    # not available
         esac
 
         printf "%s" "$icon"
@@ -112,24 +122,24 @@ get_data() {
         "$(extract_xml "temperature" "value" "$current_data")" \
     )
     current_icon=$(extract_xml "temperature" "icon" "$current_data")
-    current="$(get_icon "$current_icon") $current_temp°"
+    current="$(get_icon "$current_icon") $current_temp$(get_icon "x07")"
 
     # forecast
     forecast_temp=$(printf "%.0f" \
         "$(extract_xml "temperature" "value" "$forecast_data")" \
     )
     forecast_icon=$(extract_xml "symbol" "var" "$forecast_data")
-    forecast="$(get_icon "$forecast_icon") $forecast_temp°"
+    forecast="$(get_icon "$forecast_icon") $forecast_temp$(get_icon "x07")"
 
     # weather
     if [ "$forecast_temp" -gt "$current_temp" ]; then
-        weather="$current  $forecast"
+        weather="$current $(get_icon "x02")$forecast"
     elif [ "$current_temp" -gt "$forecast_temp" ]; then
-        weather="$current  $forecast"
+        weather="$current $(get_icon "x03")$forecast"
     elif [ "$current_icon" = "$forecast_icon" ]; then
         weather="$current"
     else
-        weather="$current  $forecast"
+        weather="$current $(get_icon "x04")$forecast"
     fi
 
     # precipitation
@@ -140,7 +150,7 @@ get_data() {
         )" \
     )
     [ "$forecast_precipitation" -gt 0 ] \
-        && precipitation="  $forecast_precipitation%"
+        && precipitation=" $(get_icon "x01")$forecast_precipitation%"
 
     # sun
     current_sunrise=$(extract_xml "sun" "rise" "$current_data")
@@ -152,9 +162,9 @@ get_data() {
 
     if [ "$sunrise" -ge "$now" ] \
         || [ "$now" -gt "$sunset" ]; then
-        sun="  $(convert_date "$sunrise")"
+        sun=" $(get_icon "x05")$(convert_date "$sunrise")"
     elif [ "$sunset" -ge "$now" ]; then
-        sun="  $(convert_date "$sunset")"
+        sun=" $(get_icon "x06")$(convert_date "$sunset")"
     fi
 }
 

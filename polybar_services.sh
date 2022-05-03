@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-24T08:03:18+0200
+# date:   2022-05-03T13:10:55+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -34,16 +34,16 @@ service_status() {
 
 case "$1" in
     --status)
-        service_status "xautolock.service" "" "user"
-        service_status "i3_autotiling.service" "" "user"
-        service_status "picom.service" "" "user"
-        service_status "xbanish.service" "" "user"
-        service_status "bluetooth.service" ""
-        service_status "cups.service" ""
-        service_status "systemd-resolved.service" ""
-        service_status "sshd.service" ""
-        service_status "systemd-timesyncd.service" ""
-        service_status "vpnc@hades.service" ""
+        service_status "xautolock.service" "ﱱ " "user"
+        service_status "i3_autotiling.service" "﬿ " "user"
+        service_status "picom.service" " " "user"
+        service_status "xbanish.service" " " "user"
+        service_status "bluetooth.service" " "
+        service_status "cups.service" "朗 "
+        service_status "systemd-resolved.service" " "
+        service_status "sshd.service" " "
+        service_status "systemd-timesyncd.service" " "
+        service_status "vpnc@hades.service" "旅 "
 
         polybar_helper_output.sh "$services"
         ;;
