@@ -3,11 +3,42 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-05-03T21:17:12+0200
+# date:   2022-05-04T12:13:40+0200
 
 # speed up script by using standard c
 LC_ALL=C
 LANG=C
+
+get_icon() {
+    case $1 in
+        # https://openweathermap.org/weather-conditions
+        01d) icon="%{T2}%{T-}  ";;     # clear sky day
+        01n) icon="%{T2}%{T-}  ";;     # clear sky night
+        02d) icon="%{T2}%{T-}  ";;     # few cloud day
+        02n) icon="%{T2}%{T-}  ";;     # few cloud night
+        03*) icon="%{T2}%{T-}  ";;     # scattered clouds
+        04*) icon="%{T2}%{T-}  ";;     # broken clouds
+        09d) icon="%{T2}%{T-}  ";;     # shower rain day
+        09n) icon="%{T2}%{T-}  ";;     # shower rain night
+        10d) icon="%{T2}%{T-}  ";;     # rain day
+        10n) icon="%{T2}%{T-}  ";;     # rain night
+        11d) icon="%{T2}%{T-}  ";;     # thunderstorm day
+        11n) icon="%{T2}%{T-}  ";;     # thunderstorm night
+        13d) icon="%{T2}%{T-}  ";;     # snow day
+        13n) icon="%{T2}%{T-}  ";;     # snow night
+        50*) icon="%{T2}%{T-}  ";;     # mist
+        x01) icon="%{T2}瀞%{T-}  ";;    # sunrise
+        x02) icon="%{T2}漢%{T-}  ";;    # sunset
+        x03) icon="%{T2}%{T-} ";;      # precipitation
+        x04) icon="%{T2}%{T-} ";;      # up
+        x05) icon="%{T2}%{T-} ";;      # down
+        x06) icon="%{T2}%{T-} ";;      # constant
+        x07) icon="°";;                 # degree
+        *)   icon="%{T2}%{T-}  ";;     # not available
+    esac
+
+    printf "%s" "$icon"
+}
 
 request() {
     # needed/optional data from openweathermap in gpg file
@@ -57,37 +88,6 @@ request() {
 }
 
 get_data() {
-    get_icon() {
-        case $1 in
-            # https://openweathermap.org/weather-conditions
-            01d) icon="  ";;    # clear sky day
-            01n) icon="  ";;    # clear sky night
-            02d) icon="  ";;    # few cloud day
-            02n) icon="  ";;    # few cloud night
-            03*) icon="  ";;    # scattered clouds
-            04*) icon="  ";;    # broken clouds
-            09d) icon="  ";;    # shower rain day
-            09n) icon="  ";;    # shower rain night
-            10d) icon="  ";;    # rain day
-            10n) icon="  ";;    # rain night
-            11d) icon="  ";;    # thunderstorm day
-            11n) icon="  ";;    # thunderstorm night
-            13d) icon="  ";;    # snow day
-            13n) icon="  ";;    # snow night
-            50*) icon="  ";;    # mist
-            x01) icon="  ";;    # precipitation
-            x02) icon=" ";;    # up
-            x03) icon=" ";;    # down
-            x04) icon=" ";;    # constant
-            x05) icon="    ";;    # sunrise
-            x06) icon=" 滋  ";;   # sunset
-            x07) icon="°";;     # degree
-            *)   icon="  ";;    # not available
-        esac
-
-        printf "%s" "$icon"
-    }
-
     convert_date() {
         case $2 in
             Epoch)
@@ -133,13 +133,13 @@ get_data() {
 
     # weather
     if [ "$forecast_temp" -gt "$current_temp" ]; then
-        weather="$current$(get_icon "x02")$forecast"
+        weather="$current$(get_icon "x04")$forecast"
     elif [ "$current_temp" -gt "$forecast_temp" ]; then
-        weather="$current$(get_icon "x03")$forecast"
+        weather="$current$(get_icon "x05")$forecast"
     elif [ "$current_icon" = "$forecast_icon" ]; then
         weather="$current"
     else
-        weather="$current$(get_icon "x04")$forecast"
+        weather="$current$(get_icon "x06")$forecast"
     fi
 
     # precipitation
@@ -150,7 +150,7 @@ get_data() {
         )" \
     )
     [ "$forecast_precipitation" -gt 0 ] \
-        && precipitation="$(get_icon "x01")$forecast_precipitation%"
+        && precipitation=" $(get_icon "x03")$forecast_precipitation%"
 
     # sun
     current_sunrise=$(extract_xml "sun" "rise" "$current_data")
@@ -162,9 +162,9 @@ get_data() {
 
     if [ "$sunrise" -ge "$now" ] \
         || [ "$now" -gt "$sunset" ]; then
-        sun="$(get_icon "x05")$(convert_date "$sunrise")"
+        sun=" $(get_icon "x01")$(convert_date "$sunrise")"
     elif [ "$sunset" -ge "$now" ]; then
-        sun="$(get_icon "x06")$(convert_date "$sunset")"
+        sun=" $(get_icon "x02")$(convert_date "$sunset")"
     fi
 }
 

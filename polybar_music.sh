@@ -3,11 +3,11 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-05-03T11:17:18+0200
+# date:   2022-05-04T10:13:10+0200
 
-play_icon="契"
-pause_icon=""
-stop_icon="栗"
+icon_play="%{T2}契%{T-} "
+icon_pause="%{T2}%{T-} "
+icon_stop="%{T2}栗%{T-} "
 
 cmus_data() {
     if info=$(cmus-remote -Q 2> /dev/null); then
@@ -102,13 +102,13 @@ notify() {
 
     case $status in
         "playing")
-            notification "$play_icon $runtime" "$info"
+            notification " $runtime" "$info"
             ;;
         "paused")
-            notification "$pause_icon $runtime" "$info"
+            notification " $runtime" "$info"
             ;;
         "stopped")
-            notification "$stop_icon $runtime" "$info"
+            notification " $runtime" "$info"
             ;;
         *)
             notification "$runtime" "$info"
@@ -134,13 +134,13 @@ status() {
 
     case $status in
         "playing")
-            polybar_helper_output.sh "$play_icon $info"
+            polybar_helper_output.sh "$icon_play$info"
             ;;
         "paused")
-            polybar_helper_output.sh "$pause_icon $info" "Polybar.secondary"
+            polybar_helper_output.sh "$icon_pause$info" "Polybar.secondary"
             ;;
         "stopped")
-            polybar_helper_output.sh "$stop_icon $info" "Polybar.red"
+            polybar_helper_output.sh "$icon_stop$info" "Polybar.red"
             ;;
         *)
             polybar_helper_output.sh "$info"
