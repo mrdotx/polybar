@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-05-04T12:13:40+0200
+# date:   2022-05-08T12:41:41+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -27,13 +27,12 @@ get_icon() {
         13d) icon="%{T2}%{T-}  ";;     # snow day
         13n) icon="%{T2}%{T-}  ";;     # snow night
         50*) icon="%{T2}%{T-}  ";;     # mist
-        x01) icon="%{T2}瀞%{T-}  ";;    # sunrise
-        x02) icon="%{T2}漢%{T-}  ";;    # sunset
-        x03) icon="%{T2}%{T-} ";;      # precipitation
-        x04) icon="%{T2}%{T-} ";;      # up
-        x05) icon="%{T2}%{T-} ";;      # down
-        x06) icon="%{T2}%{T-} ";;      # constant
-        x07) icon="°";;                 # degree
+        x01) icon="%{T2}勤%{T-}  ";;    # trending up
+        x02) icon="%{T2}免%{T-}  ";;    # trending down
+        x03) icon="%{T2}勉%{T-}  ";;    # trending neutral
+        x04) icon="%{T2}琢%{T-}  ";;    # precipitation
+        x05) icon="%{T2}瀞%{T-}  ";;    # sunrise
+        x06) icon="%{T2}漢%{T-}  ";;    # sunset
         *)   icon="%{T2}%{T-}  ";;     # not available
     esac
 
@@ -122,24 +121,24 @@ get_data() {
         "$(extract_xml "temperature" "value" "$current_data")" \
     )
     current_icon=$(extract_xml "temperature" "icon" "$current_data")
-    current="$(get_icon "$current_icon") $current_temp$(get_icon "x07")"
+    current="$(get_icon "$current_icon") $current_temp°"
 
     # forecast
     forecast_temp=$(printf "%.0f" \
         "$(extract_xml "temperature" "value" "$forecast_data")" \
     )
     forecast_icon=$(extract_xml "symbol" "var" "$forecast_data")
-    forecast="$(get_icon "$forecast_icon") $forecast_temp$(get_icon "x07")"
+    forecast="$(get_icon "$forecast_icon") $forecast_temp°"
 
     # weather
     if [ "$forecast_temp" -gt "$current_temp" ]; then
-        weather="$current$(get_icon "x04")$forecast"
+        weather="$current $(get_icon "x01")$forecast"
     elif [ "$current_temp" -gt "$forecast_temp" ]; then
-        weather="$current$(get_icon "x05")$forecast"
+        weather="$current $(get_icon "x02")$forecast"
     elif [ "$current_icon" = "$forecast_icon" ]; then
         weather="$current"
     else
-        weather="$current$(get_icon "x06")$forecast"
+        weather="$current $(get_icon "x03")$forecast"
     fi
 
     # precipitation
@@ -150,7 +149,7 @@ get_data() {
         )" \
     )
     [ "$forecast_precipitation" -gt 0 ] \
-        && precipitation=" $(get_icon "x03")$forecast_precipitation%"
+        && precipitation=" $(get_icon "x04")$forecast_precipitation%"
 
     # sun
     current_sunrise=$(extract_xml "sun" "rise" "$current_data")
@@ -162,9 +161,9 @@ get_data() {
 
     if [ "$sunrise" -ge "$now" ] \
         || [ "$now" -gt "$sunset" ]; then
-        sun=" $(get_icon "x01")$(convert_date "$sunrise")"
+        sun=" $(get_icon "x05")$(convert_date "$sunrise")"
     elif [ "$sunset" -ge "$now" ]; then
-        sun=" $(get_icon "x02")$(convert_date "$sunset")"
+        sun=" $(get_icon "x06")$(convert_date "$sunset")"
     fi
 }
 
