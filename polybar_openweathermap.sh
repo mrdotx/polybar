@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-05-08T12:41:41+0200
+# date:   2022-05-08T18:09:59+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -13,7 +13,7 @@ get_icon() {
     case $1 in
         # https://openweathermap.org/weather-conditions
         01d) icon="%{T2}%{T-}  ";;     # clear sky day
-        01n) icon="%{T2}%{T-}  ";;     # clear sky night
+        01n) icon="%{T2}%{T-} ";;      # clear sky night
         02d) icon="%{T2}%{T-}  ";;     # few cloud day
         02n) icon="%{T2}%{T-}  ";;     # few cloud night
         03*) icon="%{T2}%{T-}  ";;     # scattered clouds
@@ -26,14 +26,14 @@ get_icon() {
         11n) icon="%{T2}%{T-}  ";;     # thunderstorm night
         13d) icon="%{T2}%{T-}  ";;     # snow day
         13n) icon="%{T2}%{T-}  ";;     # snow night
-        50*) icon="%{T2}%{T-}  ";;     # mist
+        50*) icon="%{T2}%{T-} ";;      # mist
         x01) icon="%{T2}勤%{T-}  ";;    # trending up
         x02) icon="%{T2}免%{T-}  ";;    # trending down
         x03) icon="%{T2}勉%{T-}  ";;    # trending neutral
         x04) icon="%{T2}琢%{T-}  ";;    # precipitation
         x05) icon="%{T2}瀞%{T-}  ";;    # sunrise
         x06) icon="%{T2}漢%{T-}  ";;    # sunset
-        *)   icon="%{T2}%{T-}  ";;     # not available
+        *)   icon="%{T2}%{T-} ";;      # not available
     esac
 
     printf "%s" "$icon"
@@ -86,30 +86,30 @@ request() {
     curl -sf "$url_api?$url_appid&$url_para&$(get_location "$city")"
 }
 
+extract_xml() {
+    tag="$1"
+    value="$2"
+    shift 2
+
+    printf "%s\n" "$*" \
+        | awk -F "<$tag" '{print $2}' \
+        | awk -F "$value=" '{print $2}' \
+        | cut -d'"' -f2 \
+        | sed '/^$/d'
+}
+
+convert_date() {
+    case $2 in
+        Epoch)
+            TZ=UTC date -d "$1" +%s
+            ;;
+        *)
+            date -d "@$1" +%H:%M
+            ;;
+    esac
+}
+
 get_data() {
-    convert_date() {
-        case $2 in
-            Epoch)
-                TZ=UTC date -d "$1" +%s
-                ;;
-            *)
-                date -d "@$1" +%H:%M
-                ;;
-        esac
-    }
-
-    extract_xml() {
-        tag="$1"
-        value="$2"
-        shift 2
-
-        printf "%s\n" "$*" \
-            | awk -F "<$tag" '{print $2}' \
-            | awk -F "$value=" '{print $2}' \
-            | cut -d'"' -f2 \
-            | sed '/^$/d'
-    }
-
     # request data
     # https://openweathermap.org/current
     current_data=$(request "weather")
@@ -128,7 +128,13 @@ get_data() {
         "$(extract_xml "temperature" "value" "$forecast_data")" \
     )
     forecast_icon=$(extract_xml "symbol" "var" "$forecast_data")
-    forecast="$(get_icon "$forecast_icon") $forecast_temp°"
+    if [ "$current_icon" = "$forecast_icon" ]; then
+        forecast="$forecast_temp°"
+    elif [ "$forecast_temp" -eq "$current_temp" ]; then
+        forecast="$(get_icon "$forecast_icon") "
+    else
+        forecast="$(get_icon "$forecast_icon") $forecast_temp°"
+    fi
 
     # weather
     if [ "$forecast_temp" -gt "$current_temp" ]; then
