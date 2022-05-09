@@ -3,16 +3,16 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-05-09T12:08:28+0200
+# date:   2022-05-09T17:31:13+0200
 
 # speed up script by using standard c
 LC_ALL=C
 LANG=C
 
-# needed/optional data for openweathermap in gpg file
-# needed api key: api_key = a2d...
-# optional city id (eg munich): city_id = 2867714
-# without city id the location is determined by mozilla service
+# data for openweathermap in gpg file
+# api key (needed):     api_key = a2d833bfaa8912dc090fd547e109cf13
+# city id (optional):   city_id = 2867714
+# without city id the location is determined by geoip.me
 gpg_file="$HOME/.local/share/repos/password-store/www/development/openweathermap.gpg"
 
 # https://openweathermap.org/weather-conditions
@@ -26,16 +26,16 @@ icon_11d=""    icon_11n=""
 icon_13d=""    icon_13n=""
 icon_50x=""
 
-icon_t01="勤"   icon_t02="免"   icon_t03="勉"
-icon_p01="琢"
-icon_s01="瀞"   icon_s02="漢"
-icon_xxx=""
+icon_71x="勤"   icon_72x="免"   icon_73x="勉"
+icon_81x="琢"
+icon_91x="瀞"   icon_92x="漢"
+icon_99x=""
 
 notification() {
     title="Weather Icons"
+    table_header="────┬────┬──────────────────┬────"
     message=$(printf "%s\n" \
-        "OpenWeather" \
-        "────┬────┬──────────────────┬────" \
+        "OpenWeather\n$table_header" \
         " $icon_01d  │ $icon_01n  │ clear sky        | 01" \
         " $icon_02d  │ $icon_02n  │ few clouds       | 02" \
         " $icon_03x  │ $icon_03x  │ scattered clouds | 03" \
@@ -45,15 +45,14 @@ notification() {
         " $icon_11d  │ $icon_11n  │ thunderstorm     | 11" \
         " $icon_13d  │ $icon_13n  │ snow             | 13" \
         " $icon_50x  │ $icon_50x  │ mist             | 50" \
-        "\nOther" \
-        "────┬────┬──────────────────┬────" \
-        " $icon_t01  │ $icon_t01  │ trend up         | 01" \
-        " $icon_t02  │ $icon_t02  │ trend down       | 02" \
-        " $icon_t03  │ $icon_t03  │ trend neutral    | 03" \
-        " $icon_p01  │ $icon_p01  │ precipitation    | 04" \
-        " $icon_s01  │ $icon_s01  │ sunrise          | 05" \
-        " $icon_s02  │ $icon_s02  │ sunset           | 06" \
-        " $icon_xxx  │ $icon_xxx  │ not available    |   " \
+        "\nOther\n$table_header" \
+        " $icon_71x  │ $icon_71x  │ trend up         | 71" \
+        " $icon_72x  │ $icon_72x  │ trend down       | 72" \
+        " $icon_73x  │ $icon_73x  │ trend neutral    | 73" \
+        " $icon_81x  │ $icon_81x  │ precipitation    | 81" \
+        " $icon_91x  │ $icon_91x  │ sunrise          | 91" \
+        " $icon_92x  │ $icon_92x  │ sunset           | 92" \
+        " $icon_99x  │ $icon_99x  │ not available    |   " \
     )
 
     notify-send \
@@ -82,13 +81,13 @@ format_icon() {
         13d) icon="%{T2}$icon_13d%{T-}  ";;
         13n) icon="%{T2}$icon_13n%{T-}  ";;
         50*) icon="%{T2}$icon_50x%{T-} ";;
-        p01) icon="%{T2}$icon_p01%{T-}  ";;
-        s01) icon="%{T2}$icon_s01%{T-}  ";;
-        s02) icon="%{T2}$icon_s02%{T-}  ";;
-        t01) icon="%{T2}$icon_t01%{T-}  ";;
-        t02) icon="%{T2}$icon_t02%{T-}  ";;
-        t03) icon="%{T2}$icon_t03%{T-}  ";;
-        *)   icon="%{T2}$icon_xxx%{T-} ";;
+        71x) icon="%{T2}$icon_71x%{T-}  ";;
+        72x) icon="%{T2}$icon_72x%{T-}  ";;
+        73x) icon="%{T2}$icon_73x%{T-}  ";;
+        81x) icon="%{T2}$icon_81x%{T-}  ";;
+        91x) icon="%{T2}$icon_91x%{T-}  ";;
+        92x) icon="%{T2}$icon_92x%{T-}  ";;
+        *)   icon="%{T2}$icon_99x%{T-} ";;
     esac
 
     printf "%s" "$icon"
@@ -187,13 +186,13 @@ get_data() {
 
     # weather
     if [ "$forecast_temp" -gt "$current_temp" ]; then
-        weather="$current $(format_icon "t01")$forecast"
+        weather="$current $(format_icon "71x")$forecast"
     elif [ "$current_temp" -gt "$forecast_temp" ]; then
-        weather="$current $(format_icon "t02")$forecast"
+        weather="$current $(format_icon "72x")$forecast"
     elif [ "$current_icon" = "$forecast_icon" ]; then
         weather="$current"
     else
-        weather="$current $(format_icon "t03")$forecast"
+        weather="$current $(format_icon "73x")$forecast"
     fi
 
     # precipitation
@@ -204,7 +203,7 @@ get_data() {
         )" \
     )
     [ "$forecast_precipitation" -gt 0 ] \
-        && precipitation=" $(format_icon "p01")$forecast_precipitation%"
+        && precipitation=" $(format_icon "81x")$forecast_precipitation%"
 
     # sun
     current_sunrise=$(extract_xml "sun" "rise" "$current_data")
@@ -216,9 +215,9 @@ get_data() {
 
     if [ "$sunrise" -ge "$now" ] \
         || [ "$now" -gt "$sunset" ]; then
-        sun=" $(format_icon "s01")$(convert_date "$sunrise")"
+        sun=" $(format_icon "91x")$(convert_date "$sunrise")"
     elif [ "$sunset" -ge "$now" ]; then
-        sun=" $(format_icon "s02")$(convert_date "$sunset")"
+        sun=" $(format_icon "92x")$(convert_date "$sunset")"
     fi
 }
 
