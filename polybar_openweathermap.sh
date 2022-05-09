@@ -3,87 +3,105 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-05-08T18:09:59+0200
+# date:   2022-05-09T12:08:28+0200
 
 # speed up script by using standard c
 LC_ALL=C
 LANG=C
 
-get_icon() {
+# needed/optional data for openweathermap in gpg file
+# needed api key: api_key = a2d...
+# optional city id (eg munich): city_id = 2867714
+# without city id the location is determined by mozilla service
+gpg_file="$HOME/.local/share/repos/password-store/www/development/openweathermap.gpg"
+
+# https://openweathermap.org/weather-conditions
+icon_01d=""    icon_01n=""
+icon_02d=""    icon_02n=""
+icon_03x=""
+icon_04x=""
+icon_09d=""    icon_09n=""
+icon_10d=""    icon_10n=""
+icon_11d=""    icon_11n=""
+icon_13d=""    icon_13n=""
+icon_50x=""
+
+icon_t01="勤"   icon_t02="免"   icon_t03="勉"
+icon_p01="琢"
+icon_s01="瀞"   icon_s02="漢"
+icon_xxx=""
+
+notification() {
+    title="Weather Icons"
+    message=$(printf "%s\n" \
+        "OpenWeather" \
+        "────┬────┬──────────────────┬────" \
+        " $icon_01d  │ $icon_01n  │ clear sky        | 01" \
+        " $icon_02d  │ $icon_02n  │ few clouds       | 02" \
+        " $icon_03x  │ $icon_03x  │ scattered clouds | 03" \
+        " $icon_04x  │ $icon_04x  │ broken clouds    | 04" \
+        " $icon_09d  │ $icon_09n  │ shower rain      | 09" \
+        " $icon_10d  │ $icon_10n  │ rain             | 10" \
+        " $icon_11d  │ $icon_11n  │ thunderstorm     | 11" \
+        " $icon_13d  │ $icon_13n  │ snow             | 13" \
+        " $icon_50x  │ $icon_50x  │ mist             | 50" \
+        "\nOther" \
+        "────┬────┬──────────────────┬────" \
+        " $icon_t01  │ $icon_t01  │ trend up         | 01" \
+        " $icon_t02  │ $icon_t02  │ trend down       | 02" \
+        " $icon_t03  │ $icon_t03  │ trend neutral    | 03" \
+        " $icon_p01  │ $icon_p01  │ precipitation    | 04" \
+        " $icon_s01  │ $icon_s01  │ sunrise          | 05" \
+        " $icon_s02  │ $icon_s02  │ sunset           | 06" \
+        " $icon_xxx  │ $icon_xxx  │ not available    |   " \
+    )
+
+    notify-send \
+        -u low  \
+        -t 0 \
+        -i "dialog-information" \
+        "$title" \
+        "\n$message" \
+        -h string:x-canonical-private-synchronous:"$title"
+}
+
+format_icon() {
     case $1 in
-        # https://openweathermap.org/weather-conditions
-        01d) icon="%{T2}%{T-}  ";;     # clear sky day
-        01n) icon="%{T2}%{T-} ";;      # clear sky night
-        02d) icon="%{T2}%{T-}  ";;     # few cloud day
-        02n) icon="%{T2}%{T-}  ";;     # few cloud night
-        03*) icon="%{T2}%{T-}  ";;     # scattered clouds
-        04*) icon="%{T2}%{T-}  ";;     # broken clouds
-        09d) icon="%{T2}%{T-}  ";;     # shower rain day
-        09n) icon="%{T2}%{T-}  ";;     # shower rain night
-        10d) icon="%{T2}%{T-}  ";;     # rain day
-        10n) icon="%{T2}%{T-}  ";;     # rain night
-        11d) icon="%{T2}%{T-}  ";;     # thunderstorm day
-        11n) icon="%{T2}%{T-}  ";;     # thunderstorm night
-        13d) icon="%{T2}%{T-}  ";;     # snow day
-        13n) icon="%{T2}%{T-}  ";;     # snow night
-        50*) icon="%{T2}%{T-} ";;      # mist
-        x01) icon="%{T2}勤%{T-}  ";;    # trending up
-        x02) icon="%{T2}免%{T-}  ";;    # trending down
-        x03) icon="%{T2}勉%{T-}  ";;    # trending neutral
-        x04) icon="%{T2}琢%{T-}  ";;    # precipitation
-        x05) icon="%{T2}瀞%{T-}  ";;    # sunrise
-        x06) icon="%{T2}漢%{T-}  ";;    # sunset
-        *)   icon="%{T2}%{T-} ";;      # not available
+        01d) icon="%{T2}$icon_01d%{T-}  ";;
+        01n) icon="%{T2}$icon_01n%{T-} ";;
+        02d) icon="%{T2}$icon_02d%{T-}  ";;
+        02n) icon="%{T2}$icon_02n%{T-}  ";;
+        03*) icon="%{T2}$icon_03x%{T-}  ";;
+        04*) icon="%{T2}$icon_04x%{T-}  ";;
+        09d) icon="%{T2}$icon_09d%{T-}  ";;
+        09n) icon="%{T2}$icon_09n%{T-}  ";;
+        10d) icon="%{T2}$icon_10d%{T-}  ";;
+        10n) icon="%{T2}$icon_10n%{T-}  ";;
+        11d) icon="%{T2}$icon_11d%{T-}  ";;
+        11n) icon="%{T2}$icon_11n%{T-}  ";;
+        13d) icon="%{T2}$icon_13d%{T-}  ";;
+        13n) icon="%{T2}$icon_13n%{T-}  ";;
+        50*) icon="%{T2}$icon_50x%{T-} ";;
+        p01) icon="%{T2}$icon_p01%{T-}  ";;
+        s01) icon="%{T2}$icon_s01%{T-}  ";;
+        s02) icon="%{T2}$icon_s02%{T-}  ";;
+        t01) icon="%{T2}$icon_t01%{T-}  ";;
+        t02) icon="%{T2}$icon_t02%{T-}  ";;
+        t03) icon="%{T2}$icon_t03%{T-}  ";;
+        *)   icon="%{T2}$icon_xxx%{T-} ";;
     esac
 
     printf "%s" "$icon"
 }
 
-request() {
-    # needed/optional data from openweathermap in gpg file
-    # needed api key: api_key = a2d...
-    # optional city id (eg munich): city_id = 2867714
-    # without city id the location is determined by mozilla service
-    gpg_file="$HOME/.local/share/repos/password-store/www/development/openweathermap.gpg"
+extract_json() {
+    tag="$1"
+    shift
 
-    get_gpg_data() {
-        gpg -q -d "$1" \
-            | grep "^$2 =" \
-            | awk -F ' = ' '{print $2}'
-    }
-
-    get_location() {
-        extract_json() {
-            tag="$1"
-            shift
-
-            printf "%s\n" "$*" \
-                | awk -F "\"$tag\": " '{print $2}' \
-                | cut -d"," -f1 \
-                | sed '/^$/d'
-        }
-
-        if [ "$1" -gt 0 ]; then
-            printf "%s" "id=$1"
-        elif [ -n "$1" ]; then
-            printf "%s" "q=$*"
-        else
-            data=$(curl -fsS -H 'Accept: */json' "https://geoip.me")
-
-            location_lat=$(extract_json "latitude" "$data")
-            location_lng=$(extract_json "longitude" "$data")
-
-            printf "lat=%s&lon=%s" "$location_lat" "$location_lng"
-        fi
-    }
-
-    url_api="https://api.openweathermap.org/data/2.5/$1"
-    url_appid="appid=$(get_gpg_data "$gpg_file" "api_key")"
-    url_para="mode=xml&units=metric"
-
-    city=$(get_gpg_data "$gpg_file" "city_id")
-
-    curl -sf "$url_api?$url_appid&$url_para&$(get_location "$city")"
+    printf "%s\n" "$*" \
+        | awk -F "\"$tag\": " '{print $2}' \
+        | cut -d"," -f1 \
+        | sed '/^$/d'
 }
 
 extract_xml() {
@@ -109,6 +127,37 @@ convert_date() {
     esac
 }
 
+get_gpg_data() {
+    gpg -q -d "$1" \
+        | grep "^$2 =" \
+        | awk -F ' = ' '{print $2}'
+}
+
+get_location() {
+    if [ "$1" -gt 0 ]; then
+        printf "%s" "id=$1"
+    elif [ -n "$1" ]; then
+        printf "%s" "q=$*"
+    else
+        data=$(curl -fsS -H 'Accept: */json' "https://geoip.me")
+
+        location_lat=$(extract_json "latitude" "$data")
+        location_lng=$(extract_json "longitude" "$data")
+
+        printf "lat=%s&lon=%s" "$location_lat" "$location_lng"
+    fi
+}
+
+request() {
+    url_api="https://api.openweathermap.org/data/2.5/$1"
+    url_appid="appid=$(get_gpg_data "$gpg_file" "api_key")"
+    url_para="mode=xml&units=metric"
+
+    city=$(get_gpg_data "$gpg_file" "city_id")
+
+    curl -sf "$url_api?$url_appid&$url_para&$(get_location "$city")"
+}
+
 get_data() {
     # request data
     # https://openweathermap.org/current
@@ -121,7 +170,7 @@ get_data() {
         "$(extract_xml "temperature" "value" "$current_data")" \
     )
     current_icon=$(extract_xml "temperature" "icon" "$current_data")
-    current="$(get_icon "$current_icon") $current_temp°"
+    current="$(format_icon "$current_icon") $current_temp°"
 
     # forecast
     forecast_temp=$(printf "%.0f" \
@@ -131,20 +180,20 @@ get_data() {
     if [ "$current_icon" = "$forecast_icon" ]; then
         forecast="$forecast_temp°"
     elif [ "$forecast_temp" -eq "$current_temp" ]; then
-        forecast="$(get_icon "$forecast_icon") "
+        forecast="$(format_icon "$forecast_icon") "
     else
-        forecast="$(get_icon "$forecast_icon") $forecast_temp°"
+        forecast="$(format_icon "$forecast_icon") $forecast_temp°"
     fi
 
     # weather
     if [ "$forecast_temp" -gt "$current_temp" ]; then
-        weather="$current $(get_icon "x01")$forecast"
+        weather="$current $(format_icon "t01")$forecast"
     elif [ "$current_temp" -gt "$forecast_temp" ]; then
-        weather="$current $(get_icon "x02")$forecast"
+        weather="$current $(format_icon "t02")$forecast"
     elif [ "$current_icon" = "$forecast_icon" ]; then
         weather="$current"
     else
-        weather="$current $(get_icon "x03")$forecast"
+        weather="$current $(format_icon "t03")$forecast"
     fi
 
     # precipitation
@@ -155,7 +204,7 @@ get_data() {
         )" \
     )
     [ "$forecast_precipitation" -gt 0 ] \
-        && precipitation=" $(get_icon "x04")$forecast_precipitation%"
+        && precipitation=" $(format_icon "p01")$forecast_precipitation%"
 
     # sun
     current_sunrise=$(extract_xml "sun" "rise" "$current_data")
@@ -167,13 +216,16 @@ get_data() {
 
     if [ "$sunrise" -ge "$now" ] \
         || [ "$now" -gt "$sunset" ]; then
-        sun=" $(get_icon "x05")$(convert_date "$sunrise")"
+        sun=" $(format_icon "s01")$(convert_date "$sunrise")"
     elif [ "$sunset" -ge "$now" ]; then
-        sun=" $(get_icon "x06")$(convert_date "$sunset")"
+        sun=" $(format_icon "s02")$(convert_date "$sunset")"
     fi
 }
 
 case "$1" in
+    --notify)
+        notification
+        ;;
     --update)
         for id in $(pgrep -f "polybar main"); do
             polybar-msg -p "$id" \
