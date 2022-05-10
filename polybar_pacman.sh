@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_pacman.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-05-04T10:09:53+0200
+# date:   2022-05-10T09:23:15+0200
 
 # use standard c to identify paru ignored updates
 LC_ALL=C
@@ -26,23 +26,24 @@ case "$1" in
         done
         ;;
     *)
-        if polybar_helper_net_check.sh "$(get_pacman_mirror)"; then
-            updates_pacman=$(checkupdates 2> /dev/null | wc -l)
-            updates_aur=$(paru -Qua | grep -c -v "\[ignored\]" 2> /dev/null)
+        ! polybar_helper_net_check.sh "$(get_pacman_mirror)" \
+            && exit 1
 
-            if [ "$updates_pacman" -gt 0 ] \
-                && [ "$updates_aur" -gt 0 ]; then \
-                    polybar_helper_output.sh \
-                        "$icon_pacman $updates_pacman $icon_aur $updates_aur"
-            else
-                [ "$updates_pacman" -gt 0 ] \
-                    && polybar_helper_output.sh \
-                        "$icon_pacman $updates_pacman"
+        updates_pacman=$(checkupdates 2> /dev/null | wc -l)
+        updates_aur=$(paru -Qua | grep -c -v "\[ignored\]" 2> /dev/null)
 
-                [ "$updates_aur" -gt 0 ] \
-                    && polybar_helper_output.sh \
-                        "$icon_aur $updates_aur"
-            fi
+        if [ "$updates_pacman" -gt 0 ] \
+            && [ "$updates_aur" -gt 0 ]; then \
+                polybar_helper_output.sh \
+                    "$icon_pacman $updates_pacman $icon_aur $updates_aur"
+        else
+            [ "$updates_pacman" -gt 0 ] \
+                && polybar_helper_output.sh \
+                    "$icon_pacman $updates_pacman"
+
+            [ "$updates_aur" -gt 0 ] \
+                && polybar_helper_output.sh \
+                    "$icon_aur $updates_aur"
         fi
         ;;
 esac
