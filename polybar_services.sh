@@ -3,29 +3,28 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-05-10T10:13:37+0200
+# date:   2022-05-10T20:51:33+0200
 
 # speed up script by using standard c
 LC_ALL=C
 LANG=C
 
-icon_spacer="  "
-icon_autolock="%{T2}ﱱ%{T-}"
-icon_autotiling="%{T2}﬿%{T-}"
-icon_compositor="%{T2}%{T-}"
+icon_autolock="%{T2}ﱱ%{T-}  "
+icon_autotiling="%{T2}﬿%{T-} "
+icon_compositor="%{T2}זּ%{T-} "
 icon_mousepointer="%{T2}%{T-}"
-icon_resolver="%{T2}%{T-}"
-icon_timesync="%{T2}%{T-}"
-icon_ssh="%{T2}%{T-}"
-icon_vpn="%{T2}旅%{T-}"
-icon_printer="%{T2}朗%{T-}"
+icon_resolver="%{T2}%{T-} "
+icon_timesync="%{T2}祥%{T-} "
+icon_ssh="%{T2}撚%{T-} "
+icon_vpn="%{T2}旅%{T-} "
+icon_printer="%{T2}朗%{T-} "
 icon_bluetooth="%{T2}%{T-}"
 
 set_output() {
     if [ -z "$services" ]; then
         services="$(printf "%s" "$1")"
     else
-        services="$(printf "%s%s%s" "$services" "$icon_spacer" "$1")"
+        services="$(printf "%s %s" "$services" "$1")"
     fi
 }
 
