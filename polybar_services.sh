@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-05-04T10:32:31+0200
+# date:   2022-05-10T10:13:37+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -21,25 +21,23 @@ icon_vpn="%{T2}旅%{T-}"
 icon_printer="%{T2}朗%{T-}"
 icon_bluetooth="%{T2}%{T-}"
 
+set_output() {
+    if [ -z "$services" ]; then
+        services="$(printf "%s" "$1")"
+    else
+        services="$(printf "%s%s%s" "$services" "$icon_spacer" "$1")"
+    fi
+}
+
 service_status() {
     case "$3" in
         user)
-            if systemctl --user -q is-active "$1"; then
-                if [ -z "$services" ]; then
-                    services="$(printf "%s" "$2")"
-                else
-                    services="$(printf "%s%s%s" "$services" "$icon_spacer" "$2")"
-                fi
-            fi
+            systemctl --user -q is-active "$1" \
+                && set_output "$2"
             ;;
         *)
-            if systemctl -q is-active "$1"; then
-                if [ -z "$services" ]; then
-                    services="$(printf "%s" "$2")"
-                else
-                    services="$(printf "%s%s%s" "$services" "$icon_spacer" "$2")"
-                fi
-            fi
+            systemctl -q is-active "$1" \
+                && set_output "$2"
             ;;
     esac
 }
