@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-05-09T17:31:13+0200
+# date:   2022-05-10T10:18:54+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -216,7 +216,7 @@ get_data() {
     if [ "$sunrise" -ge "$now" ] \
         || [ "$now" -gt "$sunset" ]; then
         sun=" $(format_icon "91x")$(convert_date "$sunrise")"
-    elif [ "$sunset" -ge "$now" ]; then
+    else
         sun=" $(format_icon "92x")$(convert_date "$sunset")"
     fi
 }
@@ -232,9 +232,10 @@ case "$1" in
         done
         ;;
     *)
-        polybar_helper_net_check.sh "openweathermap.org" \
-            && get_data \
-            && polybar_helper_output.sh \
-                "$weather$precipitation$sun"
+        ! polybar_helper_net_check.sh "openweathermap.org" \
+            && exit 1
+
+        get_data
+        polybar_helper_output.sh "$weather$precipitation$sun"
         ;;
 esac
