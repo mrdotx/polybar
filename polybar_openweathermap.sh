@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-05-11T10:52:36+0200
+# date:   2022-05-13T14:11:10+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -35,7 +35,7 @@ notification() {
     title="Weather Icons"
     table_header="────┬────┬──────────────────┬────"
     message=$(printf "%s\n" \
-        "OpenWeather\n$table_header" \
+        "<i>OpenWeather</i>\n$table_header" \
         " $icon_01d  │ $icon_01n  │ clear sky        │ 01" \
         " $icon_02d  │ $icon_02n  │ few clouds       │ 02" \
         " $icon_03x  │ $icon_03x  │ scattered clouds │ 03" \
@@ -45,7 +45,7 @@ notification() {
         " $icon_11d  │ $icon_11n  │ thunderstorm     │ 11" \
         " $icon_13d  │ $icon_13n  │ snow             │ 13" \
         " $icon_50x  │ $icon_50x  │ mist             │ 50" \
-        "\nOther\n$table_header" \
+        "\n<i>Other</i>\n$table_header" \
         " $icon_71x  │ $icon_71x  │ trend up         │ 71" \
         " $icon_72x  │ $icon_72x  │ trend down       │ 72" \
         " $icon_73x  │ $icon_73x  │ trend neutral    │ 73" \
