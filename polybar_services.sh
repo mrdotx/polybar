@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-05-20T12:48:06+0200
+# date:   2022-05-20T14:56:31+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -15,7 +15,7 @@ icon_compositor="%{T2}頋%{T-} "
 icon_mousepointer="%{T2}%{T-}"
 icon_resolver="%{T2}%{T-} "
 icon_timesync="%{T2}祥%{T-} "
-icon_ssh="%{T2}%{T-} "
+icon_ssh="%{T2}撚%{T-} "
 icon_vpn="%{T2}旅%{T-} "
 icon_printer="%{T2}朗%{T-} "
 icon_bluetooth="%{T2}%{T-}"
