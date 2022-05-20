@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-05-20T08:54:15+0200
+# date:   2022-05-20T12:48:06+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -11,7 +11,7 @@ LANG=C
 
 icon_autolock="%{T2}ﱱ%{T-}  "
 icon_autotiling="%{T2}侀%{T-} "
-icon_compositor="%{T2}זּ%{T-} "
+icon_compositor="%{T2}頋%{T-} "
 icon_mousepointer="%{T2}%{T-}"
 icon_resolver="%{T2}%{T-} "
 icon_timesync="%{T2}祥%{T-} "
