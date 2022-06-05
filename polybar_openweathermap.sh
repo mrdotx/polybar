@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-05-13T14:11:10+0200
+# date:   2022-06-05T18:06:41+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -56,9 +56,8 @@ notification() {
     )
 
     notify-send \
-        -u low  \
         -t 0 \
-        -i "dialog-information" \
+        -u low  \
         "$title" \
         "\n$message" \
         -h string:x-canonical-private-synchronous:"$title"
