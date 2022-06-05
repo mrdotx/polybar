@@ -31,3 +31,4 @@ config files:
 ![monitor2](screenshot_monitor2.png)
 ![cmus polybar](screenshot_cmus_polybar.png)
 ![cmus notify](screenshot_cmus_notify.png)
+![openweathermap](screenshot_openweathermap.png)
