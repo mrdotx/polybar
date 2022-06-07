@@ -3,11 +3,14 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-05-04T10:13:10+0200
+# date:   2022-06-07T07:36:31+0200
 
 icon_play="%{T2}契%{T-} "
 icon_pause="%{T2}%{T-} "
 icon_stop="%{T2}栗%{T-} "
+icon_notification_play=" "
+icon_notification_pause=" "
+icon_notification_stop=" "
 
 cmus_data() {
     if info=$(cmus-remote -Q 2> /dev/null); then
@@ -102,13 +105,13 @@ notify() {
 
     case $status in
         "playing")
-            notification " $runtime" "$info"
+            notification "$icon_notification_play$runtime" "$info"
             ;;
         "paused")
-            notification " $runtime" "$info"
+            notification "$icon_notification_pause$runtime" "$info"
             ;;
         "stopped")
-            notification " $runtime" "$info"
+            notification "$icon_notification_stop$runtime" "$info"
             ;;
         *)
             notification "$runtime" "$info"
@@ -123,14 +126,12 @@ status() {
         info="$stream | $genre | $title"
     fi
 
-    if [ -z "$artist" ] \
-        && [ -z "$title" ]; then
-            info=$(printf "%s\n" "${file##*/}" \
-                | cut -c 1-98)
-    else
-        info=$(printf "%s\n" "$info" \
-            | cut -c 1-98)
-    fi
+    [ -z "$artist" ] \
+        && [ -z "$title" ] \
+        && info=$(printf "%s\n" "${file##*/}")
+
+    info=$(printf "%s\n" "$info" \
+        | cut -c 1-98)
 
     case $status in
         "playing")
