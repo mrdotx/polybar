@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-06-09T08:19:04+0200
+# date:   2022-06-09T12:37:53+0200
 
 icon_play="%{T2}契%{T-} "
 icon_pause="%{T2}%{T-} "
@@ -11,6 +11,14 @@ icon_stop="%{T2}栗%{T-} "
 icon_notification_play=" "
 icon_notification_pause=" "
 icon_notification_stop=" "
+
+trim_string() {
+    if [ "$(printf "%s" "$2" | wc -m)" -ge "$1" ]; then
+        printf "%s…" "$(printf "%s" "$2" | cut -c 1-"$(($1-1))")"
+    else
+        printf "%s" "$2"
+    fi
+}
 
 cmus_data() {
     if info=$(cmus-remote -Q 2> /dev/null); then
@@ -134,8 +142,7 @@ status() {
         && [ -z "$title" ] \
         && info=$(printf "%s\n" "${file##*/}")
 
-    info=$(printf "%s\n" "$info" \
-        | cut -c 1-98)
+    info=$(trim_string 73 "$info")
 
     case $status in
         "playing")
