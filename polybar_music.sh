@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-06-07T07:36:31+0200
+# date:   2022-06-09T08:19:04+0200
 
 icon_play="%{T2}契%{T-} "
 icon_pause="%{T2}%{T-} "
@@ -121,9 +121,13 @@ notify() {
 
 status() {
     if [ -z "$stream" ]; then
-        info="$artist - $title | $album"
+        info="$artist - $title"
     else
-        info="$stream | $genre | $title"
+        info="$stream"
+        [ -n "$genre" ] \
+            && info="$info | $genre"
+        [ -n "$title" ] \
+            && info="$info | $title"
     fi
 
     [ -z "$artist" ] \
