@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_trash-cli.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-05-04T12:20:23+0200
+# date:   2022-06-12T19:15:32+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -13,7 +13,7 @@ LANG=C
 # depending on configuration requirements
 auth="${EXEC_AS_USER:-sudo}"
 
-icon_trash="%{T2}%{T-} "
+icon_trash="%{T2} %{T-}"
 
 case "$1" in
     --update)

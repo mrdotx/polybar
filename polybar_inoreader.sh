@@ -3,14 +3,14 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-05-10T09:31:05+0200
+# date:   2022-06-12T19:39:30+0200
 
 # speed up script by using standard c
 LC_ALL=C
 LANG=C
 
-icon_rss="%{T2}索%{T-} "
-icon_star="%{T2}留%{T-} "
+icon_rss="%{T2}索 %{T-}"
+icon_star="%{T2}留 %{T-}"
 
 request() {
     url_login="https://www.inoreader.com/accounts/ClientLogin"

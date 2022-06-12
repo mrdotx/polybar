@@ -3,11 +3,11 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-06-09T12:37:53+0200
+# date:   2022-06-12T19:16:35+0200
 
-icon_play="%{T2}契%{T-} "
-icon_pause="%{T2}%{T-} "
-icon_stop="%{T2}栗%{T-} "
+icon_play="%{T2}契 %{T-}"
+icon_pause="%{T2} %{T-}"
+icon_stop="%{T2}栗 %{T-}"
 icon_notification_play=" "
 icon_notification_pause=" "
 icon_notification_stop=" "

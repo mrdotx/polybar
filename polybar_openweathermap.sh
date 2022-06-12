@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-06-05T18:06:41+0200
+# date:   2022-06-12T19:39:14+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -65,28 +65,28 @@ notification() {
 
 format_icon() {
     case $1 in
-        01d) icon="%{T2}$icon_01d%{T-}  ";;
-        01n) icon="%{T2}$icon_01n%{T-} ";;
-        02d) icon="%{T2}$icon_02d%{T-}  ";;
-        02n) icon="%{T2}$icon_02n%{T-}  ";;
-        03*) icon="%{T2}$icon_03x%{T-}  ";;
-        04*) icon="%{T2}$icon_04x%{T-}  ";;
-        09d) icon="%{T2}$icon_09d%{T-}  ";;
-        09n) icon="%{T2}$icon_09n%{T-}  ";;
-        10d) icon="%{T2}$icon_10d%{T-}  ";;
-        10n) icon="%{T2}$icon_10n%{T-}  ";;
-        11d) icon="%{T2}$icon_11d%{T-}  ";;
-        11n) icon="%{T2}$icon_11n%{T-}  ";;
-        13d) icon="%{T2}$icon_13d%{T-}  ";;
-        13n) icon="%{T2}$icon_13n%{T-}  ";;
-        50*) icon="%{T2}$icon_50x%{T-} ";;
-        71x) icon="%{T2}$icon_71x%{T-}  ";;
-        72x) icon="%{T2}$icon_72x%{T-}  ";;
-        73x) icon="%{T2}$icon_73x%{T-}  ";;
-        81x) icon="%{T2}$icon_81x%{T-}  ";;
-        91x) icon="%{T2}$icon_91x%{T-}  ";;
-        92x) icon="%{T2}$icon_92x%{T-}  ";;
-        *)   icon="%{T2}$icon_99x%{T-} ";;
+        01d) icon="%{T2}$icon_01d %{T-}";;
+        01n) icon="%{T2}$icon_01n %{T-}";;
+        02d) icon="%{T2}$icon_02d %{T-}";;
+        02n) icon="%{T2}$icon_02n %{T-}";;
+        03*) icon="%{T2}$icon_03x %{T-}";;
+        04*) icon="%{T2}$icon_04x %{T-}";;
+        09d) icon="%{T2}$icon_09d %{T-}";;
+        09n) icon="%{T2}$icon_09n %{T-}";;
+        10d) icon="%{T2}$icon_10d %{T-}";;
+        10n) icon="%{T2}$icon_10n %{T-}";;
+        11d) icon="%{T2}$icon_11d %{T-}";;
+        11n) icon="%{T2}$icon_11n %{T-}";;
+        13d) icon="%{T2}$icon_13d %{T-}";;
+        13n) icon="%{T2}$icon_13n %{T-}";;
+        50*) icon="%{T2}$icon_50x %{T-}";;
+        71x) icon="%{T2}$icon_71x %{T-}";;
+        72x) icon="%{T2}$icon_72x %{T-}";;
+        73x) icon="%{T2}$icon_73x %{T-}";;
+        81x) icon="%{T2}$icon_81x %{T-}";;
+        91x) icon="%{T2}$icon_91x %{T-}";;
+        92x) icon="%{T2}$icon_92x %{T-}";;
+        *)   icon="%{T2}$icon_99x %{T-}";;
     esac
 
     printf "%s" "$icon"
