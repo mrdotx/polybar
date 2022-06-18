@@ -3,28 +3,29 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-06-12T22:57:37+0200
+# date:   2022-06-18T14:22:41+0200
 
 # speed up script by using standard c
 LC_ALL=C
 LANG=C
 
-icon_autolock="%{T2}ﱱ %{T-} "
-icon_autotiling="%{T2}侀 %{T-}"
-icon_compositor="%{T2}頋 %{T-}"
-icon_mousepointer="%{T2}%{T-} "
-icon_resolver="%{T2} %{T-}"
-icon_timesync="%{T2}祥 %{T-}"
-icon_ssh="%{T2}撚 %{T-}"
-icon_vpn="%{T2}旅 %{T-}"
-icon_printer="%{T2}朗 %{T-}"
-icon_bluetooth="%{T2}%{T-} "
+icon_autolock=""
+icon_autotiling="侀"
+icon_compositor="頋"
+icon_wacom=""
+icon_mousepointer=""
+icon_resolver=""
+icon_timesync="祥"
+icon_ssh="撚"
+icon_vpn="旅"
+icon_printer="朗"
+icon_bluetooth=""
 
 set_output() {
     if [ -z "$services" ]; then
         services="$(printf "%s" "$1")"
     else
-        services="$(printf "%s%s" "$services" "$1")"
+        services="$(printf "%s %s" "$services" "$1")"
     fi
 }
 
@@ -46,6 +47,7 @@ case "$1" in
         service_status "xautolock.service" "$icon_autolock" "user"
         service_status "i3_autotiling.service" "$icon_autotiling" "user"
         service_status "picom.service" "$icon_compositor" "user"
+        service_status "wacom.service" "$icon_wacom" "user"
         service_status "xbanish.service" "$icon_mousepointer" "user"
         service_status "systemd-resolved.service" "$icon_resolver"
         service_status "systemd-timesyncd.service" "$icon_timesync"
@@ -54,7 +56,7 @@ case "$1" in
         service_status "cups.service" "$icon_printer"
         service_status "bluetooth.service" "$icon_bluetooth"
 
-        polybar_helper_output.sh "$services"
+        polybar_helper_output.sh "%{T2}$services%{T-} "
         ;;
     --update)
         for id in $(pgrep -f "polybar main"); do
