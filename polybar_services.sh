@@ -3,23 +3,11 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-06-18T14:22:41+0200
+# date:   2022-06-19T19:29:01+0200
 
 # speed up script by using standard c
 LC_ALL=C
 LANG=C
-
-icon_autolock=""
-icon_autotiling="侀"
-icon_compositor="頋"
-icon_wacom=""
-icon_mousepointer=""
-icon_resolver=""
-icon_timesync="祥"
-icon_ssh="撚"
-icon_vpn="旅"
-icon_printer="朗"
-icon_bluetooth=""
 
 set_output() {
     if [ -z "$services" ]; then
@@ -44,17 +32,17 @@ service_status() {
 
 case "$1" in
     --status)
-        service_status "xautolock.service" "$icon_autolock" "user"
-        service_status "i3_autotiling.service" "$icon_autotiling" "user"
-        service_status "picom.service" "$icon_compositor" "user"
-        service_status "wacom.service" "$icon_wacom" "user"
-        service_status "xbanish.service" "$icon_mousepointer" "user"
-        service_status "systemd-resolved.service" "$icon_resolver"
-        service_status "systemd-timesyncd.service" "$icon_timesync"
-        service_status "sshd.service" "$icon_ssh"
-        service_status "vpnc@hades.service" "$icon_vpn"
-        service_status "cups.service" "$icon_printer"
-        service_status "bluetooth.service" "$icon_bluetooth"
+        service_status "xautolock.service" "" "user"
+        service_status "i3_autotiling.service" "侀" "user"
+        service_status "picom.service" "頋" "user"
+        service_status "wacom.service" "" "user"
+        service_status "xbanish.service" "" "user"
+        service_status "systemd-resolved.service" ""
+        service_status "systemd-timesyncd.service" "ﮮ"
+        service_status "sshd.service" "撚"
+        service_status "vpnc@hades.service" "旅"
+        service_status "cups.service" "朗"
+        service_status "bluetooth.service" ""
 
         polybar_helper_output.sh "%{T2}$services%{T-} "
         ;;
