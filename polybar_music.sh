@@ -3,14 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-06-12T19:16:35+0200
-
-icon_play="%{T2}契 %{T-}"
-icon_pause="%{T2} %{T-}"
-icon_stop="%{T2}栗 %{T-}"
-icon_notification_play=" "
-icon_notification_pause=" "
-icon_notification_stop=" "
+# date:   2022-06-19T19:37:37+0200
 
 trim_string() {
     if [ "$(printf "%s" "$2" | wc -m)" -ge "$1" ]; then
@@ -113,13 +106,13 @@ notify() {
 
     case $status in
         "playing")
-            notification "$icon_notification_play$runtime" "$info"
+            notification " $runtime" "$info"
             ;;
         "paused")
-            notification "$icon_notification_pause$runtime" "$info"
+            notification " $runtime" "$info"
             ;;
         "stopped")
-            notification "$icon_notification_stop$runtime" "$info"
+            notification " $runtime" "$info"
             ;;
         *)
             notification "$runtime" "$info"
@@ -146,13 +139,13 @@ status() {
 
     case $status in
         "playing")
-            polybar_helper_output.sh "$icon_play$info"
+            polybar_helper_output.sh "%{T2}契 %{T-}$info"
             ;;
         "paused")
-            polybar_helper_output.sh "$icon_pause$info" "Polybar.secondary"
+            polybar_helper_output.sh "%{T2} %{T-}$info" "Polybar.secondary"
             ;;
         "stopped")
-            polybar_helper_output.sh "$icon_stop$info" "Polybar.red"
+            polybar_helper_output.sh "%{T2}栗 %{T-}$info" "Polybar.red"
             ;;
         *)
             polybar_helper_output.sh "$info"
