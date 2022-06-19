@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-06-12T19:39:14+0200
+# date:   2022-06-19T19:33:23+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -65,31 +65,31 @@ notification() {
 
 format_icon() {
     case $1 in
-        01d) icon="%{T2}$icon_01d %{T-}";;
-        01n) icon="%{T2}$icon_01n %{T-}";;
-        02d) icon="%{T2}$icon_02d %{T-}";;
-        02n) icon="%{T2}$icon_02n %{T-}";;
-        03*) icon="%{T2}$icon_03x %{T-}";;
-        04*) icon="%{T2}$icon_04x %{T-}";;
-        09d) icon="%{T2}$icon_09d %{T-}";;
-        09n) icon="%{T2}$icon_09n %{T-}";;
-        10d) icon="%{T2}$icon_10d %{T-}";;
-        10n) icon="%{T2}$icon_10n %{T-}";;
-        11d) icon="%{T2}$icon_11d %{T-}";;
-        11n) icon="%{T2}$icon_11n %{T-}";;
-        13d) icon="%{T2}$icon_13d %{T-}";;
-        13n) icon="%{T2}$icon_13n %{T-}";;
-        50*) icon="%{T2}$icon_50x %{T-}";;
-        71x) icon="%{T2}$icon_71x %{T-}";;
-        72x) icon="%{T2}$icon_72x %{T-}";;
-        73x) icon="%{T2}$icon_73x %{T-}";;
-        81x) icon="%{T2}$icon_81x %{T-}";;
-        91x) icon="%{T2}$icon_91x %{T-}";;
-        92x) icon="%{T2}$icon_92x %{T-}";;
-        *)   icon="%{T2}$icon_99x %{T-}";;
+        01d) icon="$icon_01d";;
+        01n) icon="$icon_01n";;
+        02d) icon="$icon_02d";;
+        02n) icon="$icon_02n";;
+        03*) icon="$icon_03x";;
+        04*) icon="$icon_04x";;
+        09d) icon="$icon_09d";;
+        09n) icon="$icon_09n";;
+        10d) icon="$icon_10d";;
+        10n) icon="$icon_10n";;
+        11d) icon="$icon_11d";;
+        11n) icon="$icon_11n";;
+        13d) icon="$icon_13d";;
+        13n) icon="$icon_13n";;
+        50*) icon="$icon_50x";;
+        71x) icon="$icon_71x";;
+        72x) icon="$icon_72x";;
+        73x) icon="$icon_73x";;
+        81x) icon="$icon_81x";;
+        91x) icon="$icon_91x";;
+        92x) icon="$icon_92x";;
+        *)   icon="$icon_99x";;
     esac
 
-    printf "%s" "$icon"
+    printf "%%{T2}%s %%{T-}" "$icon"
 }
 
 extract_json() {
