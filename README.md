@@ -2,10 +2,10 @@
 
 general helper scripts for polybar
 
-| name                        | comment                                            |
-| :-------------------------- | :------------------------------------------------- |
-| polybar_helper_net_check.sh | check a defined time for an internet connection    |
-| polybar_helper_output.sh    | format line/foreground color output from xresource |
+| name                 | comment                                            |
+| :------------------- | :------------------------------------------------- |
+| polybar_net_check.sh | check a defined time for an internet connection    |
+| polybar_output.sh    | format line/foreground color output from xresource |
 
 shell scripts for polybar
 

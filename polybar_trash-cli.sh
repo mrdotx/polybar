@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_trash-cli.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-06-19T19:39:14+0200
+# date:   2022-06-20T17:49:02+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -23,8 +23,11 @@ case "$1" in
     *)
         trash=$($auth trash-list 2> /dev/null | wc -l)
 
+        basename=${0##*/}
+        path=${0%"$basename"}
+
         [ "$trash" -gt 0 ] \
-            && polybar_helper_output.sh \
+            && "$path"helper/polybar_output.sh \
                 "%{T2} %{T-}$trash"
         ;;
 esac

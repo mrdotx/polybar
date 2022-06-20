@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# path:   /home/klassiker/.local/share/repos/polybar/polybar_helper_output.sh
+# path:   /home/klassiker/.local/share/repos/polybar/helper/polybar_output.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-20T07:56:20+0200
+# date:   2022-06-20T17:47:53+0200
 
 # xresource value for line color (default Polybar.primary)
 line_color=${2:-Polybar.primary}

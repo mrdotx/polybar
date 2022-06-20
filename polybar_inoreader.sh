@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-06-19T20:12:12+0200
+# date:   2022-06-20T17:58:17+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -46,7 +46,10 @@ case "$1" in
         done
         ;;
     *)
-        ! polybar_helper_net_check.sh "inoreader.com" \
+        basename=${0##*/}
+        path=${0%"$basename"}
+
+        ! "$path"helper/polybar_net_check.sh "inoreader.com" \
             && exit 1
 
         data=$(request)
@@ -58,15 +61,15 @@ case "$1" in
 
         if [ "$unreaded" -gt 0 ] \
             && [ "$starred" -gt 0 ]; then \
-                polybar_helper_output.sh \
+                "$path"helper/polybar_output.sh \
                     "$icon_rss$unreaded $icon_star$starred"
         else
             [ "$unreaded" -gt 0 ] \
-                && polybar_helper_output.sh \
+                && "$path"helper/polybar_output.sh \
                     "$icon_rss$unreaded"
 
             [ "$starred" -gt 0 ] \
-                && polybar_helper_output.sh \
+                && "$path"helper/polybar_output.sh \
                     "$icon_star$starred"
         fi
         ;;

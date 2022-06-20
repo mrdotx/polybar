@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-06-19T19:33:23+0200
+# date:   2022-06-20T18:00:33+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -231,10 +231,13 @@ case "$1" in
         done
         ;;
     *)
-        ! polybar_helper_net_check.sh "openweathermap.org" \
+        basename=${0##*/}
+        path=${0%"$basename"}
+
+        ! "$path"helper/polybar_net_check.sh "openweathermap.org" \
             && exit 1
 
         get_data
-        polybar_helper_output.sh "$weather$precipitation$sun"
+        "$path"helper/polybar_output.sh "$weather$precipitation$sun"
         ;;
 esac

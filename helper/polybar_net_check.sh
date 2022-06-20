@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# path:   /home/klassiker/.local/share/repos/polybar/polybar_helper_net_check.sh
+# path:   /home/klassiker/.local/share/repos/polybar/helper/polybar_net_check.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-06-14T13:23:45+0200
+# date:   2022-06-20T17:48:05+0200
 
 # check ip/address to connect to (default 1.1.1.1)
 net=${1:-1.1.1.1}
