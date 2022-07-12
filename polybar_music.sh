@@ -3,11 +3,11 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-06-20T18:02:40+0200
+# date:   2022-07-12T11:09:38+0200
 
 trim_string() {
     if [ "$(printf "%s" "$2" | wc -m)" -ge "$1" ]; then
-        printf "%s…" "$(printf "%s" "$2" | cut -c 1-"$(($1-1))")"
+        printf "%s…" "$(printf "%s" "$2" | cut -c 1-"$(($1 - 1))")"
     else
         printf "%s" "$2"
     fi
