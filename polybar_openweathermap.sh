@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-06-23T21:21:07+0200
+# date:   2022-08-28T10:12:28+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -33,26 +33,26 @@ icon_99x=""
 
 notification() {
     title="Weather Icons"
-    table_header="────┬────┬──────────────────┬────"
+    table_header="───┬───┬──────────────────┬────"
     message=$(printf "%s\n" \
         "<i>OpenWeather</i>\n$table_header" \
-        " $icon_01d  │ $icon_01n  │ clear sky        │ 01" \
-        " $icon_02d  │ $icon_02n  │ few clouds       │ 02" \
-        " $icon_03x  │ $icon_03x  │ scattered clouds │ 03" \
-        " $icon_04x  │ $icon_04x  │ broken clouds    │ 04" \
-        " $icon_09d  │ $icon_09n  │ shower rain      │ 09" \
-        " $icon_10d  │ $icon_10n  │ rain             │ 10" \
-        " $icon_11d  │ $icon_11n  │ thunderstorm     │ 11" \
-        " $icon_13d  │ $icon_13n  │ snow             │ 13" \
-        " $icon_50x  │ $icon_50x  │ mist             │ 50" \
+        " $icon_01d │ $icon_01n │ clear sky        │ 01" \
+        " $icon_02d │ $icon_02n │ few clouds       │ 02" \
+        " $icon_03x │ $icon_03x │ scattered clouds │ 03" \
+        " $icon_04x │ $icon_04x │ broken clouds    │ 04" \
+        " $icon_09d │ $icon_09n │ shower rain      │ 09" \
+        " $icon_10d │ $icon_10n │ rain             │ 10" \
+        " $icon_11d │ $icon_11n │ thunderstorm     │ 11" \
+        " $icon_13d │ $icon_13n │ snow             │ 13" \
+        " $icon_50x │ $icon_50x │ mist             │ 50" \
         "\n<i>Other</i>\n$table_header" \
-        " $icon_71x  │ $icon_71x  │ trend up         │ 71" \
-        " $icon_72x  │ $icon_72x  │ trend down       │ 72" \
-        " $icon_73x  │ $icon_73x  │ trend neutral    │ 73" \
-        " $icon_81x  │ $icon_81x  │ precipitation    │ 81" \
-        " $icon_91x  │ $icon_91x  │ sunrise          │ 91" \
-        " $icon_92x  │ $icon_92x  │ sunset           │ 92" \
-        " $icon_99x  │ $icon_99x  │ not available    │   " \
+        " $icon_71x │ $icon_71x │ trend up         │ 71" \
+        " $icon_72x │ $icon_72x │ trend down       │ 72" \
+        " $icon_73x │ $icon_73x │ trend neutral    │ 73" \
+        " $icon_81x │ $icon_81x │ precipitation    │ 81" \
+        " $icon_91x │ $icon_91x │ sunrise          │ 91" \
+        " $icon_92x │ $icon_92x │ sunset           │ 92" \
+        " $icon_99x │ $icon_99x │ not available    │   " \
     )
 
     notify-send \
@@ -89,7 +89,7 @@ format_icon() {
         *)   icon="$icon_99x";;
     esac
 
-    printf "%%{T2}%s %%{T-}" "$icon"
+    printf "%%{T2}%s%%{T-} " "$icon"
 }
 
 extract_json() {
@@ -168,7 +168,7 @@ get_data() {
         "$(extract_xml "temperature" "value" "$current_data")" \
     )
     current_icon=$(extract_xml "temperature" "icon" "$current_data")
-    current="$(format_icon "$current_icon") $current_temp°"
+    current="$(format_icon "$current_icon")$current_temp°"
 
     # forecast
     forecast_temp=$(printf "%.0f" \
@@ -178,20 +178,20 @@ get_data() {
     if [ "$current_icon" = "$forecast_icon" ]; then
         forecast="$forecast_temp°"
     elif [ "$forecast_temp" -eq "$current_temp" ]; then
-        forecast="$(format_icon "$forecast_icon") "
+        forecast="$(format_icon "$forecast_icon")"
     else
-        forecast="$(format_icon "$forecast_icon") $forecast_temp°"
+        forecast="$(format_icon "$forecast_icon")$forecast_temp°"
     fi
 
     # weather
     if [ "$forecast_temp" -gt "$current_temp" ]; then
-        weather="$current $(format_icon "71x")$forecast"
+        weather="$current $(format_icon "71x") $forecast"
     elif [ "$current_temp" -gt "$forecast_temp" ]; then
-        weather="$current $(format_icon "72x")$forecast"
+        weather="$current $(format_icon "72x") $forecast"
     elif [ "$current_icon" = "$forecast_icon" ]; then
         weather="$current"
     else
-        weather="$current $(format_icon "73x")$forecast"
+        weather="$current $(format_icon "73x") $forecast"
     fi
 
     # precipitation

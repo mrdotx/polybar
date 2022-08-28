@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-07-12T11:09:38+0200
+# date:   2022-08-28T09:54:25+0200
 
 trim_string() {
     if [ "$(printf "%s" "$2" | wc -m)" -ge "$1" ]; then
@@ -143,15 +143,15 @@ status() {
     case $status in
         "playing")
             "$path"helper/polybar_output.sh \
-                "%{T2}契 %{T-}$info"
+                "%{T2}契%{T-} $info"
             ;;
         "paused")
             "$path"helper/polybar_output.sh \
-                "%{T2} %{T-}$info" "Polybar.secondary"
+                "%{T2}%{T-} $info" "Polybar.secondary"
             ;;
         "stopped")
             "$path"helper/polybar_output.sh \
-                "%{T2}栗 %{T-}$info" "Polybar.red"
+                "%{T2}栗%{T-} $info" "Polybar.red"
             ;;
         *)
             "$path"helper/polybar_output.sh \
