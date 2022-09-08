@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_pacman.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-08-28T09:52:06+0200
+# date:   2022-06-20T17:52:25+0200
 
 # use standard c to identify paru ignored updates
 LC_ALL=C
@@ -32,8 +32,8 @@ case "$1" in
         updates_pacman=$(checkupdates 2> /dev/null | wc -l)
         updates_aur=$(paru -Qua | grep -c -v "\[ignored\]" 2> /dev/null)
 
-        icon_pacman="%{T2}%{T-} "
-        icon_aur="%{T2}%{T-} "
+        icon_pacman="%{T2} %{T-}"
+        icon_aur="%{T2} %{T-}"
 
         if [ "$updates_pacman" -gt 0 ] \
             && [ "$updates_aur" -gt 0 ]; then \

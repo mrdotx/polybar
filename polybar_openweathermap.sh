@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-08-28T10:12:28+0200
+# date:   2022-09-08T09:19:45+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -89,7 +89,7 @@ format_icon() {
         *)   icon="$icon_99x";;
     esac
 
-    printf "%%{T2}%s%%{T-} " "$icon"
+    printf "%%{T2}%s %%{T-}" "$icon"
 }
 
 extract_json() {
@@ -168,7 +168,7 @@ get_data() {
         "$(extract_xml "temperature" "value" "$current_data")" \
     )
     current_icon=$(extract_xml "temperature" "icon" "$current_data")
-    current="$(format_icon "$current_icon")$current_temp°"
+    current="$(format_icon "$current_icon") $current_temp°"
 
     # forecast
     forecast_temp=$(printf "%.0f" \
@@ -178,20 +178,20 @@ get_data() {
     if [ "$current_icon" = "$forecast_icon" ]; then
         forecast="$forecast_temp°"
     elif [ "$forecast_temp" -eq "$current_temp" ]; then
-        forecast="$(format_icon "$forecast_icon")"
+        forecast="$(format_icon "$forecast_icon") "
     else
-        forecast="$(format_icon "$forecast_icon")$forecast_temp°"
+        forecast="$(format_icon "$forecast_icon") $forecast_temp°"
     fi
 
     # weather
     if [ "$forecast_temp" -gt "$current_temp" ]; then
-        weather="$current $(format_icon "71x") $forecast"
+        weather="$current $(format_icon "71x")$forecast"
     elif [ "$current_temp" -gt "$forecast_temp" ]; then
-        weather="$current $(format_icon "72x") $forecast"
+        weather="$current $(format_icon "72x")$forecast"
     elif [ "$current_icon" = "$forecast_icon" ]; then
         weather="$current"
     else
-        weather="$current $(format_icon "73x") $forecast"
+        weather="$current $(format_icon "73x")$forecast"
     fi
 
     # precipitation
