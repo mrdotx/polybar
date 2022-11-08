@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-11-07T09:39:45+0100
+# date:   2022-11-08T18:48:50+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -19,6 +19,10 @@ set_output() {
 
 service_status() {
     case "$3" in
+        wireguard)
+            [ "$(wireguard_toggle.sh -s "$1")" = "$1 is enabled" ] \
+                && set_output "$2"
+            ;;
         user)
             systemctl --user -q is-active "$1" \
                 && set_output "$2"
@@ -40,6 +44,7 @@ case "$1" in
         service_status "systemd-resolved.service" ""
         service_status "systemd-timesyncd.service" "ﮮ"
         service_status "sshd.service" "撚"
+        service_status "wg0" "旅" "wireguard"
         service_status "cups.service" "朗"
         service_status "bluetooth.service" ""
 
