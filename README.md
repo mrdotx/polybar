@@ -12,7 +12,8 @@ shell scripts for polybar
 | name                      | comment                                                                    | used helper       |
 | :------------------------ | :------------------------------------------------------------------------- | :---------------- |
 | polybar.sh                | start, restart, kill and cycle polybars                                    |                   |
-| polybar_inoreader.sh      | shows the number of rss/starred feeds from inoreader                       | output, net_check |
+| polybar_freshrss.sh       | shows the number of rss feeds (unreader) from freshrss                     | output, net_check |
+| polybar_inoreader.sh      | shows the number of rss feeds (unreaded/starred) from inoreader            | output, net_check |
 | polybar_music.sh          | cmus statusbar and notification                                            | output            |
 | polybar_openweathermap.sh | shows current/forecast weather and sunrise/sunset time from openweathermap | output, net_check |
 | polybar_pacman.sh         | shows the number of package updates from pacman/aur                        | output, net_check |
