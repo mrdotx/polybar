@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-06-20T17:58:17+0200
+# date:   2022-11-26T15:07:35+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -22,11 +22,13 @@ request() {
             | head -n1
     }
 
-    curl -fsS -H "Authorization: GoogleLogin $( \
+    get_auth() {
         curl -fsS "$url_login?Email=$user&Passwd=$(get_pass)" \
             | grep 'Auth=' \
-            | sed 's/Auth/auth/' \
-        )" \
+            | sed 's/Auth/auth/'
+    }
+
+    curl -fsS -H "Authorization: GoogleLogin $(get_auth)" \
         "$url_request?AppId=$app_id&AppKey=$app_key"
 }
 
