@@ -3,20 +3,22 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-11-26T15:07:35+0100
+# date:   2022-11-28T11:05:57+0100
 
 # speed up script by using standard c
 LC_ALL=C
 LANG=C
 
-request() {
-    url_login="https://www.inoreader.com/accounts/ClientLogin"
-    url_request="https://www.inoreader.com/reader/api/0/unread-count"
-    user="klassiker"
-    gpg_file="$HOME/.local/share/repos/password-store/www/social/inoreader.gpg"
-    app_id="999999505"
-    app_key="EQsZICxpsbFczwbXrsrkRbXUUw8DdfwO"
+# config
+user="klassiker"
+gpg_file="$HOME/.local/share/repos/password-store/www/social/inoreader.gpg"
+app_id="999999505"
+app_key="EQsZICxpsbFczwbXrsrkRbXUUw8DdfwO"
+url_login="https://www.inoreader.com/accounts/ClientLogin"
+url_request="https://www.inoreader.com/reader/api/0"
+url_parameter="?AppId=$app_id&AppKey=$app_key"
 
+request() {
     get_pass() {
         gpg -q -d "$gpg_file" \
             | head -n1
@@ -29,10 +31,10 @@ request() {
     }
 
     curl -fsS -H "Authorization: GoogleLogin $(get_auth)" \
-        "$url_request?AppId=$app_id&AppKey=$app_key"
+        "$url_request/$1$url_parameter"
 }
 
-extract_data() {
+get_count() {
     printf "%s" "$1" \
         | awk -F "$2" '{print $2}' \
         | cut -d ',' -f1 \
@@ -54,9 +56,9 @@ case "$1" in
         ! "$path"helper/polybar_net_check.sh "inoreader.com" \
             && exit 1
 
-        data=$(request)
-        unreaded=$(extract_data "$data" 'reading-list",')
-        starred=$(extract_data "$data" 'starred",')
+        data=$(request "unread-count")
+        unreaded=$(get_count "$data" 'reading-list",')
+        starred=$(get_count "$data" 'starred",')
 
         icon_rss="%{T2}參 %{T-}"
         icon_star="%{T2}留 %{T-}"
