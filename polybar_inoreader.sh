@@ -3,15 +3,15 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-11-28T11:05:57+0100
+# date:   2022-11-29T12:53:30+0100
 
 # speed up script by using standard c
 LC_ALL=C
 LANG=C
 
-# config
+# config (password can be plain text or a gpg file path)
 user="klassiker"
-gpg_file="$HOME/.local/share/repos/password-store/www/social/inoreader.gpg"
+password="$HOME/.local/share/repos/password-store/www/social/inoreader.gpg"
 app_id="999999505"
 app_key="EQsZICxpsbFczwbXrsrkRbXUUw8DdfwO"
 url_login="https://www.inoreader.com/accounts/ClientLogin"
@@ -20,8 +20,12 @@ url_parameter="?AppId=$app_id&AppKey=$app_key"
 
 request() {
     get_pass() {
-        gpg -q -d "$gpg_file" \
-            | head -n1
+        if [ -e "$password" ]; then
+            gpg -q -d "$password" \
+                | head -n1
+        else
+            printf "%s" "$password"
+        fi
     }
 
     get_auth() {
