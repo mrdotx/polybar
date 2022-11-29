@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_freshrss.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-11-28T12:41:32+0100
+# date:   2022-11-29T11:04:11+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -42,8 +42,8 @@ get_count() {
 
 count_string() {
     printf "%s" "$1" \
-        | sed "s/$2/##FILTER##\n/g" \
-        | grep -c "##FILTER##"
+        | sed "s/$2/$2\n/g" \
+        | grep -c "$2"
 }
 
 case "$1" in
