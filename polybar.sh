@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-04-24T08:02:31+0200
+# date:   2022-12-28T10:19:04+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -45,29 +45,29 @@ set_xresource() {
 
 cycle() {
     systemctl --user -q is-active "$service" \
-        && case "$(get_xresource "Polybar.type.$1")" in
+        && case "$(get_xresource "Polybar.$1")" in
             main)
-                set_xresource "Polybar.type.$1" "main_small"
+                set_xresource "Polybar.$1" "main_small"
                 ;;
             main_small)
-                set_xresource "Polybar.type.$1" "empty"
+                set_xresource "Polybar.$1" "empty"
                 ;;
             empty)
-                set_xresource "Polybar.type.$1" "sys_info"
+                set_xresource "Polybar.$1" "sys_info"
                 ;;
             sys_info)
-                monitor1="$(get_xresource "Polybar.type.monitor1")"
-                monitor2="$(get_xresource "Polybar.type.monitor2")"
+                monitor1="$(get_xresource "Polybar.monitor1")"
+                monitor2="$(get_xresource "Polybar.monitor2")"
 
                 if [ "$monitor1" = "disabled" ] \
                     || [ "$monitor2" = "disabled" ]; then
-                        set_xresource "Polybar.type.$1" "main"
+                        set_xresource "Polybar.$1" "main"
                 else
-                    set_xresource "Polybar.type.$1" "disabled"
+                    set_xresource "Polybar.$1" "disabled"
                 fi
                 ;;
             *)
-                set_xresource "Polybar.type.$1" "main"
+                set_xresource "Polybar.$1" "main"
                 ;;
         esac \
         && systemctl --user restart "$service"
@@ -87,8 +87,8 @@ start() {
         | cut -d ':' -f1 \
     )
 
-    monitor1="$(get_xresource "Polybar.type.monitor1")"
-    monitor2="$(get_xresource "Polybar.type.monitor2")"
+    monitor1="$(get_xresource "Polybar.monitor1")"
+    monitor2="$(get_xresource "Polybar.monitor2")"
 
     if [ "$monitor1" = "disabled" ] \
         || [ "$monitor2" = "disabled" ]; then
