@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-12-28T10:19:04+0100
+# date:   2023-01-12T18:14:16+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -39,7 +39,7 @@ get_xresource() {
 }
 
 set_xresource() {
-    sed -i "/$1:/c\\$1: $2" "$config"
+    sed -i "/$1:/c\\$1:   $2" "$config"
     xrdb -merge "$xresource"
 }
 
