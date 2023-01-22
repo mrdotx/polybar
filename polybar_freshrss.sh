@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_freshrss.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-11-29T12:53:39+0100
+# date:   2023-01-22T17:44:53+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -12,8 +12,8 @@ LANG=C
 # config (password can be plain text or a gpg file path)
 user="klassiker"
 password="$HOME/.local/share/repos/password-store/www/development/freshrss_api.gpg"
-url_login="http://pi/freshrss/api/greader.php/accounts/ClientLogin"
-url_request="http://pi/freshrss/api/greader.php/reader/api/0"
+url_login="http://m625q/freshrss/api/greader.php/accounts/ClientLogin"
+url_request="http://m625q/freshrss/api/greader.php/reader/api/0"
 url_parameter="?output=json"
 
 request() {
@@ -61,7 +61,7 @@ case "$1" in
         basename=${0##*/}
         path=${0%"$basename"}
 
-        ! "$path"helper/polybar_net_check.sh "pi" \
+        ! "$path"helper/polybar_net_check.sh "m625q" \
             && exit 1
 
         unreaded=$(request "unread-count")
