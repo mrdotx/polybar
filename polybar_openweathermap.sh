@@ -26,9 +26,9 @@ icon_11d=""    icon_11n=""
 icon_13d=""    icon_13n=""
 icon_50x=""
 
-icon_71x="勤"   icon_72x="免"   icon_73x="勉"
-icon_81x="琢"
-icon_91x="瀞"   icon_92x="漢"
+icon_71x="󰔵"   icon_72x="󰔳"   icon_73x="󰔴"
+icon_81x="󰕋"
+icon_91x="󰖜"   icon_92x="󰖛"
 icon_99x=""
 
 notification() {

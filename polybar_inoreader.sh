@@ -64,8 +64,8 @@ case "$1" in
         unreaded=$(get_count "$data" 'reading-list",')
         starred=$(get_count "$data" 'starred",')
 
-        icon_rss="%{T2}參 %{T-}"
-        icon_star="%{T2}留 %{T-}"
+        icon_rss="%{T2}󰑬 %{T-}"
+        icon_star="%{T2}󰓎 %{T-}"
 
         if [ "$unreaded" -gt 0 ] \
             && [ "$starred" -gt 0 ]; then \

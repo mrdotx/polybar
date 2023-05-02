@@ -143,15 +143,15 @@ status() {
     case $status in
         "playing")
             "$path"helper/polybar_output.sh \
-                "%{T2}契 %{T-}$info"
+                "%{T2}󰐊 %{T-}$info"
             ;;
         "paused")
             "$path"helper/polybar_output.sh \
-                "%{T2} %{T-}$info" "Polybar.secondary"
+                "%{T2}󰏤 %{T-}$info" "Polybar.secondary"
             ;;
         "stopped")
             "$path"helper/polybar_output.sh \
-                "%{T2}栗 %{T-}$info" "Polybar.red"
+                "%{T2}󰓛 %{T-}$info" "Polybar.red"
             ;;
         *)
             "$path"helper/polybar_output.sh \

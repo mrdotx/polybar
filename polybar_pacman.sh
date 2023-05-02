@@ -32,8 +32,8 @@ case "$1" in
         updates_pacman=$(checkupdates 2> /dev/null | wc -l)
         updates_aur=$(paru -Qua | grep -c -v "\[ignored\]" 2> /dev/null)
 
-        icon_pacman="%{T2} %{T-}"
-        icon_aur="%{T2} %{T-}"
+        icon_pacman="%{T2}󰏗 %{T-}"
+        icon_aur="%{T2}󰏖 %{T-}"
 
         if [ "$updates_pacman" -gt 0 ] \
             && [ "$updates_aur" -gt 0 ]; then \

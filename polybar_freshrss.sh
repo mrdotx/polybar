@@ -69,8 +69,8 @@ case "$1" in
         starred=$(request "stream/contents/user/-/state/com.google/starred")
         starred=$(count_string "$starred" '{"id":"tag')
 
-        icon_rss="%{T2}參 %{T-}"
-        icon_star="%{T2}留 %{T-}"
+        icon_rss="%{T2}󰑬 %{T-}"
+        icon_star="%{T2}󰓎 %{T-}"
 
         if [ "$unreaded" -gt 0 ] \
             && [ "$starred" -gt 0 ]; then \

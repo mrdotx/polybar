@@ -36,15 +36,15 @@ service_status() {
 
 case "$1" in
     --status)
-        service_status "xautolock.service" "" "user"
-        service_status "i3_autotiling.service" "侀" "user"
-        service_status "picom.service" "頋" "user"
-        service_status "wacom.service" "" "user"
-        service_status "xbanish.service" "" "user"
-        service_status "sshd.service" "撚"
-        service_status "wg0" "旅" "wireguard"
-        service_status "cups.service" "朗"
-        service_status "bluetooth.service" ""
+        service_status "xautolock.service" "󰌾" "user"
+        service_status "i3_autotiling.service" "󰕴" "user"
+        service_status "picom.service" "󰗌" "user"
+        service_status "wacom.service" "󰏪" "user"
+        service_status "xbanish.service" "󰆽" "user"
+        service_status "sshd.service" "󰒒"
+        service_status "wg0" "󰒄" "wireguard"
+        service_status "cups.service" "󰐪"
+        service_status "bluetooth.service" "󰂯"
 
         basename=${0##*/}
         path=${0%"$basename"}
