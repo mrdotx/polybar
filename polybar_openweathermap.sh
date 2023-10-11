@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-09-08T09:19:45+0200
+# date:   2023-10-11T20:48:51+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -168,7 +168,7 @@ get_data() {
         "$(extract_xml "temperature" "value" "$current_data")" \
     )
     current_icon=$(extract_xml "temperature" "icon" "$current_data")
-    current="$(format_icon "$current_icon") $current_temp°"
+    current="$(format_icon "$current_icon")$current_temp°"
 
     # forecast
     forecast_temp=$(printf "%.0f" \
@@ -178,9 +178,9 @@ get_data() {
     if [ "$current_icon" = "$forecast_icon" ]; then
         forecast="$forecast_temp°"
     elif [ "$forecast_temp" -eq "$current_temp" ]; then
-        forecast="$(format_icon "$forecast_icon") "
+        forecast="$(format_icon "$forecast_icon")"
     else
-        forecast="$(format_icon "$forecast_icon") $forecast_temp°"
+        forecast="$(format_icon "$forecast_icon")$forecast_temp°"
     fi
 
     # weather
@@ -218,6 +218,9 @@ get_data() {
     else
         sun=" $(format_icon "92x")$(convert_date "$sunset")"
     fi
+
+    # output
+    printf "%s%s%s" "$weather" "$precipitation" "$sun"
 }
 
 case "$1" in
@@ -237,7 +240,6 @@ case "$1" in
         ! "$path"helper/polybar_net_check.sh "openweathermap.org" \
             && exit 1
 
-        get_data
-        "$path"helper/polybar_output.sh "$weather$precipitation$sun"
+        "$path"helper/polybar_output.sh "$(get_data)"
         ;;
 esac
