@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2023-11-25T15:51:01+0100
+# date:   2023-11-25T16:25:03+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -14,7 +14,7 @@ LANG=C
 gpg_file="$HOME/.local/share/repos/password-store/www/development/openweathermap.gpg"
 
 # file with location (if not available, determine with ipinfo.io)
-location_file="/tmp/weather_location"
+location_file="/tmp/weather.location"
 
 # https://openweathermap.org/weather-conditions
 icon_01d=""    icon_01n=""
