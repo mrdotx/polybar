@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2023-11-25T10:05:31+0100
+# date:   2023-11-25T15:51:01+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -106,7 +106,7 @@ request() {
     url_api="https://api.openweathermap.org/data/2.5/$1"
     url_appid="appid=$api_key"
     url_para="mode=xml&units=metric"
-    url_city="q=$(cat "$location_file")"
+    url_city="q=$(sed 's/ /%20/g' "$location_file")"
 
     curl -sf "$url_api?$url_appid&$url_para&$url_city"
 }
