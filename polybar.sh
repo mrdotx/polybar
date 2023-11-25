@@ -3,11 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2023-01-12T18:14:16+0100
-
-# speed up script by using standard c
-LC_ALL=C
-LANG=C
+# date:   2023-11-25T11:19:44+0100
 
 config="$HOME/.config/X11/Xresources.d/polybar"
 xresource="$HOME/.config/X11/Xresources"
