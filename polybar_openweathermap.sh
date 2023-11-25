@@ -3,17 +3,18 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweathermap.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2023-10-11T20:48:51+0200
+# date:   2023-11-25T10:05:31+0100
 
 # speed up script by using standard c
 LC_ALL=C
 LANG=C
 
-# data for openweathermap in gpg file
-# api key (needed):     api_key = a2d833bfaa8912dc090fd547e109cf13
-# city id (optional):   city_id = 2867714
-# without city id the location is determined by geoip.me
+# needed data for openweathermap in gpg file
+# api key:  api_key = a2d833bfaa8912dc090fd547e109cf13
 gpg_file="$HOME/.local/share/repos/password-store/www/development/openweathermap.gpg"
+
+# file with location (if not available, determine with ipinfo.io)
+location_file="/tmp/weather_location"
 
 # https://openweathermap.org/weather-conditions
 icon_01d=""    icon_01n=""
@@ -92,14 +93,22 @@ format_icon() {
     printf "%%{T2}%s %%{T-}" "$icon"
 }
 
-extract_json() {
-    tag="$1"
-    shift
+request() {
+    api_key="$( \
+        gpg -q -d "$gpg_file" \
+            | grep "^api_key =" \
+            | awk -F ' = ' '{print $2}' \
+    )"
 
-    printf "%s\n" "$*" \
-        | awk -F "\"$tag\": " '{print $2}' \
-        | cut -d"," -f1 \
-        | sed '/^$/d'
+    grep -q -s '[^[:space:]]' $location_file \
+        || curl -fsS 'https://ipinfo.io/city' > $location_file
+
+    url_api="https://api.openweathermap.org/data/2.5/$1"
+    url_appid="appid=$api_key"
+    url_para="mode=xml&units=metric"
+    url_city="q=$(cat "$location_file")"
+
+    curl -sf "$url_api?$url_appid&$url_para&$url_city"
 }
 
 extract_xml() {
@@ -123,37 +132,6 @@ convert_date() {
             date -d "@$1" +%H:%M
             ;;
     esac
-}
-
-get_gpg_data() {
-    gpg -q -d "$1" \
-        | grep "^$2 =" \
-        | awk -F ' = ' '{print $2}'
-}
-
-get_location() {
-    if [ "$1" -gt 0 ]; then
-        printf "%s" "id=$1"
-    elif [ -n "$1" ]; then
-        printf "%s" "q=$*"
-    else
-        data=$(curl -fsS -H 'Accept: */json' "https://geoip.me")
-
-        location_lat=$(extract_json "latitude" "$data")
-        location_lng=$(extract_json "longitude" "$data")
-
-        printf "lat=%s&lon=%s" "$location_lat" "$location_lng"
-    fi
-}
-
-request() {
-    url_api="https://api.openweathermap.org/data/2.5/$1"
-    url_appid="appid=$(get_gpg_data "$gpg_file" "api_key")"
-    url_para="mode=xml&units=metric"
-
-    city=$(get_gpg_data "$gpg_file" "city_id")
-
-    curl -sf "$url_api?$url_appid&$url_para&$(get_location "$city")"
 }
 
 get_data() {
