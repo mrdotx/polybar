@@ -3,11 +3,14 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_pacman.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-06-20T17:52:25+0200
+# date:   2023-11-27T20:52:56+0100
 
 # use standard c to identify paru ignored updates
 LC_ALL=C
 LANG=C
+
+# source polybar helper
+. polybar_helper.sh
 
 get_pacman_mirror() {
     grep '^Server' /etc/pacman.d/mirrorlist \
@@ -23,10 +26,7 @@ case "$1" in
         done
         ;;
     *)
-        basename=${0##*/}
-        path=${0%"$basename"}
-
-        ! "$path"helper/polybar_net_check.sh "$(get_pacman_mirror)" \
+        ! polybar_net_check "$(get_pacman_mirror)" \
             && exit 1
 
         updates_pacman=$(checkupdates 2> /dev/null | wc -l)
@@ -37,15 +37,15 @@ case "$1" in
 
         if [ "$updates_pacman" -gt 0 ] \
             && [ "$updates_aur" -gt 0 ]; then \
-                "$path"helper/polybar_output.sh \
+                polybar_output \
                     "$icon_pacman$updates_pacman $icon_aur$updates_aur"
         else
             [ "$updates_pacman" -gt 0 ] \
-                && "$path"helper/polybar_output.sh \
+                && polybar_output \
                     "$icon_pacman$updates_pacman"
 
             [ "$updates_aur" -gt 0 ] \
-                && "$path"helper/polybar_output.sh \
+                && polybar_output \
                     "$icon_aur$updates_aur"
         fi
         ;;

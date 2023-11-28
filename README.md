@@ -1,24 +1,18 @@
 # polybar
 
-general helper scripts for polybar
-
-| name                 | comment                                            |
-| :------------------- | :------------------------------------------------- |
-| polybar_net_check.sh | check a defined time for an internet connection    |
-| polybar_output.sh    | format line/foreground color output from xresource |
-
 shell scripts for polybar
 
-| name                      | comment                                                                    | used helper       |
-| :------------------------ | :------------------------------------------------------------------------- | :---------------- |
-| polybar.sh                | start, restart, kill and cycle polybars                                    |                   |
-| polybar_freshrss.sh       | shows the number of rss feeds (unreaded/starred) from freshrss             | output, net_check |
-| polybar_inoreader.sh      | shows the number of rss feeds (unreaded/starred) from inoreader            | output, net_check |
-| polybar_music.sh          | cmus statusbar and notification                                            | output            |
-| polybar_openweathermap.sh | shows current/forecast weather and sunrise/sunset time from openweathermap | output, net_check |
-| polybar_pacman.sh         | shows the number of package updates from pacman/aur                        | output, net_check |
-| polybar_services.sh       | shows the status of defined services                                       | output            |
-| polybar_trash.sh          | shows the number of trash items                                            | output            |
+| name                   | comment                                                                 |
+| :--------------------- | :---------------------------------------------------------------------- |
+| polybar.sh             | start, restart, kill and cycle polybars                                 |
+| polybar_freshrss.sh    | shows the number of rss feeds (unreaded/starred) from freshrss          |
+| polybar_helper.sh      | used in the other scripts for output and net check                      |
+| polybar_inoreader.sh   | shows the number of rss feeds (unreaded/starred) from inoreader         |
+| polybar_music.sh       | cmus statusbar and notification                                         |
+| polybar_openweather.sh | shows current/forecast weather and sunrise/sunset time from openweather |
+| polybar_pacman.sh      | shows the number of package updates from pacman/aur                     |
+| polybar_services.sh    | shows the status of defined services                                    |
+| polybar_trash-cli.sh   | shows the number of trash items                                         |
 
 config files:
 
@@ -32,4 +26,4 @@ config files:
 ![monitor2](screenshot_monitor2.png)
 ![cmus polybar](screenshot_cmus_polybar.png)
 ![cmus notify](screenshot_cmus_notify.png)
-![openweathermap](screenshot_openweathermap.png)
+![openweather](screenshot_openweather.png)

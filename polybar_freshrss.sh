@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_freshrss.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2023-01-22T17:44:53+0100
+# date:   2023-11-27T20:57:10+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -15,6 +15,9 @@ password="$HOME/.local/share/repos/password-store/www/development/freshrss_api.g
 url_login="http://m625q/freshrss/api/greader.php/accounts/ClientLogin"
 url_request="http://m625q/freshrss/api/greader.php/reader/api/0"
 url_parameter="?output=json"
+
+# source polybar helper
+. polybar_helper.sh
 
 request() {
     get_pass() {
@@ -58,10 +61,7 @@ case "$1" in
         done
         ;;
     *)
-        basename=${0##*/}
-        path=${0%"$basename"}
-
-        ! "$path"helper/polybar_net_check.sh "m625q" \
+        ! polybar_net_check "m625q" \
             && exit 1
 
         unreaded=$(request "unread-count")
@@ -74,16 +74,13 @@ case "$1" in
 
         if [ "$unreaded" -gt 0 ] \
             && [ "$starred" -gt 0 ]; then \
-                "$path"helper/polybar_output.sh \
-                    "$icon_rss$unreaded $icon_star$starred"
+                polybar_output "$icon_rss$unreaded $icon_star$starred"
         else
             [ "$unreaded" -gt 0 ] \
-                && "$path"helper/polybar_output.sh \
-                    "$icon_rss$unreaded"
+                && polybar_output "$icon_rss$unreaded"
 
             [ "$starred" -gt 0 ] \
-                && "$path"helper/polybar_output.sh \
-                    "$icon_star$starred"
+                && polybar_output "$icon_star$starred"
         fi
         ;;
 esac

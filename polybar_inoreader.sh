@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2022-11-29T12:53:30+0100
+# date:   2023-11-27T20:55:57+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -17,6 +17,9 @@ app_key="EQsZICxpsbFczwbXrsrkRbXUUw8DdfwO"
 url_login="https://www.inoreader.com/accounts/ClientLogin"
 url_request="https://www.inoreader.com/reader/api/0"
 url_parameter="?AppId=$app_id&AppKey=$app_key"
+
+# source polybar helper
+. polybar_helper.sh
 
 request() {
     get_pass() {
@@ -54,10 +57,7 @@ case "$1" in
         done
         ;;
     *)
-        basename=${0##*/}
-        path=${0%"$basename"}
-
-        ! "$path"helper/polybar_net_check.sh "inoreader.com" \
+        ! polybar_net_check "inoreader.com" \
             && exit 1
 
         data=$(request "unread-count")
@@ -69,16 +69,13 @@ case "$1" in
 
         if [ "$unreaded" -gt 0 ] \
             && [ "$starred" -gt 0 ]; then \
-                "$path"helper/polybar_output.sh \
-                    "$icon_rss$unreaded $icon_star$starred"
+                polybar_output "$icon_rss$unreaded $icon_star$starred"
         else
             [ "$unreaded" -gt 0 ] \
-                && "$path"helper/polybar_output.sh \
-                    "$icon_rss$unreaded"
+                && polybar_output "$icon_rss$unreaded"
 
             [ "$starred" -gt 0 ] \
-                && "$path"helper/polybar_output.sh \
-                    "$icon_star$starred"
+                && polybar_output "$icon_star$starred"
         fi
         ;;
 esac
