@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweather.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2023-11-27T20:47:02+0100
+# date:   2023-11-30T07:47:12+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -18,46 +18,6 @@ location_file="/tmp/weather.location"
 
 # source polybar helper
 . polybar_helper.sh
-
-get_icon_info() {
-    # https://openweathermap.org/weather-conditions
-    case $1 in
-        01d) icon="" icon_name="Clear Sky";;
-        01n) icon="" icon_name="Clear Sky";;
-        02d) icon="" icon_name="Few Clouds";;
-        02n) icon="" icon_name="Few Clouds";;
-        03*) icon="" icon_name="Scattered Clouds";;
-        04*) icon="" icon_name="Broken Clouds";;
-        09d) icon="" icon_name="Shower Rain";;
-        09n) icon="" icon_name="Shower Rain";;
-        10d) icon="" icon_name="Rain";;
-        10n) icon="" icon_name="Rain";;
-        11d) icon="" icon_name="Thunderstorm";;
-        11n) icon="" icon_name="Thunderstorm";;
-        13d) icon="" icon_name="Snow";;
-        13n) icon="" icon_name="Snow";;
-        50*) icon="" icon_name="Mist";;
-        71x) icon="󰔵" icon_name="Trend Up";;
-        72x) icon="󰔳" icon_name="Trend Down";;
-        73x) icon="󰔴" icon_name="Trend Neutral";;
-        81x) icon="󰕋" icon_name="Precipitation";;
-        91x) icon="󰖜" icon_name="Sunrise";;
-        92x) icon="󰖛" icon_name="Sunset";;
-        *)   icon="" icon_name="Not Available";;
-    esac
-
-    case $2 in
-        icon)
-            printf "%s " "$icon"
-            ;;
-        name)
-            printf "%s" "$icon_name"
-            ;;
-        *)
-            printf "%%{T2}%s %%{T-}" "$icon"
-            ;;
-    esac
-}
 
 request() {
     api_key="$( \
@@ -83,7 +43,7 @@ extract_xml() {
     shift 2
 
     printf "%s\n" "$*" \
-        | awk -F "<$tag" '{print $2}' \
+        | awk -F "<$tag " '{print $2}' \
         | awk -F "$value=" '{print $2}' \
         | cut -d'"' -f2 \
         | sed '/^$/d'
@@ -100,16 +60,10 @@ convert_date() {
     esac
 }
 
-add_spacer() {
-    output=" $1"
-    i=$((16 - ${#1}))
-
-    while [ "$i" -gt 0 ]; do
-        output="$output "
-        i=$((i - 1))
-    done
-
-    printf "%s" "$output"
+period() {
+    printf "%s - %s\n" \
+        "$(convert_date "$(convert_date "$1" "Epoch")")" \
+        "$(convert_date "$(convert_date "$2" "Epoch")")"
 }
 
 get_data() {
@@ -123,103 +77,325 @@ get_data() {
     current_temp=$(printf "%.0f" \
         "$(extract_xml "temperature" "value" "$current_data")" \
     )
-    current_icon=$(extract_xml "temperature" "icon" "$current_data")
+    current_like=$(printf "%.0f" \
+        "$(extract_xml "feels_like" "value" "$current_data")" \
+    )
+    current_humidity=$(extract_xml "humidity" "value" "$current_data")
+    current_pressure=$(extract_xml "pressure" "value" "$current_data")
+    current_visibility=$(printf "%.1f" \
+        "$(printf "%s/1000\n" \
+            "$(extract_xml "visibility" "value" "$current_data")" \
+            | bc -l \
+        )" \
+    )
+    current_number=$(extract_xml "weather" "number" "$current_data")
+
+    # current precipitation
+    current_mode=$(extract_xml "precipitation" "mode" "$current_data")
+    case $current_mode in
+        no)
+            current_precipitation="0.0"
+            ;;
+        *)
+            current_precipitation=$(extract_xml "precipitation" \
+                "value" "$current_data")
+            ;;
+    esac
+
+    # current wind
+    current_speed=$(printf "%.1f" \
+        "$(printf "%s*3.6\n" \
+            "$(extract_xml "speed" "value" "$current_data")" \
+            | bc -l \
+        )" \
+    )
+    current_direction=$(extract_xml "direction" "code" "$current_data")
+
+    # current daylight
+    current_sunrise=$(extract_xml "sun" "rise" "$current_data")
+    current_sunset=$(extract_xml "sun" "set" "$current_data")
+    daylight_sunrise=$(convert_date "$current_sunrise" "Epoch")
+    daylight_sunset=$(convert_date "$current_sunset" "Epoch")
+    now=$(date +%s)
+    sunrise=$(convert_date "$daylight_sunrise")
+    sunset="$(convert_date "$daylight_sunset")"
+    if [ "$daylight_sunrise" -ge "$now" ] \
+        || [ "$now" -gt "$daylight_sunset" ]; then
+        daytime="n"
+    else
+        daytime="d"
+    fi
 
     # forecast
+    forecast_from=$(extract_xml "time" "from" "$forecast_data")
+    forecast_to=$(extract_xml "time" "to" "$forecast_data")
+    forecast_number=$(extract_xml "symbol" "number" "$forecast_data")
     forecast_temp=$(printf "%.0f" \
         "$(extract_xml "temperature" "value" "$forecast_data")" \
     )
-    forecast_icon=$(extract_xml "symbol" "var" "$forecast_data")
-
-    # precipitation
-    forecast_precipitation=$(printf "%.0f" \
-        "$(printf "%s * 100\n" \
-            "$(extract_xml "precipitation" "probability" "$forecast_data")" \
+    forecast_like=$(printf "%.0f" \
+        "$(extract_xml "feels_like" "value" "$forecast_data")" \
+    )
+    forecast_pressure=$(extract_xml "pressure" "value" "$forecast_data")
+    forecast_humidity=$(extract_xml "humidity" "value" "$forecast_data")
+    forecast_visibility=$(printf "%.1f" \
+        "$(printf "%s/1000\n" \
+            "$(extract_xml "visibility" "value" "$forecast_data")" \
             | bc -l \
         )" \
     )
 
-    # sun
-    current_sunrise=$(extract_xml "sun" "rise" "$current_data")
-    current_sunset=$(extract_xml "sun" "set" "$current_data")
+    # forecast precipitation
+    forecast_probability=$(printf "%.0f" \
+        "$(printf "%s*100\n" \
+            "$(extract_xml "precipitation" "probability" "$forecast_data")" \
+            | bc -l \
+        )" \
+    )
+    case $forecast_probability in
+        0)
+            forecast_precipitation="0.0"
+            ;;
+        *)
+            forecast_precipitation=$(extract_xml "precipitation" \
+                "value" "$forecast_data")
+            ;;
+    esac
+    forecast_type=$(extract_xml "precipitation" "type" "$forecast_data")
+
+    # forecast wind
+    forecast_speed=$(printf "%.1f" \
+        "$(printf "%s*3.6\n" \
+            "$(extract_xml "windSpeed" "mps" "$forecast_data")" \
+            | bc -l \
+        )" \
+    )
+    forecast_direction=$(extract_xml "windDirection" "code" "$forecast_data")
 }
 
-output_data() {
+get_weather() {
+    # https://openweathermap.org/weather-conditions
+    case $1 in
+        200) code="11" condition="thunderstorm with light rain";;
+        201) code="11" condition="thunderstorm with rain";;
+        202) code="11" condition="thunderstorm with heavy rain";;
+        210) code="11" condition="light thunderstorm";;
+        211) code="11" condition="thunderstorm";;
+        212) code="11" condition="heavy thunderstorm";;
+        221) code="11" condition="ragged thunderstorm";;
+        230) code="11" condition="thunderstorm with light drizzle";;
+        231) code="11" condition="thunderstorm with drizzle";;
+        232) code="11" condition="thunderstorm with heavy drizzle";;
+        300) code="09" condition="light intensity drizzle";;
+        301) code="09" condition="drizzle";;
+        302) code="09" condition="heavy intensity drizzle";;
+        310) code="09" condition="light intensity drizzle rain";;
+        311) code="09" condition="drizzle rain";;
+        312) code="09" condition="heavy intensity drizzle rain";;
+        313) code="09" condition="shower rain and drizzle";;
+        314) code="09" condition="heavy shower rain and drizzle";;
+        321) code="09" condition="shower drizzle";;
+        500) code="10" condition="light rain";;
+        501) code="10" condition="moderate rain";;
+        502) code="10" condition="heavy intensity rain";;
+        503) code="10" condition="very heavy rain";;
+        504) code="10" condition="extreme rain";;
+        511) code="13" condition="freezing rain";;
+        520) code="09" condition="light intensity shower rain";;
+        521) code="09" condition="shower rain";;
+        522) code="09" condition="heavy intensity shower rain";;
+        531) code="09" condition="ragged shower rain";;
+        600) code="13" condition="light snow";;
+        601) code="13" condition="snow";;
+        602) code="13" condition="heavy snow";;
+        611) code="13" condition="sleet";;
+        612) code="13" condition="light shower sleet";;
+        613) code="13" condition="shower sleet";;
+        615) code="13" condition="light rain and snow";;
+        616) code="13" condition="rain and snow";;
+        620) code="13" condition="light shower snow";;
+        621) code="13" condition="shower snow";;
+        622) code="13" condition="heavy shower snow";;
+        701) code="50" condition="mist";;
+        711) code="50" condition="smoke";;
+        721) code="50" condition="haze";;
+        731) code="50" condition="sand/dust whirls";;
+        741) code="50" condition="fog";;
+        751) code="50" condition="sand";;
+        761) code="50" condition="dust";;
+        762) code="50" condition="volcanic ash";;
+        771) code="50" condition="squalls";;
+        781) code="50" condition="tornado";;
+        800) code="01" condition="clear sky";;
+        801) code="02" condition="few clouds: 11-25%";;
+        802) code="03" condition="scattered clouds: 25-50%";;
+        803) code="04" condition="broken clouds: 51-84%";;
+        804) code="04" condition="overcast clouds: 85-100%";;
+        N)   icon=""  condition="north";;
+        NNE) icon=""  condition="north-northeast";;
+        NE)  icon=""  condition="northeast";;
+        ENE) icon=""  condition="east-northeast";;
+        E)   icon=""  condition="east";;
+        ESE) icon=""  condition="east-southeast";;
+        SE)  icon=""  condition="southeast";;
+        SSE) icon=""  condition="south-southeast";;
+        S)   icon=""  condition="south";;
+        SSW) icon=""  condition="south-southwest";;
+        SW)  icon=""  condition="south-west";;
+        WSW) icon=""  condition="west-southwest";;
+        W)   icon=""  condition="west";;
+        WNW) icon=""  condition="west-northwest";;
+        NW)  icon=""  condition="northwest";;
+        NNW) icon=""  condition="north-northwest";;
+        x71) icon="󰔵"  condition="trend up";;
+        x72) icon="󰔳"  condition="trend down";;
+        x73) icon="󰔴"  condition="trend neutral";;
+        x81) icon="󰕋"  condition="precipitation";;
+        x91) icon="󰖜"  condition="sunrise";;
+        x92) icon="󰖛"  condition="sunset";;
+        *)   icon=""  condition="not available"
+    esac
+
+    case $code in
+        01)
+            case $daytime in
+                d) icon="󰖙";; # clear sky day
+                n) icon="󰖔";; # clear sky night
+            esac;;
+        02)
+            case $daytime in
+                d) icon="󰖕";; # few clouds day
+                n) icon="󰼱";; # few clouds night
+            esac;;
+        03) icon="󰖐";; # scattered clouds
+        04) icon="󰹮";; # broken clouds
+        09) icon="󰼳";; # shower rain
+        10) icon="󰖗";; # rain
+        11) icon="󰙾";; # thunderstorm
+        13) icon="󰜗";; # snow
+        50) icon="󰼰";; # mist
+    esac
+
+    case $2 in
+        condition)
+            printf "%s\n" "$condition"
+            ;;
+        icon)
+            printf "%s " "$icon"
+            ;;
+        *)
+            printf "%%{T2}%s %%{T-}" "$icon"
+            ;;
+    esac
+}
+
+polybar_data() {
     # current
-    current="$(get_icon_info "$current_icon")$current_temp°"
+    current="$(get_weather "$current_number")$current_temp°"
 
     # forecast
-    if [ "$current_icon" = "$forecast_icon" ]; then
+    if [ "$current_number" = "$forecast_number" ]; then
         forecast="$forecast_temp°"
     elif [ "$forecast_temp" -eq "$current_temp" ]; then
-        forecast="$(get_icon_info "$forecast_icon")"
+        forecast="$(get_weather "$forecast_number")"
     else
-        forecast="$(get_icon_info "$forecast_icon")$forecast_temp°"
+        forecast="$(get_weather "$forecast_number")$forecast_temp°"
     fi
 
     # weather
     if [ "$forecast_temp" -gt "$current_temp" ]; then
-        weather="$current $(get_icon_info "71x")$forecast"
+        weather="$current $(get_weather "x71")$forecast"
     elif [ "$current_temp" -gt "$forecast_temp" ]; then
-        weather="$current $(get_icon_info "72x")$forecast"
-    elif [ "$current_icon" = "$forecast_icon" ]; then
+        weather="$current $(get_weather "x72")$forecast"
+    elif [ "$current_number" = "$forecast_number" ]; then
         weather="$current"
     else
-        weather="$current $(get_icon_info "73x")$forecast"
+        weather="$current $(get_weather "x73")$forecast"
     fi
 
     # precipitation
-    [ "$forecast_precipitation" -gt 0 ] \
-        && precipitation=" $(get_icon_info "81x")$forecast_precipitation%"
+    [ "$forecast_probability" -gt 0 ] \
+        && precipitation=" $(get_weather "x81")$forecast_probability%"
 
     # daylight
-    now=$(date +%s)
-    sunrise=$(convert_date "$current_sunrise" "Epoch")
-    sunset=$(convert_date "$current_sunset" "Epoch")
-
-    if [ "$sunrise" -ge "$now" ] \
-        || [ "$now" -gt "$sunset" ]; then
-        daylight=" $(get_icon_info "91x")$(convert_date "$sunrise")"
-    else
-        daylight=" $(get_icon_info "92x")$(convert_date "$sunset")"
-    fi
+    case $daytime in
+        d)
+            daylight=" $(get_weather "x92")$sunset"
+            ;;
+        n)
+            daylight=" $(get_weather "x91")$sunrise"
+            ;;
+    esac
 
     # output
     printf "%s%s%s" "$weather" "$precipitation" "$daylight"
 }
 
-notification() {
-    title="OpenWeather [$(cat "$location_file")]"
-    table_header="──────────────────┬───┬───────"
-    current_name="$(get_icon_info "$current_icon" "name")"
-    current="$(get_icon_info "$current_icon" "icon")"
-    forecast_name="$(get_icon_info "$forecast_icon" "name")"
-    forecast="$(get_icon_info "$forecast_icon" "icon")"
-    precipitation_name="$(get_icon_info "81x" "name")"
-    precipitation="$(get_icon_info "81x" "icon")"
-    sunrise_name="$(get_icon_info "91x" "name")"
-    sunrise_icon="$(get_icon_info "91x" "icon")"
-    sunrise="$(convert_date "$(convert_date "$current_sunrise" "Epoch")")"
-    sunset_name="$(get_icon_info "92x" "name")"
-    sunset_icon="$(get_icon_info "92x" "icon")"
-    sunset="$(convert_date "$(convert_date "$current_sunset" "Epoch")")"
-    message=$(printf "%s\n" \
-        "<i>Current [$(date +"%k:%M %d.%m.%Y")]</i>\n$table_header" \
-        "$(add_spacer "$current_name") | $current| $current_temp°" \
-        "\n<i>Forecast [3h]</i>\n$table_header" \
-        "$(add_spacer "$forecast_name") | $forecast| $forecast_temp°" \
-        "$(add_spacer "$precipitation_name") | $precipitation| $forecast_precipitation%" \
-        "\n<i>Daylight</i>\n$table_header" \
-        "$(add_spacer "$sunrise_name") | $sunrise_icon| $sunrise" \
-        "$(add_spacer "$sunset_name") | $sunset_icon| $sunset" \
-    )
+output_data() {
+    table_header="─────────────────────────────────┬───┬─────────"
+    table_divider="─────────────────────────────────┼───┼─────────"
 
-    notify-send \
-        -t 0 \
-        -u low \
-        "$title" \
-        "\n$message" \
-        -h string:x-canonical-private-synchronous:"$title"
+    row() {
+        width=31
+        divider="│"
+
+        printf "%s %s %s%s %s\n" \
+            "$(polybar_add_spacer "$1" $width)" \
+            "$divider" \
+            "$2" \
+            "$divider" \
+            "$3"
+    }
+
+    current_name="$(get_weather "$current_number" "condition")"
+    current="$(get_weather "$current_number" "icon")"
+    current_wind="$(get_weather "$current_direction" "icon")"
+    sunrise_icon="$(get_weather "x91" "icon")"
+    sunset_icon="$(get_weather "x92" "icon")"
+    forecast_name="$(get_weather "$forecast_number" "condition")"
+    forecast="$(get_weather "$forecast_number" "icon")"
+    forecast_wind="$(get_weather "$forecast_direction" "icon")"
+    precipitation="$(get_weather "x81" "icon")"
+
+    printf "%s\n" \
+        "<i>Current [$(date +"%H:%M %d.%m.%Y")]</i>" \
+        "$table_header" \
+        "$(row "$current_name" \
+            "$current" "$current_temp°C")" \
+        "$(row "feels like" \
+            "  " "$current_like°C")" \
+        "$(row "$current_mode precipitation" \
+            "$precipitation" "${current_precipitation}mm")" \
+        "$(row "wind: ${current_speed}km/h" \
+            "$current_wind" "$current_direction")" \
+        "$(row "pressure" \
+            "  " "${current_pressure}hPa")" \
+        "$(row "humidity" \
+            "  " "$current_humidity%")" \
+        "$(row "visibility" \
+            "  " "${current_visibility}km")" \
+        "$table_divider" \
+        "$(row "sunrise" \
+            "$sunrise_icon" "$sunrise")" \
+        "$(row "sunset" \
+            "$sunset_icon" "$sunset")" \
+        "" \
+        "<i>Forecast [$(period "$forecast_from" "$forecast_to")]</i>" \
+        "$table_header" \
+        "$(row "$forecast_name" \
+            "$forecast" "$forecast_temp°C")" \
+        "$(row "feels like" \
+            "  " "$forecast_like°C")" \
+        "$(row "${forecast_type:-"no"} precipitation: $forecast_probability%" \
+            "$precipitation" "${forecast_precipitation}mm")" \
+        "$(row "wind: ${forecast_speed}km/h" \
+            "$forecast_wind" "$forecast_direction")" \
+        "$(row "pressure" \
+            "  " "${forecast_pressure}hPa")" \
+        "$(row "humidity" \
+            "  " "$forecast_humidity%")" \
+        "$(row "visibility" \
+            "  " "${forecast_visibility}km")"
 }
 
 case "$1" in
@@ -228,7 +404,21 @@ case "$1" in
             && exit 1
 
         get_data
-        notification
+        title="OpenWeather [$(cat "$location_file")]"
+        notify-send \
+            -t 0 \
+            -u low \
+            "$title" \
+            "\n$(output_data)" \
+            -h string:x-canonical-private-synchronous:"$title"
+        ;;
+    --terminal)
+        ! polybar_net_check "openweathermap.org" \
+            && exit 1
+
+        get_data
+        output_data \
+            | sed 's/\(<i>\|<\/i>\)//g'
         ;;
     --update)
         for id in $(pgrep -f "polybar main"); do
@@ -241,6 +431,6 @@ case "$1" in
             && exit 1
 
         get_data
-        polybar_output "$(output_data)"
+        polybar_output "$(polybar_data)"
         ;;
 esac
