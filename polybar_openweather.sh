@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweather.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2023-11-30T07:47:12+0100
+# date:   2023-12-01T13:51:24+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -250,30 +250,58 @@ get_weather() {
         x71) icon="󰔵"  condition="trend up";;
         x72) icon="󰔳"  condition="trend down";;
         x73) icon="󰔴"  condition="trend neutral";;
-        x81) icon="󰕋"  condition="precipitation";;
-        x91) icon="󰖜"  condition="sunrise";;
-        x92) icon="󰖛"  condition="sunset";;
+        x81) icon=""  condition="precipitation";;
+        x91) icon=""  condition="sunrise";;
+        x92) icon=""  condition="sunset";;
         *)   icon=""  condition="not available"
     esac
 
     case $code in
         01)
             case $daytime in
-                d) icon="󰖙";; # clear sky day
-                n) icon="󰖔";; # clear sky night
+                d) icon="";; # clear sky day
+                n) icon="";; # clear sky night
             esac;;
         02)
             case $daytime in
-                d) icon="󰖕";; # few clouds day
-                n) icon="󰼱";; # few clouds night
+                d) icon="";; # few clouds day
+                n) icon="";; # few clouds night
             esac;;
-        03) icon="󰖐";; # scattered clouds
-        04) icon="󰹮";; # broken clouds
-        09) icon="󰼳";; # shower rain
-        10) icon="󰖗";; # rain
-        11) icon="󰙾";; # thunderstorm
-        13) icon="󰜗";; # snow
-        50) icon="󰼰";; # mist
+        03)
+            case $daytime in
+                d) icon="";; # scattered clouds day
+                n) icon="";; # scatteres clouds night
+            esac;;
+        04)
+            case $daytime in
+                d) icon="";; # broken clouds day
+                n) icon="";; # broken clouds night
+            esac;;
+        09)
+            case $daytime in
+                d) icon="";; # shower rain day
+                n) icon="";; # shower rain night
+            esac;;
+        10)
+            case $daytime in
+                d) icon="";; # rain day
+                n) icon="";; # rain night
+            esac;;
+        11)
+            case $daytime in
+                d) icon="";; # thunderstorm day
+                n) icon="";; # thunderstorm night
+            esac;;
+        13)
+            case $daytime in
+                d) icon="";; # snow day
+                n) icon="";; # snow night
+            esac;;
+        50)
+            case $daytime in
+                d) icon="";; # mist day
+                n) icon="";; # mist night
+            esac;;
     esac
 
     case $2 in
@@ -290,40 +318,49 @@ get_weather() {
 }
 
 polybar_data() {
+    current_icon="$(get_weather "$current_number")"
+    forecast_icon="$(get_weather "$forecast_number")"
+    trend_up_icon="$(get_weather "x71")"
+    trend_down_icon="$(get_weather "x72")"
+    trend_neutral_icon="$(get_weather "x72")"
+    precipitation_icon="$(get_weather "x81")"
+    sunrise_icon="$(get_weather "x91")"
+    sunset_icon="$(get_weather "x92")"
+
     # current
     current="$(get_weather "$current_number")$current_temp°"
 
     # forecast
-    if [ "$current_number" = "$forecast_number" ]; then
+    if [ "$current_icon" = "$forecast_icon" ]; then
         forecast="$forecast_temp°"
     elif [ "$forecast_temp" -eq "$current_temp" ]; then
-        forecast="$(get_weather "$forecast_number")"
+        forecast="$forecast_icon"
     else
-        forecast="$(get_weather "$forecast_number")$forecast_temp°"
+        forecast="$forecast_icon$forecast_temp°"
     fi
 
     # weather
     if [ "$forecast_temp" -gt "$current_temp" ]; then
-        weather="$current $(get_weather "x71")$forecast"
+        weather="$current $trend_up_icon$forecast"
     elif [ "$current_temp" -gt "$forecast_temp" ]; then
-        weather="$current $(get_weather "x72")$forecast"
-    elif [ "$current_number" = "$forecast_number" ]; then
+        weather="$current $trend_down_icon$forecast"
+    elif [ "$current_icon" = "$forecast_icon" ]; then
         weather="$current"
     else
-        weather="$current $(get_weather "x73")$forecast"
+        weather="$current $trend_neutral_icon$forecast"
     fi
 
     # precipitation
     [ "$forecast_probability" -gt 0 ] \
-        && precipitation=" $(get_weather "x81")$forecast_probability%"
+        && precipitation=" $precipitation_icon$forecast_probability%"
 
     # daylight
     case $daytime in
         d)
-            daylight=" $(get_weather "x92")$sunset"
+            daylight=" $sunset_icon$sunset"
             ;;
         n)
-            daylight=" $(get_weather "x91")$sunrise"
+            daylight=" $sunrise_icon$sunrise"
             ;;
     esac
 
@@ -339,41 +376,41 @@ output_data() {
         width=31
         divider="│"
 
-        printf "%s %s %s%s %s\n" \
+        printf " %s %s %s%s %s\n" \
             "$(polybar_add_spacer "$1" $width)" \
             "$divider" \
-            "$2" \
+            "${2:-"  "}" \
             "$divider" \
             "$3"
     }
 
-    current_name="$(get_weather "$current_number" "condition")"
-    current="$(get_weather "$current_number" "icon")"
-    current_wind="$(get_weather "$current_direction" "icon")"
+    current_condition="$(get_weather "$current_number" "condition")"
+    current_icon="$(get_weather "$current_number" "icon")"
+    current_wind_icon="$(get_weather "$current_direction" "icon")"
     sunrise_icon="$(get_weather "x91" "icon")"
     sunset_icon="$(get_weather "x92" "icon")"
-    forecast_name="$(get_weather "$forecast_number" "condition")"
-    forecast="$(get_weather "$forecast_number" "icon")"
+    forecast_condition="$(get_weather "$forecast_number" "condition")"
+    forecast_icon="$(get_weather "$forecast_number" "icon")"
     forecast_wind="$(get_weather "$forecast_direction" "icon")"
-    precipitation="$(get_weather "x81" "icon")"
+    precipitation_icon="$(get_weather "x81" "icon")"
 
     printf "%s\n" \
         "<i>Current [$(date +"%H:%M %d.%m.%Y")]</i>" \
         "$table_header" \
-        "$(row "$current_name" \
-            "$current" "$current_temp°C")" \
+        "$(row "$current_condition" \
+            "$current_icon" "$current_temp°C")" \
         "$(row "feels like" \
-            "  " "$current_like°C")" \
+            "" "$current_like°C")" \
         "$(row "$current_mode precipitation" \
-            "$precipitation" "${current_precipitation}mm")" \
+            "$precipitation_icon" "${current_precipitation}mm")" \
         "$(row "wind: ${current_speed}km/h" \
-            "$current_wind" "$current_direction")" \
+            "$current_wind_icon" "$current_direction")" \
         "$(row "pressure" \
-            "  " "${current_pressure}hPa")" \
+            "" "${current_pressure}hPa")" \
         "$(row "humidity" \
-            "  " "$current_humidity%")" \
+            "" "$current_humidity%")" \
         "$(row "visibility" \
-            "  " "${current_visibility}km")" \
+            "" "${current_visibility}km")" \
         "$table_divider" \
         "$(row "sunrise" \
             "$sunrise_icon" "$sunrise")" \
@@ -382,26 +419,26 @@ output_data() {
         "" \
         "<i>Forecast [$(period "$forecast_from" "$forecast_to")]</i>" \
         "$table_header" \
-        "$(row "$forecast_name" \
-            "$forecast" "$forecast_temp°C")" \
+        "$(row "$forecast_condition" \
+            "$forecast_icon" "$forecast_temp°C")" \
         "$(row "feels like" \
-            "  " "$forecast_like°C")" \
+            "" "$forecast_like°C")" \
         "$(row "${forecast_type:-"no"} precipitation: $forecast_probability%" \
-            "$precipitation" "${forecast_precipitation}mm")" \
+            "$precipitation_icon" "${forecast_precipitation}mm")" \
         "$(row "wind: ${forecast_speed}km/h" \
             "$forecast_wind" "$forecast_direction")" \
         "$(row "pressure" \
-            "  " "${forecast_pressure}hPa")" \
+            "" "${forecast_pressure}hPa")" \
         "$(row "humidity" \
-            "  " "$forecast_humidity%")" \
+            "" "$forecast_humidity%")" \
         "$(row "visibility" \
-            "  " "${forecast_visibility}km")"
+            "" "${forecast_visibility}km")"
 }
 
 case "$1" in
     --notify)
-        ! polybar_net_check "openweathermap.org" \
-            && exit 1
+        polybar_net_check "openweathermap.org" \
+            || exit 1
 
         get_data
         title="OpenWeather [$(cat "$location_file")]"
@@ -413,8 +450,8 @@ case "$1" in
             -h string:x-canonical-private-synchronous:"$title"
         ;;
     --terminal)
-        ! polybar_net_check "openweathermap.org" \
-            && exit 1
+        polybar_net_check "openweathermap.org" \
+            || exit 1
 
         get_data
         output_data \
@@ -427,8 +464,8 @@ case "$1" in
         done
         ;;
     *)
-        ! polybar_net_check "openweathermap.org" \
-            && exit 1
+        polybar_net_check "openweathermap.org" \
+            || exit 1
 
         get_data
         polybar_output "$(polybar_data)"
