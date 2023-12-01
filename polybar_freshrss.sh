@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_freshrss.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2023-11-27T20:57:10+0100
+# date:   2023-11-30T14:03:52+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -61,8 +61,8 @@ case "$1" in
         done
         ;;
     *)
-        ! polybar_net_check "m625q" \
-            && exit 1
+        polybar_net_check "m625q" \
+            || exit 1
 
         unreaded=$(request "unread-count")
         unreaded=$(get_count "$unreaded" 'reading-list",')

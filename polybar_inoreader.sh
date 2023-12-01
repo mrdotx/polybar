@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2023-11-27T20:55:57+0100
+# date:   2023-11-30T14:04:07+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -57,8 +57,8 @@ case "$1" in
         done
         ;;
     *)
-        ! polybar_net_check "inoreader.com" \
-            && exit 1
+        polybar_net_check "inoreader.com" \
+            || exit 1
 
         data=$(request "unread-count")
         unreaded=$(get_count "$data" 'reading-list",')
