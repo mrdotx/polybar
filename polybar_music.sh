@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2023-11-27T20:54:11+0100
+# date:   2023-12-01T14:08:57+0100
 
 # source polybar helper
 . polybar_helper.sh
@@ -109,13 +109,13 @@ notify() {
 
     case $status in
         "playing")
-            notification " $runtime" "$info"
+            notification "󰐊 $runtime" "$info"
             ;;
         "paused")
-            notification " $runtime" "$info"
+            notification "󰏤 $runtime" "$info"
             ;;
         "stopped")
-            notification " $runtime" "$info"
+            notification "󰓛 $runtime" "$info"
             ;;
         *)
             notification "$runtime" "$info"
