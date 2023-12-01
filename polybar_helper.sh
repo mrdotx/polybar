@@ -3,10 +3,10 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_helper.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2023-11-28T08:44:03+0100
+# date:   2023-11-30T09:40:38+0100
 
 polybar_add_spacer() {
-    polybar_add_spacer_output=" $1"
+    polybar_add_spacer_output="$1"
     polybar_add_spacer_i=$(($2 - ${#1}))
 
     while [ "$polybar_add_spacer_i" -gt 0 ]; do
