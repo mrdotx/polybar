@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2023-11-25T11:19:44+0100
+# date:   2023-12-03T08:57:04+0100
 
 config="$HOME/.config/X11/Xresources.d/polybar"
 xresource="$HOME/.config/X11/Xresources"
@@ -12,12 +12,13 @@ service="polybar.service"
 script=$(basename "$0")
 help="$script [-h/--help] -- script to start polybar
   Usage:
-    $script [--kill/--reload/--monitor1/--monitor2]
+    $script [--kill/--reload/--restart/--monitor1/--monitor2]
 
   Settings:
     without given settings, re-/start polybar
-    [--kill]     = kill single-/multi-/stats bar
-    [--reload]   = reload polybar when it is running
+    [--kill]     = terminate already running polybar instances
+    [--reload]   = reload polybar modules
+    [--restart]  = restart polybar
     [--monitor1] = cycle bars on primary monitor
     [--monitor2] = cycle bars on secondary monitor
 
@@ -25,6 +26,7 @@ help="$script [-h/--help] -- script to start polybar
     $script
     $script --kill
     $script --reload
+    $script --restart
     $script --monitor1
     $script --monitor2"
 
@@ -65,8 +67,7 @@ cycle() {
             *)
                 set_xresource "Polybar.$1" "main"
                 ;;
-        esac \
-        && systemctl --user restart "$service"
+        esac
 }
 
 start() {
@@ -112,6 +113,9 @@ case "$1" in
         ;;
     --kill)
         polybar-msg cmd quit >/dev/null 2>&1
+        ;;
+    --restart)
+        systemctl --user restart "$service"
         ;;
     --reload)
         polybar-msg cmd restart >/dev/null 2>&1
