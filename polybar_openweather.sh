@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweather.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2023-12-01T13:51:24+0100
+# date:   2023-12-01T19:37:28+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -309,7 +309,7 @@ get_weather() {
             printf "%s\n" "$condition"
             ;;
         icon)
-            printf "%s " "$icon"
+            printf "%s" "$icon"
             ;;
         *)
             printf "%%{T2}%s %%{T-}" "$icon"
@@ -376,10 +376,10 @@ output_data() {
         width=31
         divider="│"
 
-        printf " %s %s %s%s %s\n" \
+        printf " %s %s %s %s %s\n" \
             "$(polybar_add_spacer "$1" $width)" \
             "$divider" \
-            "${2:-"  "}" \
+            "${2:-" "}" \
             "$divider" \
             "$3"
     }
