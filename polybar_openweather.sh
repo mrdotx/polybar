@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweather.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2023-12-01T19:37:28+0100
+# date:   2023-12-04T20:46:59+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -14,7 +14,7 @@ LANG=C
 gpg_file="$HOME/.local/share/repos/password-store/www/development/openweathermap.gpg"
 
 # file for location cache (if not available, determine with ipinfo.io)
-location_file="/tmp/weather.location"
+location_file="/tmp/weather_location"
 
 # source polybar helper
 . polybar_helper.sh
@@ -54,16 +54,13 @@ convert_date() {
         Epoch)
             TZ=UTC date -d "$1" +%s
             ;;
-        *)
+        time)
             date -d "@$1" +%H:%M
             ;;
+        *)
+            date -d "@$1" +"%H:%M %d.%m.%Y"
+            ;;
     esac
-}
-
-period() {
-    printf "%s - %s\n" \
-        "$(convert_date "$(convert_date "$1" "Epoch")")" \
-        "$(convert_date "$(convert_date "$2" "Epoch")")"
 }
 
 get_data() {
@@ -111,14 +108,18 @@ get_data() {
     )
     current_direction=$(extract_xml "direction" "code" "$current_data")
 
+    # current last update
+    current_last=$(extract_xml "lastupdate" "value" "$current_data")
+    lastupdate=$(convert_date "$(convert_date "$current_last" "Epoch")")
+
     # current daylight
     current_sunrise=$(extract_xml "sun" "rise" "$current_data")
     current_sunset=$(extract_xml "sun" "set" "$current_data")
     daylight_sunrise=$(convert_date "$current_sunrise" "Epoch")
     daylight_sunset=$(convert_date "$current_sunset" "Epoch")
     now=$(date +%s)
-    sunrise=$(convert_date "$daylight_sunrise")
-    sunset="$(convert_date "$daylight_sunset")"
+    sunrise=$(convert_date "$daylight_sunrise" "time")
+    sunset=$(convert_date "$daylight_sunset" "time")
     if [ "$daylight_sunrise" -ge "$now" ] \
         || [ "$now" -gt "$daylight_sunset" ]; then
         daytime="n"
@@ -129,6 +130,10 @@ get_data() {
     # forecast
     forecast_from=$(extract_xml "time" "from" "$forecast_data")
     forecast_to=$(extract_xml "time" "to" "$forecast_data")
+    from_to=$(printf "%s - %s\n" \
+        "$(convert_date "$(convert_date "$forecast_from" "Epoch")" "time")" \
+        "$(convert_date "$(convert_date "$forecast_to" "Epoch")" "time")"
+    )
     forecast_number=$(extract_xml "symbol" "number" "$forecast_data")
     forecast_temp=$(printf "%.0f" \
         "$(extract_xml "temperature" "value" "$forecast_data")" \
@@ -318,6 +323,8 @@ get_weather() {
 }
 
 polybar_data() {
+    get_data
+
     current_icon="$(get_weather "$current_number")"
     forecast_icon="$(get_weather "$forecast_number")"
     trend_up_icon="$(get_weather "x71")"
@@ -369,19 +376,22 @@ polybar_data() {
 }
 
 output_data() {
+    get_data
+
     table_header="─────────────────────────────────┬───┬─────────"
     table_divider="─────────────────────────────────┼───┼─────────"
 
     row() {
-        width=31
-        divider="│"
+        table_width=31
+        table_width1=8
+        table_row_divider="│"
 
         printf " %s %s %s %s %s\n" \
-            "$(polybar_add_spacer "$1" $width)" \
-            "$divider" \
+            "$(polybar_add_spacer "$1" $table_width)" \
+            "$table_row_divider" \
             "${2:-" "}" \
-            "$divider" \
-            "$3"
+            "$table_row_divider" \
+            "$(polybar_add_spacer "$3" $table_width1)"
     }
 
     current_condition="$(get_weather "$current_number" "condition")"
@@ -394,8 +404,11 @@ output_data() {
     forecast_wind="$(get_weather "$forecast_direction" "icon")"
     precipitation_icon="$(get_weather "x81" "icon")"
 
+    current_file="$(mktemp -t weather_current.XXXXXX)"
+    forecast_file="$(mktemp -t weather_forecast.XXXXXX)"
+
     printf "%s\n" \
-        "<i>Current [$(date +"%H:%M %d.%m.%Y")]</i>" \
+        "<i>Current [$lastupdate]</i>" \
         "$table_header" \
         "$(row "$current_condition" \
             "$current_icon" "$current_temp°C")" \
@@ -415,9 +428,10 @@ output_data() {
         "$(row "sunrise" \
             "$sunrise_icon" "$sunrise")" \
         "$(row "sunset" \
-            "$sunset_icon" "$sunset")" \
-        "" \
-        "<i>Forecast [$(period "$forecast_from" "$forecast_to")]</i>" \
+            "$sunset_icon" "$sunset")" > "$current_file"
+
+    printf "%s\n" \
+        "<i>Forecast [$from_to]</i>" \
         "$table_header" \
         "$(row "$forecast_condition" \
             "$forecast_icon" "$forecast_temp°C")" \
@@ -432,7 +446,22 @@ output_data() {
         "$(row "humidity" \
             "" "$forecast_humidity%")" \
         "$(row "visibility" \
-            "" "${forecast_visibility}km")"
+            "" "${forecast_visibility}km")" > "$forecast_file"
+
+    case $1 in
+        notify)
+            sed '1i\ ' "$current_file"
+            sed '1i\ ' "$forecast_file"
+            ;;
+        terminal)
+            paste "$current_file" "$forecast_file" \
+                | sed \
+                    -e 's/<i>//g' \
+                    -e 's/<\/i>/                /g'
+            ;;
+    esac
+
+    rm -f "$current_file" "$forecast_file"
 }
 
 case "$1" in
@@ -440,22 +469,19 @@ case "$1" in
         polybar_net_check "openweathermap.org" \
             || exit 1
 
-        get_data
         title="OpenWeather [$(cat "$location_file")]"
         notify-send \
             -t 0 \
             -u low \
             "$title" \
-            "\n$(output_data)" \
+            "$(output_data "notify")" \
             -h string:x-canonical-private-synchronous:"$title"
         ;;
     --terminal)
         polybar_net_check "openweathermap.org" \
             || exit 1
 
-        get_data
-        output_data \
-            | sed 's/\(<i>\|<\/i>\)//g'
+        output_data "terminal"
         ;;
     --update)
         for id in $(pgrep -f "polybar main"); do
