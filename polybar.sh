@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2023-12-03T08:57:04+0100
+# date:   2023-12-03T16:33:30+0100
 
 config="$HOME/.config/X11/Xresources.d/polybar"
 xresource="$HOME/.config/X11/Xresources"
@@ -12,13 +12,14 @@ service="polybar.service"
 script=$(basename "$0")
 help="$script [-h/--help] -- script to start polybar
   Usage:
-    $script [--kill/--reload/--restart/--monitor1/--monitor2]
+    $script [--kill/--reload/--restart/--toggle/--monitor1/--monitor2]
 
   Settings:
     without given settings, re-/start polybar
     [--kill]     = terminate already running polybar instances
     [--reload]   = reload polybar modules
     [--restart]  = restart polybar
+    [--toggle]   = toggle polybar visibility
     [--monitor1] = cycle bars on primary monitor
     [--monitor2] = cycle bars on secondary monitor
 
@@ -119,6 +120,9 @@ case "$1" in
         ;;
     --reload)
         polybar-msg cmd restart >/dev/null 2>&1
+        ;;
+    --toggle)
+        polybar-msg cmd toggle >/dev/null 2>&1
         ;;
     --monitor1)
         cycle "monitor1"
