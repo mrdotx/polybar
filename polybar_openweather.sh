@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweather.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2023-12-04T20:46:59+0100
+# date:   2023-12-05T16:36:42+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -68,7 +68,9 @@ get_data() {
     # https://openweathermap.org/current
     current_data=$(request "weather")
     # https://openweathermap.org/forecast5
-    forecast_data=$(request "forecast")
+    forecast_data=$(printf "%s\n" "$(request "forecast")" \
+        | awk -F '</time>' '{print $1}' \
+    )
 
     # current
     current_temp=$(printf "%.0f" \
@@ -109,30 +111,43 @@ get_data() {
     current_direction=$(extract_xml "direction" "code" "$current_data")
 
     # current last update
-    current_last=$(extract_xml "lastupdate" "value" "$current_data")
-    lastupdate=$(convert_date "$(convert_date "$current_last" "Epoch")")
+    current_last=$(convert_date \
+        "$(convert_date \
+            "$(extract_xml "lastupdate" "value" "$current_data")" \
+        "Epoch") \
+    ")
 
-    # current daylight
-    current_sunrise=$(extract_xml "sun" "rise" "$current_data")
-    current_sunset=$(extract_xml "sun" "set" "$current_data")
-    daylight_sunrise=$(convert_date "$current_sunrise" "Epoch")
-    daylight_sunset=$(convert_date "$current_sunset" "Epoch")
+    # current daytime
+    current_sunrise_epoch=$(convert_date \
+            "$(extract_xml "sun" "rise" "$current_data")" \
+        "Epoch" \
+    )
+    current_sunset_epoch=$(convert_date \
+            "$(extract_xml "sun" "set" "$current_data")" \
+        "Epoch" \
+    )
+    current_sunrise=$(convert_date "$current_sunrise_epoch" "time")
+    current_sunset=$(convert_date "$current_sunset_epoch" "time")
     now=$(date +%s)
-    sunrise=$(convert_date "$daylight_sunrise" "time")
-    sunset=$(convert_date "$daylight_sunset" "time")
-    if [ "$daylight_sunrise" -ge "$now" ] \
-        || [ "$now" -gt "$daylight_sunset" ]; then
-        daytime="n"
+    if [ "$current_sunrise_epoch" -ge "$now" ] \
+        || [ "$now" -gt "$current_sunset_epoch" ]; then
+        current_daytime="n"
     else
-        daytime="d"
+        current_daytime="d"
     fi
 
     # forecast
-    forecast_from=$(extract_xml "time" "from" "$forecast_data")
-    forecast_to=$(extract_xml "time" "to" "$forecast_data")
-    from_to=$(printf "%s - %s\n" \
-        "$(convert_date "$(convert_date "$forecast_from" "Epoch")" "time")" \
-        "$(convert_date "$(convert_date "$forecast_to" "Epoch")" "time")"
+    forecast_from_to=$(printf "%s - %s\n" \
+        "$(convert_date \
+            "$(convert_date \
+                "$(extract_xml "time" "from" "$forecast_data")" \
+            "Epoch")" \
+        "time")" \
+        "$(convert_date \
+            "$(convert_date \
+                "$(extract_xml "time" "to" "$forecast_data")" \
+            "Epoch")" \
+        "time")"
     )
     forecast_number=$(extract_xml "symbol" "number" "$forecast_data")
     forecast_temp=$(printf "%.0f" \
@@ -263,47 +278,47 @@ get_weather() {
 
     case $code in
         01)
-            case $daytime in
+            case $current_daytime in
                 d) icon="";; # clear sky day
                 n) icon="";; # clear sky night
             esac;;
         02)
-            case $daytime in
+            case $current_daytime in
                 d) icon="";; # few clouds day
                 n) icon="";; # few clouds night
             esac;;
         03)
-            case $daytime in
+            case $current_daytime in
                 d) icon="";; # scattered clouds day
                 n) icon="";; # scatteres clouds night
             esac;;
         04)
-            case $daytime in
+            case $current_daytime in
                 d) icon="";; # broken clouds day
                 n) icon="";; # broken clouds night
             esac;;
         09)
-            case $daytime in
+            case $current_daytime in
                 d) icon="";; # shower rain day
                 n) icon="";; # shower rain night
             esac;;
         10)
-            case $daytime in
+            case $current_daytime in
                 d) icon="";; # rain day
                 n) icon="";; # rain night
             esac;;
         11)
-            case $daytime in
+            case $current_daytime in
                 d) icon="";; # thunderstorm day
                 n) icon="";; # thunderstorm night
             esac;;
         13)
-            case $daytime in
+            case $current_daytime in
                 d) icon="";; # snow day
                 n) icon="";; # snow night
             esac;;
         50)
-            case $daytime in
+            case $current_daytime in
                 d) icon="";; # mist day
                 n) icon="";; # mist night
             esac;;
@@ -362,12 +377,12 @@ polybar_data() {
         && precipitation=" $precipitation_icon$forecast_probability%"
 
     # daylight
-    case $daytime in
+    case $current_daytime in
         d)
-            daylight=" $sunset_icon$sunset"
+            daylight=" $sunset_icon$current_sunset"
             ;;
         n)
-            daylight=" $sunrise_icon$sunrise"
+            daylight=" $sunrise_icon$current_sunrise"
             ;;
     esac
 
@@ -408,7 +423,7 @@ output_data() {
     forecast_file="$(mktemp -t weather_forecast.XXXXXX)"
 
     printf "%s\n" \
-        "<i>Current [$lastupdate]</i>" \
+        "<i>Current [$current_last]</i>" \
         "$table_header" \
         "$(row "$current_condition" \
             "$current_icon" "$current_temp°C")" \
@@ -426,12 +441,12 @@ output_data() {
             "" "${current_visibility}km")" \
         "$table_divider" \
         "$(row "sunrise" \
-            "$sunrise_icon" "$sunrise")" \
+            "$sunrise_icon" "$current_sunrise")" \
         "$(row "sunset" \
-            "$sunset_icon" "$sunset")" > "$current_file"
+            "$sunset_icon" "$current_sunset")" > "$current_file"
 
     printf "%s\n" \
-        "<i>Forecast [$from_to]</i>" \
+        "<i>Forecast [$forecast_from_to]</i>" \
         "$table_header" \
         "$(row "$forecast_condition" \
             "$forecast_icon" "$forecast_temp°C")" \
