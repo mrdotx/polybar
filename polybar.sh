@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2023-12-03T16:33:30+0100
+# date:   2023-12-14T08:25:28+0100
 
 config="$HOME/.config/X11/Xresources.d/polybar"
 xresource="$HOME/.config/X11/Xresources"
@@ -20,8 +20,8 @@ help="$script [-h/--help] -- script to start polybar
     [--reload]   = reload polybar modules
     [--restart]  = restart polybar
     [--toggle]   = toggle polybar visibility
-    [--monitor1] = cycle bars on primary monitor
-    [--monitor2] = cycle bars on secondary monitor
+    [--monitor1] = change bar on primary monitor
+    [--monitor2] = change bar on secondary monitor
 
   Example:
     $script
@@ -42,19 +42,22 @@ set_xresource() {
     xrdb -merge "$xresource"
 }
 
-cycle() {
+bars() {
     systemctl --user -q is-active "$service" \
         && case "$(get_xresource "Polybar.$1")" in
             main)
-                set_xresource "Polybar.$1" "main_small"
+                set_xresource "Polybar.$1" "main_s"
                 ;;
-            main_small)
-                set_xresource "Polybar.$1" "empty"
+            main_s)
+                set_xresource "Polybar.$1" "blank"
                 ;;
-            empty)
+            blank)
                 set_xresource "Polybar.$1" "sys_info"
                 ;;
             sys_info)
+                set_xresource "Polybar.$1" "sys_info_s"
+                ;;
+            sys_info_s)
                 monitor1="$(get_xresource "Polybar.monitor1")"
                 monitor2="$(get_xresource "Polybar.monitor2")"
 
@@ -124,11 +127,8 @@ case "$1" in
     --toggle)
         polybar-msg cmd toggle >/dev/null 2>&1
         ;;
-    --monitor1)
-        cycle "monitor1"
-        ;;
-    --monitor2)
-        cycle "monitor2"
+    --monitor1 | --monitor2)
+        bars "${1##*--}"
         ;;
     *)
         start
