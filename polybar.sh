@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2024-02-01T07:41:34+0100
+# date:   2024-02-02T09:20:15+0100
 
 service="polybar.service"
 
@@ -29,7 +29,7 @@ start() {
     # terminate already running bar instances
     polybar-msg cmd quit >/dev/null 2>&1
 
-    # type = main, main_s, blank, sys_info, sys_info_s
+    # type = blank, sys_info_s, sys_info, main_s, main
     case "$(uname -n)" in
         m75q)
             monitor1="sys_info"
@@ -37,8 +37,8 @@ start() {
             pin_i3=true
             ;;
         mi)
-            monitor1="main"
-            monitor2="sys_info"
+            monitor1="main_s"
+            monitor2="sys_info_s"
             pin_i3=true
             ;;
         *)
@@ -57,17 +57,22 @@ start() {
         | cut -d ':' -f1 \
     )
 
-    if [ -n "$secondary" ]; then
-        [ -n "$monitor1" ] \
-            && I3PIN=$pin_i3 MONITOR=$primary polybar "$monitor1" &
+    case "$secondary" in
+        "")
+            if [ -z "$monitor1" ]; then
+                MONITOR=$primary polybar "$monitor2" &
+            else
+                MONITOR=$primary polybar "$monitor1" &
+            fi
+            ;;
+        *)
+            [ -n "$monitor1" ] \
+                && I3PIN=$pin_i3 MONITOR=$primary polybar "$monitor1" &
 
-        [ -n "$monitor2" ] \
-            && I3PIN=$pin_i3 MONITOR=$secondary polybar "$monitor2" &
-    elif [ -z "$monitor1" ]; then
-        MONITOR=$primary polybar "$monitor2" &
-    else
-        MONITOR=$primary polybar "$monitor1" &
-    fi
+            [ -n "$monitor2" ] \
+                && I3PIN=$pin_i3 MONITOR=$secondary polybar "$monitor2" &
+            ;;
+    esac
 }
 
 case "$1" in
