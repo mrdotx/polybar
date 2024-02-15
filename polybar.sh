@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2024-02-02T09:20:15+0100
+# date:   2024-02-15T09:54:18+0100
 
 service="polybar.service"
 
@@ -32,17 +32,22 @@ start() {
     # type = blank, sys_info_s, sys_info, main_s, main
     case "$(uname -n)" in
         m75q)
-            monitor1="sys_info"
-            monitor2="main"
+            primary_bar="sys_info"
+            primary_bottom="false"
+            secondary_bar="main"
+            secondary_bottom="false"
             pin_i3=true
             ;;
         mi)
-            monitor1="main_s"
-            monitor2="sys_info_s"
+            primary_bar="main_s"
+            primary_bottom="false"
+            secondary_bar="sys_info_s"
+            secondary_bottom="false"
             pin_i3=true
             ;;
         *)
-            monitor1="main_s"
+            primary_bar="main_s"
+            primary_bottom="false"
             pin_i3=false
             ;;
     esac
@@ -59,18 +64,22 @@ start() {
 
     case "$secondary" in
         "")
-            if [ -z "$monitor1" ]; then
-                MONITOR=$primary polybar "$monitor2" &
+            if [ -z "$primary_bar" ]; then
+                MONITOR=$primary BOTTOM=$primary_bottom \
+                    polybar "$secondary_bar" &
             else
-                MONITOR=$primary polybar "$monitor1" &
+                MONITOR=$primary BOTTOM=$primary_bottom \
+                    polybar "$primary_bar" &
             fi
             ;;
         *)
-            [ -n "$monitor1" ] \
-                && I3PIN=$pin_i3 MONITOR=$primary polybar "$monitor1" &
+            [ -n "$primary_bar" ] \
+                && I3PIN=$pin_i3 MONITOR=$primary BOTTOM=$primary_bottom \
+                    polybar "$primary_bar" &
 
-            [ -n "$monitor2" ] \
-                && I3PIN=$pin_i3 MONITOR=$secondary polybar "$monitor2" &
+            [ -n "$secondary_bar" ] \
+                && I3PIN=$pin_i3 MONITOR=$secondary BOTTOM=$secondary_bottom \
+                    polybar "$secondary_bar" &
             ;;
     esac
 }
