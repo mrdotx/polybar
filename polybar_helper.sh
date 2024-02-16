@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_helper.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2023-11-30T09:40:38+0100
+# date:   2024-02-16T09:16:56+0100
 
 polybar_add_spacer() {
     polybar_add_spacer_output="$1"
@@ -18,10 +18,8 @@ polybar_add_spacer() {
 }
 
 polybar_output() {
-    # xresource value for line color (default Polybar.primary)
-    polybar_output_line_color=${2:-Polybar.primary}
     # xresource value for foreground color (default Polybar.foreground)
-    polybar_output_foreground_color=${3:-Polybar.foreground}
+    polybar_output_foreground_color=${2:-Polybar.foreground}
 
     xrdb_query() {
         xrdb -query \
@@ -29,8 +27,7 @@ polybar_output() {
             | cut -f2
     }
 
-    printf "%%{o%s}%%{F%s}%s%%{F- o-}\n" \
-        "$(xrdb_query "$polybar_output_line_color")" \
+    printf "%%{F%s}%s%%{B- F-}\n" \
         "$(xrdb_query "$polybar_output_foreground_color")" \
         "$1"
 }
