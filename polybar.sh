@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2024-02-15T09:54:18+0100
+# date:   2024-02-15T21:35:28+0100
 
 service="polybar.service"
 
@@ -32,10 +32,10 @@ start() {
     # type = blank, sys_info_s, sys_info, main_s, main
     case "$(uname -n)" in
         m75q)
-            primary_bar="sys_info"
+            primary_bar="main"
             primary_bottom="false"
-            secondary_bar="main"
-            secondary_bottom="false"
+            secondary_bar="sys_info"
+            secondary_bottom="true"
             pin_i3=true
             ;;
         mi)
