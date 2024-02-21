@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2024-02-15T21:35:28+0100
+# date:   2024-02-21T07:30:13+0100
 
 service="polybar.service"
 
@@ -29,29 +29,6 @@ start() {
     # terminate already running bar instances
     polybar-msg cmd quit >/dev/null 2>&1
 
-    # type = blank, sys_info_s, sys_info, main_s, main
-    case "$(uname -n)" in
-        m75q)
-            primary_bar="main"
-            primary_bottom="false"
-            secondary_bar="sys_info"
-            secondary_bottom="true"
-            pin_i3=true
-            ;;
-        mi)
-            primary_bar="main_s"
-            primary_bottom="false"
-            secondary_bar="sys_info_s"
-            secondary_bottom="false"
-            pin_i3=true
-            ;;
-        *)
-            primary_bar="main_s"
-            primary_bottom="false"
-            pin_i3=false
-            ;;
-    esac
-
     primary=$(polybar -m \
         | grep "(primary)" \
         | cut -d ':' -f1 \
@@ -62,24 +39,31 @@ start() {
         | cut -d ':' -f1 \
     )
 
+    # type = blank, sys_info_s, sys_info, main_s, main
     case "$secondary" in
         "")
-            if [ -z "$primary_bar" ]; then
-                MONITOR=$primary BOTTOM=$primary_bottom \
-                    polybar "$secondary_bar" &
-            else
-                MONITOR=$primary BOTTOM=$primary_bottom \
-                    polybar "$primary_bar" &
-            fi
+            primary_bar="main_s"
+            primary_bottom="false"
+            pin_i3=false
+
+            I3PIN=$pin_i3 MONITOR=$primary BOTTOM=$primary_bottom \
+                polybar "$primary_bar" &
             ;;
         *)
-            [ -n "$primary_bar" ] \
-                && I3PIN=$pin_i3 MONITOR=$primary BOTTOM=$primary_bottom \
-                    polybar "$primary_bar" &
+            primary_bar="main"
+            primary_bottom="false"
+            secondary_bar="sys_info"
+            secondary_bottom="false"
+            pin_i3=true
 
-            [ -n "$secondary_bar" ] \
-                && I3PIN=$pin_i3 MONITOR=$secondary BOTTOM=$secondary_bottom \
-                    polybar "$secondary_bar" &
+            # exceptions by hostname
+            [ "$(uname -n)" = "m75q" ] \
+                && secondary_bottom="true"
+
+            I3PIN=$pin_i3 MONITOR=$primary BOTTOM=$primary_bottom \
+                polybar "$primary_bar" &
+            I3PIN=$pin_i3 MONITOR=$secondary BOTTOM=$secondary_bottom \
+                polybar "$secondary_bar" &
             ;;
     esac
 }
