@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2024-02-21T07:30:13+0100
+# date:   2024-02-21T13:15:27+0100
 
 service="polybar.service"
 
@@ -25,45 +25,42 @@ help="$script [-h/--help] -- script to start polybar
     $script --reload
     $script --restart"
 
-start() {
-    # terminate already running bar instances
-    polybar-msg cmd quit >/dev/null 2>&1
+get_monitor() {
+    polybar -m \
+        | sed -n "${1}p" \
+        | cut -d ':' -f1
+}
 
-    primary=$(polybar -m \
-        | grep "(primary)" \
-        | cut -d ':' -f1 \
-    )
-    secondary=$(polybar -m \
-        | grep -v "(primary)" \
-        | head -n1 \
-        | cut -d ':' -f1 \
-    )
+quit_bar() {
+    polybar-msg cmd quit >/dev/null 2>&1
+}
+
+exec_bar() {
+    MONITOR="$1" BOTTOM="$2" I3PIN="$3" polybar "$4" &
+}
+
+start() {
+    quit_bar
+
+    primary=$(get_monitor 1)
+    secondary=$(get_monitor 2)
 
     # type = blank, sys_info_s, sys_info, main_s, main
     case "$secondary" in
         "")
-            primary_bar="main_s"
-            primary_bottom="false"
-            pin_i3=false
-
-            I3PIN=$pin_i3 MONITOR=$primary BOTTOM=$primary_bottom \
-                polybar "$primary_bar" &
+            exec_bar "$primary" "false" "false" "main_s"
             ;;
         *)
-            primary_bar="main"
-            primary_bottom="false"
-            secondary_bar="sys_info"
-            secondary_bottom="false"
-            pin_i3=true
-
-            # exceptions by hostname
-            [ "$(uname -n)" = "m75q" ] \
-                && secondary_bottom="true"
-
-            I3PIN=$pin_i3 MONITOR=$primary BOTTOM=$primary_bottom \
-                polybar "$primary_bar" &
-            I3PIN=$pin_i3 MONITOR=$secondary BOTTOM=$secondary_bottom \
-                polybar "$secondary_bar" &
+            exec_bar "$primary" "false" "true" "main"
+            # secondary monitor by hostname
+            case "$(uname -n)" in
+                m75q)
+                    exec_bar "$secondary" "true" "true" "sys_info"
+                    ;;
+                *)
+                    exec_bar "$secondary" "false" "true" "sys_info"
+                    ;;
+            esac
             ;;
     esac
 }
@@ -73,7 +70,7 @@ case "$1" in
         printf "%s\n" "$help"
         ;;
     --kill)
-        polybar-msg cmd quit >/dev/null 2>&1
+        quit_bar
         ;;
     --restart)
         systemctl --user restart "$service"
