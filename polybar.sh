@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2024-02-21T13:15:27+0100
+# date:   2024-02-25T08:14:51+0100
 
 service="polybar.service"
 
@@ -35,8 +35,20 @@ quit_bar() {
     polybar-msg cmd quit >/dev/null 2>&1
 }
 
+get_value() {
+    case $1 in
+        top) printf "false";;
+        bottom) printf "true";;
+        pinned) printf "true";;
+        unpinned) printf "false";;
+    esac
+}
+
 exec_bar() {
-    MONITOR="$1" BOTTOM="$2" I3PIN="$3" polybar "$4" &
+    MONITOR="$1" \
+    BOTTOM="$(get_value "$2")" \
+    I3PIN="$(get_value "$3")" \
+        polybar "$4" &
 }
 
 start() {
@@ -48,17 +60,17 @@ start() {
     # type = blank, sys_info_s, sys_info, main_s, main
     case "$secondary" in
         "")
-            exec_bar "$primary" "false" "false" "main_s"
+            exec_bar "$primary" "top" "unpinned" "main_s"
             ;;
         *)
-            exec_bar "$primary" "false" "true" "main"
+            exec_bar "$primary" "top" "pinned" "main"
             # secondary monitor by hostname
             case "$(uname -n)" in
                 m75q)
-                    exec_bar "$secondary" "true" "true" "sys_info"
+                    exec_bar "$secondary" "bottom" "pinned" "sys_info"
                     ;;
                 *)
-                    exec_bar "$secondary" "false" "true" "sys_info"
+                    exec_bar "$secondary" "top" "pinned" "sys_info"
                     ;;
             esac
             ;;
