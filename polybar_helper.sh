@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_helper.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2024-02-16T09:16:56+0100
+# date:   2024-02-27T13:01:10+0100
 
 polybar_add_spacer() {
     polybar_add_spacer_output="$1"
@@ -27,7 +27,7 @@ polybar_output() {
             | cut -f2
     }
 
-    printf "%%{F%s}%s%%{B- F-}\n" \
+    printf "%%{F%s}%s%%{F-}\n" \
         "$(xrdb_query "$polybar_output_foreground_color")" \
         "$1"
 }
