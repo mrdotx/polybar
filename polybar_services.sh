@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2024-02-16T20:48:47+0100
+# date:   2024-04-04T16:32:06+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -44,6 +44,8 @@ case "$1" in
         service_status "picom.service" "󰗌" "user"
         service_status "wacom.service" "󰏪" "user"
         service_status "xbanish.service" "󰇀" "user"
+        service_status "systemd-resolved.service" "󰇧"
+        service_status "systemd-timesyncd.service" "󱫬"
         service_status "sshd.service" "󰒒"
         service_status "wg0" "󰒄" "wireguard"
         service_status "cups.service" "󰐪"
