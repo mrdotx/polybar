@@ -2,7 +2,7 @@
 
 shell scripts for polybar
 
-| name                   | comment                                                                 |
+| file                   | comment                                                                 |
 | :--------------------- | :---------------------------------------------------------------------- |
 | polybar.sh             | start, restart, kill and cycle polybars                                 |
 | polybar_freshrss.sh    | shows the number of rss feeds (unreaded/starred) from freshrss          |
