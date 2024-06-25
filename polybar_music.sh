@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2023-12-01T14:08:57+0100
+# date:   2024-06-24T15:59:04+0200
 
 # source polybar helper
 . polybar_helper.sh
@@ -86,7 +86,7 @@ notify() {
         [ -z "$stream" ] \
             && cover=$(mktemp -t polybar_music_cover.XXXXXX.png) \
             && ffmpeg -y -i "$file" -c:v copy "$cover" >/dev/null 2>&1 \
-            && convert "$cover" -resize 100 "$cover" >/dev/null 2>&1
+            && magick "$cover" -resize 100 "$cover" >/dev/null 2>&1
 
         notify-send \
             -u low  \
