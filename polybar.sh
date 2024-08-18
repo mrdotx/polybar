@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2024-02-25T08:14:51+0100
+# date:   2024-08-17T18:56:08+0200
 
 service="polybar.service"
 
@@ -64,15 +64,7 @@ start() {
             ;;
         *)
             exec_bar "$primary" "top" "pinned" "main"
-            # secondary monitor by hostname
-            case "$(uname -n)" in
-                m75q)
-                    exec_bar "$secondary" "bottom" "pinned" "sys_info"
-                    ;;
-                *)
-                    exec_bar "$secondary" "top" "pinned" "sys_info"
-                    ;;
-            esac
+            exec_bar "$secondary" "top" "pinned" "sys_info"
             ;;
     esac
 }
