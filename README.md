@@ -2,8 +2,8 @@
 
 shell scripts for polybar
 
-![monitor1](screenshot_monitor1.png)
-![monitor2](screenshot_monitor2.png)
+![monitor1](screenshots/monitor1.png)
+![monitor2](screenshots/monitor2.png)
 
 | file                   | comment                                                                 | screenshot                                                                              |
 | :--------------------- | :---------------------------------------------------------------------- | :-------------------------------------------------------------------------------------- |
