@@ -5,7 +5,7 @@ shell scripts for polybar
 ![monitor1](images/monitor1.png)
 ![monitor2](images/monitor2.png)
 
-| file                   | comment                                                                 | images                                                                          |
+| file                   | comment                                                                 | image                                                                           |
 | :--------------------- | :---------------------------------------------------------------------- | :------------------------------------------------------------------------------ |
 | polybar.sh             | start, restart, kill and cycle polybars                                 |                                                                                 |
 | polybar_freshrss.sh    | shows the number of rss feeds (unreaded/starred) from freshrss          | ![rss polybar](images/rss_polybar.png)                                          |
