@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2024-04-04T16:32:06+0200
+# date:   2024-11-03T06:58:57+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -51,7 +51,7 @@ case "$1" in
         service_status "cups.service" "󰐪"
         service_status "bluetooth.service" "󰂯"
 
-        polybar_output "%{T2}$services%{T-}"
+        polybar_output "%{T2}$services%{T-} "
         ;;
     --update)
         for id in $(pgrep -f "polybar main"); do
