@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweather.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2023-12-05T16:36:42+0100
+# date:   2024-11-27T06:54:10+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -379,10 +379,10 @@ polybar_data() {
     # daylight
     case $current_daytime in
         d)
-            daylight=" $sunset_icon$current_sunset"
+            daylight=" $sunset_icon $current_sunset"
             ;;
         n)
-            daylight=" $sunrise_icon$current_sunrise"
+            daylight=" $sunrise_icon $current_sunrise"
             ;;
     esac
 
