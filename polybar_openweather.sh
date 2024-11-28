@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweather.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2024-11-27T06:54:10+0100
+# date:   2024-11-28T06:31:31+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -374,7 +374,7 @@ polybar_data() {
 
     # precipitation
     [ "$forecast_probability" -gt 0 ] \
-        && precipitation=" $precipitation_icon$forecast_probability%"
+        && precipitation=" $precipitation_icon $forecast_probability%"
 
     # daylight
     case $current_daytime in
