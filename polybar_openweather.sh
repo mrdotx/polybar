@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweather.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2024-11-28T06:31:31+0100
+# date:   2024-12-02T07:30:54+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -344,10 +344,11 @@ polybar_data() {
     forecast_icon="$(get_weather "$forecast_number")"
     trend_up_icon="$(get_weather "x71")"
     trend_down_icon="$(get_weather "x72")"
-    trend_neutral_icon="$(get_weather "x72")"
+    trend_neutral_icon="$(get_weather "x73")"
     precipitation_icon="$(get_weather "x81")"
     sunrise_icon="$(get_weather "x91")"
     sunset_icon="$(get_weather "x92")"
+    divider=" │ "
 
     # current
     current="$(get_weather "$current_number")$current_temp°"
@@ -374,20 +375,20 @@ polybar_data() {
 
     # precipitation
     [ "$forecast_probability" -gt 0 ] \
-        && precipitation=" $precipitation_icon $forecast_probability%"
+        && precipitation="$divider$precipitation_icon $forecast_probability%"
 
     # daylight
     case $current_daytime in
         d)
-            daylight=" $sunset_icon $current_sunset"
+            daylight="$divider$sunset_icon $current_sunset"
             ;;
         n)
-            daylight=" $sunrise_icon $current_sunrise"
+            daylight="$divider$sunrise_icon $current_sunrise"
             ;;
     esac
 
     # output
-    printf "%s%s%s" "$weather" "$precipitation" "$daylight"
+    printf "» %s%s%s «" "$weather" "$precipitation" "$daylight"
 }
 
 output_data() {
