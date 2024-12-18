@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweather.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2024-12-02T07:30:54+0100
+# date:   2024-12-18T07:53:22+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -17,7 +17,7 @@ gpg_file="$HOME/.local/share/repos/password-store/www/development/openweathermap
 location_file="/tmp/weather_location"
 
 # source polybar helper
-. polybar_helper.sh
+. _polybar_helper.sh
 
 request() {
     api_key="$( \

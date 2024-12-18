@@ -3,14 +3,14 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2024-11-03T06:58:57+0100
+# date:   2024-12-18T07:53:32+0100
 
 # speed up script by using standard c
 LC_ALL=C
 LANG=C
 
 # source polybar helper
-. polybar_helper.sh
+. _polybar_helper.sh
 
 set_output() {
     if [ -z "$services" ]; then

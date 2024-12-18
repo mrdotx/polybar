@@ -3,10 +3,10 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2024-06-24T15:59:04+0200
+# date:   2024-12-18T07:53:17+0100
 
 # source polybar helper
-. polybar_helper.sh
+. _polybar_helper.sh
 
 trim_string() {
     if [ "$(printf "%s" "$2" | wc -m)" -ge "$1" ]; then

@@ -3,14 +3,14 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_pacman.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2024-03-24T09:48:30+0100
+# date:   2024-12-18T07:53:26+0100
 
 # use standard c to identify paru ignored updates
 LC_ALL=C
 LANG=C
 
 # source polybar helper
-. polybar_helper.sh
+. _polybar_helper.sh
 
 get_pacman_mirror() {
     grep '^Server' /etc/pacman.d/mirrorlist \

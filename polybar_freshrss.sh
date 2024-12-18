@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_freshrss.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2023-11-30T14:03:52+0100
+# date:   2024-12-18T07:53:08+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -17,7 +17,7 @@ url_request="http://m625q/freshrss/api/greader.php/reader/api/0"
 url_parameter="?output=json"
 
 # source polybar helper
-. polybar_helper.sh
+. _polybar_helper.sh
 
 request() {
     get_pass() {
