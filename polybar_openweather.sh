@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweather.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2024-12-18T07:53:22+0100
+# date:   2025-01-11T08:41:44+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -388,7 +388,10 @@ polybar_data() {
     esac
 
     # output
-    printf "» %s%s%s «" "$weather" "$precipitation" "$daylight"
+    printf "%%{T2}»%%{T1} %%{T-}%s%s%s%%{T1} %%{T2}«%%{T-}" \
+        "$weather" \
+        "$precipitation" \
+        "$daylight"
 }
 
 output_data() {
