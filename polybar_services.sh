@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2024-12-18T07:53:32+0100
+# date:   2025-02-20T06:48:30+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -43,7 +43,7 @@ case "$1" in
         service_status "i3_autotiling.service" "󰕴" "user"
         service_status "picom.service" "󰗌" "user"
         service_status "wacom.service" "󰏪" "user"
-        service_status "xbanish.service" "󰇀" "user"
+        service_status "xhidecursor.service" "󰇀" "user"
         service_status "systemd-resolved.service" "󰇧"
         service_status "systemd-timesyncd.service" "󱫬"
         service_status "sshd.service" "󰒒"
