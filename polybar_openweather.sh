@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweather.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2025-01-11T08:41:44+0100
+# date:   2025-03-07T06:47:42+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -490,7 +490,7 @@ case "$1" in
 
         title="OpenWeather [$(cat "$location_file")]"
         notify-send \
-            -t 0 \
+            -t 2147483647 \
             -u low \
             "$title" \
             "$(output_data "notify")" \
