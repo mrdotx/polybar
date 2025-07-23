@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # github: https://github.com/mrdotx/polybar
-# date:   2025-02-20T06:48:30+0100
+# date:   2025-07-23T04:53:51+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -47,7 +47,7 @@ case "$1" in
         service_status "systemd-resolved.service" "󰇧"
         service_status "systemd-timesyncd.service" "󱫬"
         service_status "sshd.service" "󰒒"
-        service_status "wg0" "󰒄" "wireguard"
+        service_status "99-$(uname -n)_vpn" "󰒄" "wireguard"
         service_status "cups.service" "󰐪"
         service_status "bluetooth.service" "󰂯"
 
