@@ -2,8 +2,8 @@
 
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
-# github: https://github.com/mrdotx/polybar
-# date:   2024-12-18T07:53:12+0100
+# url:    https://github.com/mrdotx/polybar
+# date:   2025-08-07T05:34:07+0200
 
 # speed up script by using standard c
 LC_ALL=C

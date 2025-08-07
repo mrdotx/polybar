@@ -2,8 +2,8 @@
 
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
-# github: https://github.com/mrdotx/polybar
-# date:   2024-12-18T07:53:17+0100
+# url:    https://github.com/mrdotx/polybar
+# date:   2025-08-07T05:34:11+0200
 
 # source polybar helper
 . _polybar_helper.sh

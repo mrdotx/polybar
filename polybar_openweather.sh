@@ -2,8 +2,8 @@
 
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweather.sh
 # author: klassiker [mrdotx]
-# github: https://github.com/mrdotx/polybar
-# date:   2025-03-07T06:47:42+0100
+# url:    https://github.com/mrdotx/polybar
+# date:   2025-08-07T05:34:15+0200
 
 # speed up script by using standard c
 LC_ALL=C

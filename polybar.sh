@@ -2,8 +2,8 @@
 
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
-# github: https://github.com/mrdotx/polybar
-# date:   2024-08-17T18:56:08+0200
+# url:    https://github.com/mrdotx/polybar
+# date:   2025-08-07T05:33:59+0200
 
 service="polybar.service"
 
