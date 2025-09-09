@@ -3,23 +3,24 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_freshrss.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2025-08-07T05:34:03+0200
+# date:   2025-09-09T05:15:28+0200
 
 # speed up script by using standard c
 LC_ALL=C
 LANG=C
 
 # config (password can be plain text or a gpg file path)
+server="m625q"
 user="klassiker"
 password="$HOME/.local/share/repos/password-store/www/development/freshrss_api.gpg"
-url_login="http://m625q/freshrss/api/greader.php/accounts/ClientLogin"
-url_request="http://m625q/freshrss/api/greader.php/reader/api/0"
-url_parameter="?output=json"
 
 # source polybar helper
 . _polybar_helper.sh
 
 request() {
+    login_url="http://$server/freshrss/api/greader.php/accounts/ClientLogin"
+    request_url="http://$server/freshrss/api/greader.php/reader/api/0"
+
     get_pass() {
         if [ -e "$password" ]; then
             gpg -q -d "$password" \
@@ -30,13 +31,13 @@ request() {
     }
 
     get_auth() {
-        curl -fsS "$url_login?Email=$user&Passwd=$(get_pass)" \
+        curl -fsS "$login_url?Email=$user&Passwd=$(get_pass)" \
             | grep 'Auth=' \
             | sed 's/Auth/auth/'
     }
 
     curl -fsS -H "Authorization:GoogleLogin $(get_auth)" \
-        "$url_request/$1$url_parameter"
+        "$request_url/$1?output=json"
 }
 
 get_count() {
