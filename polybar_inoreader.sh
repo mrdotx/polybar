@@ -3,25 +3,25 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2025-08-07T05:34:07+0200
+# date:   2025-09-09T05:16:40+0200
 
 # speed up script by using standard c
 LC_ALL=C
 LANG=C
 
 # config (password can be plain text or a gpg file path)
-user="klassiker"
-password="$HOME/.local/share/repos/password-store/www/social/inoreader.gpg"
 app_id="999999505"
 app_key="EQsZICxpsbFczwbXrsrkRbXUUw8DdfwO"
-url_login="https://www.inoreader.com/accounts/ClientLogin"
-url_request="https://www.inoreader.com/reader/api/0"
-url_parameter="?AppId=$app_id&AppKey=$app_key"
+user="klassiker"
+password="$HOME/.local/share/repos/password-store/www/social/inoreader.gpg"
 
 # source polybar helper
 . _polybar_helper.sh
 
 request() {
+    login_url="https://www.inoreader.com/accounts/ClientLogin"
+    request_url="https://www.inoreader.com/reader/api/0"
+
     get_pass() {
         if [ -e "$password" ]; then
             gpg -q -d "$password" \
@@ -32,13 +32,13 @@ request() {
     }
 
     get_auth() {
-        curl -fsS "$url_login?Email=$user&Passwd=$(get_pass)" \
+        curl -fsS "$login_url?Email=$user&Passwd=$(get_pass)" \
             | grep 'Auth=' \
             | sed 's/Auth/auth/'
     }
 
     curl -fsS -H "Authorization: GoogleLogin $(get_auth)" \
-        "$url_request/$1$url_parameter"
+        "$request_url/$1?AppId=$app_id&AppKey=$app_key"
 }
 
 get_count() {
