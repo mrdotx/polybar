@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweather.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2025-08-07T05:34:15+0200
+# date:   2025-09-17T04:31:43+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -13,28 +13,30 @@ LANG=C
 # api_key = a2d833bfaa8912dc090fd547e109cf13
 gpg_file="$HOME/.local/share/repos/password-store/www/development/openweathermap.gpg"
 
-# file for location cache (if not available, determine with ipinfo.io)
-location_file="/tmp/weather_location"
+# file for location cache
+location_file="/tmp/location.cache"
 
 # source polybar helper
 . _polybar_helper.sh
 
+location_cache() {
+    grep -q -s '[^[:space:]]' "$1" \
+        || curl -fsS 'https://ipinfo.io/city' > "$1"
+
+    cat "$1"
+}
+
 request() {
+    api_url="https://api.openweathermap.org/data/2.5/$1"
     api_key="$( \
         gpg -q -d "$gpg_file" \
             | grep "^api_key =" \
             | awk -F ' = ' '{print $2}' \
     )"
 
-    grep -q -s '[^[:space:]]' $location_file \
-        || curl -fsS 'https://ipinfo.io/city' > $location_file
+    city="$(location_cache "$location_file" | sed 's/ /%20/g')"
 
-    url_api="https://api.openweathermap.org/data/2.5/$1"
-    url_appid="appid=$api_key"
-    url_para="mode=xml&units=metric"
-    url_city="q=$(sed 's/ /%20/g' "$location_file")"
-
-    curl -sf "$url_api?$url_appid&$url_para&$url_city"
+    curl -sf "$api_url?appid=$api_key&mode=xml&units=metric&q=$city"
 }
 
 extract_xml() {
@@ -488,7 +490,7 @@ case "$1" in
         polybar_net_check "openweathermap.org" \
             || exit 1
 
-        title="OpenWeather [$(cat "$location_file")]"
+        title="OpenWeather [$(location_cache "$location_file")]"
         notify-send \
             -t 2147483647 \
             -u low \
