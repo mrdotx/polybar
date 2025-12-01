@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2025-11-21T05:55:54+0100
+# date:   2025-12-01T05:37:39+0100
 
 script=$(basename "$0")
 help="$script [-h/--help] -- script to start polybar
@@ -21,7 +21,8 @@ help="$script [-h/--help] -- script to start polybar
     $script
     $script --kill
     $script --reload
-    $script --restart"
+    $script --restart
+    $script --toggle"
 
 get_monitor() {
     polybar -m \
@@ -55,17 +56,17 @@ case "$1" in
         primary=$(get_monitor 1)
         secondary=$(get_monitor 2)
 
-        # type = main, main_s, sys_info, sys_info_s, blank
+        # bar = weather(_s), xwindow(_s), sys_info(_s), blank
         case "$secondary" in
             "")
                 MONITOR="$primary" BOTTOM="false" I3PIN="false" \
-                    polybar "main_s" &
+                    polybar "weather_s" &
                 ;;
             *)
                 MONITOR="$primary" BOTTOM="false" I3PIN="true" \
                     polybar "sys_info" &
                 MONITOR="$secondary" BOTTOM="false" I3PIN="true" \
-                    polybar "main" &
+                    polybar "xwindow" &
                 ;;
         esac
         ;;
