@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2025-09-09T05:16:40+0200
+# date:   2025-12-02T05:14:15+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -51,7 +51,7 @@ get_count() {
 
 case "$1" in
     --update)
-        for id in $(pgrep -f "polybar main"); do
+        for id in $(pgrep -fx "polybar (weather*|xwindow*)"); do
             polybar-msg -p "$id" \
                 action "#rss.hook.0" >/dev/null 2>&1 &
         done

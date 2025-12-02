@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_pacman.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2025-09-10T04:36:08+0200
+# date:   2025-12-02T05:14:30+0100
 
 # use standard c to identify paru ignored updates
 LC_ALL=C
@@ -20,7 +20,7 @@ get_pacman_mirror() {
 
 case "$1" in
     --update)
-        for id in $(pgrep -f "polybar main"); do
+        for id in $(pgrep -fx "polybar (weather*|xwindow*)"); do
             polybar-msg -p "$id" \
                 action "#packages.hook.0" >/dev/null 2>&1 &
         done

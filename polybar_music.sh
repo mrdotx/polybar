@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2025-08-07T05:34:11+0200
+# date:   2025-12-02T05:14:19+0100
 
 # source polybar helper
 . _polybar_helper.sh
@@ -168,13 +168,13 @@ case "$1" in
     --start)
         cmus \
             && sleep .5 \
-            && for id in $(pgrep -f "polybar main"); do
+            && for id in $(pgrep -fx "polybar (weather*|xwindow*)"); do
                     polybar-msg -p "$id" \
                         action "#music.hook.0" >/dev/null 2>&1 &
                 done
         ;;
     *)
-        for id in $(pgrep -f "polybar main"); do
+        for id in $(pgrep -fx "polybar (weather*|xwindow*)"); do
             polybar-msg -p "$id" \
                 action "#music.hook.1" >/dev/null 2>&1 &
         done

@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweather.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2025-09-17T04:31:43+0200
+# date:   2025-12-02T05:14:24+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -505,7 +505,7 @@ case "$1" in
         output_data "terminal"
         ;;
     --update)
-        for id in $(pgrep -f "polybar main"); do
+        for id in $(pgrep -fx "polybar (weather*|xwindow*)"); do
             polybar-msg -p "$id" \
                 action "#weather.hook.0" >/dev/null 2>&1 &
         done
