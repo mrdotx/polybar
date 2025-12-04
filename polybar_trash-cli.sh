@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_trash-cli.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2025-12-02T05:14:38+0100
+# date:   2025-12-04T06:15:53+0100
 
 # speed up script by using standard c
 LC_ALL=C
@@ -18,7 +18,7 @@ auth="${EXEC_AS_USER:-sudo}"
 
 case "$1" in
     --update)
-        for id in $(pgrep -fx "polybar (weather*|xwindow*)"); do
+        for id in $(pgrep -fx "polybar (weather.*|xwindow.*)"); do
             polybar-msg -p "$id" \
                 action "#trash.hook.0" >/dev/null 2>&1 &
         done
