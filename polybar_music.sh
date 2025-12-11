@@ -3,14 +3,14 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_music.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2025-12-04T06:15:35+0100
+# date:   2025-12-11T06:18:13+0100
 
 # source polybar helper
 . _polybar_helper.sh
 
 trim_string() {
     if [ "$(printf "%s" "$2" | wc -m)" -ge "$1" ]; then
-        printf "%s…" "$(printf "%s" "$2" | cut -c 1-"$(($1 - 1))")"
+        printf "%s…" "$(printf "%s" "$2" | cut -c 1-"$(($1 - 3))")"
     else
         printf "%s" "$2"
     fi
@@ -102,7 +102,7 @@ notify() {
         && [ -z "$title" ]; then
             info="${file##*/}"
     elif [ -z "$stream" ]; then
-        info="\nArtist: $artist\nAlbum : $album\nTrack : $tracknumber\nTitle : <b>$title</b>"
+        info="\n<b>$title</b>\n$artist\n\n$album [#$tracknumber]"
     else
         info="\n<b>$stream</b>\n$genre\n$title\n$comment"
     fi
@@ -125,7 +125,7 @@ notify() {
 
 status() {
     if [ -z "$stream" ]; then
-        info="$artist - $title"
+        info="$title - $artist"
     else
         info="$stream"
         [ -n "$genre" ] \
@@ -138,17 +138,17 @@ status() {
         && [ -z "$title" ] \
         && info=$(printf "%s\n" "${file##*/}")
 
-    info=$(trim_string 73 "$info")
+    info=$(trim_string 50 "$info")
 
     case $status in
         "playing")
-            polybar_output "%{T2}󰐊 %{T-}$info"
+            polybar_output "%{T2}󰐌 %{T-}$info"
             ;;
         "paused")
-            polybar_output "%{T2}󰏤 %{T-}$info" "Polybar.secondary"
+            polybar_output "%{T2}󰏥 %{T-}$info" "Polybar.secondary"
             ;;
         "stopped")
-            polybar_output "%{T2}󰓛 %{T-}$info" "Polybar.red"
+            polybar_output "%{T2}󰙦 %{T-}$info" "Polybar.red"
             ;;
         *)
             polybar_output "$info"
