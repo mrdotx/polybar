@@ -5,9 +5,9 @@ shell scripts for polybar
 ![monitor1](images/monitor1.png)
 ![monitor2](images/monitor2.png)
 
-| folder  | comment                       |
-| :------ | :---------------------------- |
-| images  | images for the README.md file |
+| directory | comment                       |
+| :-------- | :---------------------------- |
+| images    | images for the README.md file |
 
 | file                   | comment                                                                 | image                                                                                                       |
 | :--------------------- | :---------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------- |
