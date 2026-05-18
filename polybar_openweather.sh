@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweather.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2025-12-04T06:15:40+0100
+# date:   2026-05-18T05:27:39+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -37,6 +37,11 @@ request() {
     city="$(location_cache "$location_file" | sed 's/ /%20/g')"
 
     curl -sf "$api_url?appid=$api_key&mode=xml&units=metric&q=$city"
+}
+
+round() {
+    # WORKAROUND: printf "%.0f" not completely converted in the dash shell
+    awk "BEGIN {printf \"%.$1f\", $2}"
 }
 
 extract_xml() {
@@ -75,15 +80,15 @@ get_data() {
     )
 
     # current
-    current_temp=$(printf "%.0f" \
+    current_temp=$(round 0 \
         "$(extract_xml "temperature" "value" "$current_data")" \
     )
-    current_like=$(printf "%.0f" \
+    current_like=$(round 0 \
         "$(extract_xml "feels_like" "value" "$current_data")" \
     )
     current_humidity=$(extract_xml "humidity" "value" "$current_data")
     current_pressure=$(extract_xml "pressure" "value" "$current_data")
-    current_visibility=$(printf "%.1f" \
+    current_visibility=$(round 1 \
         "$(printf "%s/1000\n" \
             "$(extract_xml "visibility" "value" "$current_data")" \
             | bc -l \
@@ -104,7 +109,7 @@ get_data() {
     esac
 
     # current wind
-    current_speed=$(printf "%.1f" \
+    current_speed=$(round 1 \
         "$(printf "%s*3.6\n" \
             "$(extract_xml "speed" "value" "$current_data")" \
             | bc -l \
@@ -152,15 +157,15 @@ get_data() {
         "time")"
     )
     forecast_number=$(extract_xml "symbol" "number" "$forecast_data")
-    forecast_temp=$(printf "%.0f" \
+    forecast_temp=$(round 0 \
         "$(extract_xml "temperature" "value" "$forecast_data")" \
     )
-    forecast_like=$(printf "%.0f" \
+    forecast_like=$(round 0 \
         "$(extract_xml "feels_like" "value" "$forecast_data")" \
     )
     forecast_pressure=$(extract_xml "pressure" "value" "$forecast_data")
     forecast_humidity=$(extract_xml "humidity" "value" "$forecast_data")
-    forecast_visibility=$(printf "%.1f" \
+    forecast_visibility=$(round 1 \
         "$(printf "%s/1000\n" \
             "$(extract_xml "visibility" "value" "$forecast_data")" \
             | bc -l \
@@ -168,7 +173,7 @@ get_data() {
     )
 
     # forecast precipitation
-    forecast_probability=$(printf "%.0f" \
+    forecast_probability=$(round 0 \
         "$(printf "%s*100\n" \
             "$(extract_xml "precipitation" "probability" "$forecast_data")" \
             | bc -l \
@@ -186,7 +191,7 @@ get_data() {
     forecast_type=$(extract_xml "precipitation" "type" "$forecast_data")
 
     # forecast wind
-    forecast_speed=$(printf "%.1f" \
+    forecast_speed=$(round 1 \
         "$(printf "%s*3.6\n" \
             "$(extract_xml "windSpeed" "mps" "$forecast_data")" \
             | bc -l \
