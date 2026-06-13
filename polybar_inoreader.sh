@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2025-12-04T06:15:31+0100
+# date:   2026-06-13T04:45:42+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -13,7 +13,7 @@ LANG=C
 app_id="999999505"
 app_key="EQsZICxpsbFczwbXrsrkRbXUUw8DdfwO"
 user="klassiker"
-password="$HOME/.local/share/repos/password-store/www/social/inoreader.gpg"
+password="$HOME/Projects/repos/password-store/www/social/inoreader.gpg"
 
 # source polybar helper
 . _polybar_helper.sh

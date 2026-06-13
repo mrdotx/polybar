@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_openweather.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2026-05-18T05:27:39+0200
+# date:   2026-06-13T04:45:50+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -11,7 +11,7 @@ LANG=C
 
 # needed api key for openweather in gpg file
 # api_key = a2d833bfaa8912dc090fd547e109cf13
-gpg_file="$HOME/.local/share/repos/password-store/www/development/openweathermap.gpg"
+gpg_file="$HOME/Projects/repos/password-store/www/development/openweathermap.gpg"
 
 # file for location cache
 location_file="/tmp/location.cache"

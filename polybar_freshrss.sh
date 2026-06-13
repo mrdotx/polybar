@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_freshrss.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2025-12-04T06:15:26+0100
+# date:   2026-06-13T04:45:34+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -12,7 +12,7 @@ LANG=C
 # config (password can be plain text or a gpg file path)
 server="m625q"
 user="klassiker"
-password="$HOME/.local/share/repos/password-store/www/development/freshrss_api.gpg"
+password="$HOME/Projects/repos/password-store/www/development/freshrss_api.gpg"
 
 # source polybar helper
 . _polybar_helper.sh
