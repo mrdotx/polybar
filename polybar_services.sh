@@ -3,7 +3,7 @@
 # path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2025-12-04T06:15:48+0100
+# date:   2026-06-18T04:11:22+0200
 
 # speed up script by using standard c
 LC_ALL=C
@@ -39,11 +39,12 @@ service_status() {
 
 case "$1" in
     --status)
-        service_status "xautolock.service" "󰌾" "user"
         service_status "i3_autotiling.service" "󰕴" "user"
+        service_status "xautolock.service" "󰌾" "user"
         service_status "picom.service" "󰗌" "user"
-        service_status "wacom.service" "󰏪" "user"
         service_status "xhidecursor.service" "󰇀" "user"
+        service_status "wacom.service" "󰏪" "user"
+        service_status "numlockx.service" "󰎤" "user"
         service_status "systemd-resolved.service" "󰇧"
         service_status "systemd-timesyncd.service" "󱫬"
         service_status "sshd.service" "󰒒"
