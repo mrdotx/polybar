@@ -1,14 +1,14 @@
 #!/bin/sh
 
-# path:   /home/klassiker/.local/share/repos/polybar/polybar.sh
+# path:   /home/klassiker/Projects/repos/polybar/polybar.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2025-12-18T06:23:43+0100
+# date:   2026-07-04T04:32:39+0200
 
 script=$(basename "$0")
 help="$script [-h/--help] -- script to start polybar
   Usage:
-    $script [--kill/--reload/--restart/--toggle]
+    $script [--kill|--reload|--restart|--toggle]
 
   Settings:
     without given settings, re-/start polybar

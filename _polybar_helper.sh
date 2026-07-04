@@ -1,9 +1,9 @@
 #!/bin/sh
 
-# path:   /home/klassiker/.local/share/repos/polybar/_polybar_helper.sh
+# path:   /home/klassiker/Projects/repos/polybar/_polybar_helper.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2025-08-07T05:33:54+0200
+# date:   2026-07-04T04:32:33+0200
 
 polybar_add_spacer() {
     polybar_add_spacer_output="$1"

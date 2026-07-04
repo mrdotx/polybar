@@ -1,13 +1,9 @@
 #!/bin/sh
 
-# path:   /home/klassiker/.local/share/repos/polybar/polybar_openweather.sh
+# path:   /home/klassiker/Projects/repos/polybar/polybar_openweather.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2026-06-13T04:45:50+0200
-
-# speed up script by using standard c
-LC_ALL=C
-LANG=C
+# date:   2026-07-04T04:33:12+0200
 
 # needed api key for openweather in gpg file
 # api_key = a2d833bfaa8912dc090fd547e109cf13

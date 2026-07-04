@@ -1,13 +1,9 @@
 #!/bin/sh
 
-# path:   /home/klassiker/.local/share/repos/polybar/polybar_pacman.sh
+# path:   /home/klassiker/Projects/repos/polybar/polybar_pacman.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2026-03-08T05:19:20+0100
-
-# use standard c to identify paru ignored updates
-LC_ALL=C
-LANG=C
+# date:   2026-07-04T04:33:18+0200
 
 # source polybar helper
 . _polybar_helper.sh

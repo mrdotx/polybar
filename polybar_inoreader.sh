@@ -1,13 +1,9 @@
 #!/bin/sh
 
-# path:   /home/klassiker/.local/share/repos/polybar/polybar_inoreader.sh
+# path:   /home/klassiker/Projects/repos/polybar/polybar_inoreader.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2026-06-13T04:45:42+0200
-
-# speed up script by using standard c
-LC_ALL=C
-LANG=C
+# date:   2026-07-04T04:33:01+0200
 
 # config (password can be plain text or a gpg file path)
 app_id="999999505"

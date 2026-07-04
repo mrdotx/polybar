@@ -1,13 +1,9 @@
 #!/bin/sh
 
-# path:   /home/klassiker/.local/share/repos/polybar/polybar_services.sh
+# path:   /home/klassiker/Projects/repos/polybar/polybar_services.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2026-06-18T04:11:22+0200
-
-# speed up script by using standard c
-LC_ALL=C
-LANG=C
+# date:   2026-07-04T04:33:24+0200
 
 # source polybar helper
 . _polybar_helper.sh
