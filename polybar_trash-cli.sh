@@ -3,7 +3,7 @@
 # path:   /home/klassiker/Projects/repos/polybar/polybar_trash-cli.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2026-07-04T04:33:29+0200
+# date:   2026-07-13T03:42:19+0200
 
 # source polybar helper
 . _polybar_helper.sh
@@ -23,6 +23,6 @@ case "$1" in
         trash=$($auth trash-list 2> /dev/null | wc -l)
 
         [ "$trash" -gt 0 ] \
-            && polybar_output "%{T2}󰩺 %{T-}$trash"
+            && polybar_output "%{T2}󰩹 %{T-}$trash"
         ;;
 esac
