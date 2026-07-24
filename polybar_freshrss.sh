@@ -3,7 +3,7 @@
 # path:   /home/klassiker/Projects/repos/polybar/polybar_freshrss.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2026-07-04T04:32:47+0200
+# date:   2026-07-24T04:59:55+0200
 
 # config (password can be plain text or a gpg file path)
 server="m625q"
@@ -58,7 +58,7 @@ case "$1" in
         done
         ;;
     *)
-        polybar_net_check "m625q" \
+        polybar_net_check "$server" \
             || exit 1
 
         unreaded=$(request "unread-count")
