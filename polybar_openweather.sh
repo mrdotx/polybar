@@ -3,7 +3,7 @@
 # path:   /home/klassiker/Projects/repos/polybar/polybar_openweather.sh
 # author: klassiker [mrdotx]
 # url:    https://github.com/mrdotx/polybar
-# date:   2026-07-04T04:33:12+0200
+# date:   2026-10-01T05:21:26+0200
 
 # needed api key for openweather in gpg file
 # api_key = a2d833bfaa8912dc090fd547e109cf13
@@ -433,9 +433,9 @@ output_data() {
         "<i>Current [$current_last]</i>" \
         "$table_header" \
         "$(row "$current_condition" \
-            "$current_icon" "$current_temp°C")" \
+            "$current_icon" "$current_temp°")" \
         "$(row "feels like" \
-            "" "$current_like°C")" \
+            "" "$current_like°")" \
         "$(row "$current_mode precipitation" \
             "$precipitation_icon" "${current_precipitation}mm")" \
         "$(row "wind: ${current_speed}km/h" \
@@ -456,9 +456,9 @@ output_data() {
         "<i>Forecast [$forecast_from_to]</i>" \
         "$table_header" \
         "$(row "$forecast_condition" \
-            "$forecast_icon" "$forecast_temp°C")" \
+            "$forecast_icon" "$forecast_temp°")" \
         "$(row "feels like" \
-            "" "$forecast_like°C")" \
+            "" "$forecast_like°")" \
         "$(row "${forecast_type:-"no"} precipitation: $forecast_probability%" \
             "$precipitation_icon" "${forecast_precipitation}mm")" \
         "$(row "wind: ${forecast_speed}km/h" \
